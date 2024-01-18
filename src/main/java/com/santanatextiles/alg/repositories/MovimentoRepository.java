@@ -43,6 +43,7 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
 			,nativeQuery = true)
           List<Movimento> buscaMovimentoPorParametros(@Param("idfil") String idfil) ;  
     
+    
     @Query(value = "SELECT 	" + 
 			" M2.IDFIL 	,  " + 
 			" M2NF 	    ,  " + 
@@ -93,6 +94,18 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
     
     
     
+	@Transactional(readOnly=true)
+	List<Movimento>  findByIdfil(String idfil);      
+	
+	@Transactional(readOnly=true)
+	Movimento  findByIdfilAndFornecedorAndNotaFiscal(String idfil,String fornecedor,String notaFiscal);
+	
+	@Query(value="SELECT CPF.CPFM3_ID_SQ.NEXTVAL FROM DUAL", nativeQuery = true)  
+	Double codigoNovoMovimento();   
+	
+	@Transactional
+	Double deleteById(Double id ); 	 
+    
     
 /*
  * 
@@ -114,18 +127,15 @@ cSql += "  WHERE M3.IDFIL = '"+STRZERO(nIDFIL,2)+"' AND M2.M2DTBASE BETWEEN  " +
  
     
     
+           // @Query("SELECT nf FROM NotaFiscal nf JOIN nf.itens nfi WHERE nf.numeroNotaFiscal = :numeroNotaFiscal ORDER BY nfi.idItem")
+            //List<NotaFiscal> findAllOrderByItemIdByNumeroNotaFiscal(@Param("numeroNotaFiscal") String numeroNotaFiscal);
     
     
+            //@Query("SELECT mv FROM Movimento mv JOIN mv.itemMovimento mvi " + 
+            //" WHERE mv.idfil = ?1 and mv.fornecedor = ?2 and mv.notaFiscal = ?3 ORDER BY mvi.idItem")
+            //Movimento findByIdfilAndFornecedorAndNotaFiscalOrderByIdByIdItem(String idfil,String fornecedor,String notaFiscal);    
     
-    
-    		@Transactional(readOnly=true)
-    		List<Movimento>  findByIdfil(String idfil);      
-    		
-    		@Transactional(readOnly=true)
-    		Movimento  findByIdfilAndFornecedorAndNotaFiscal(String idfil,String fornecedor,String notaFiscal);
-    		
-    		@Query(value="SELECT CPF.CPFM3_ID_SQ.NEXTVAL FROM DUAL", nativeQuery = true)
-    		Double codigoNovoMovimento();    		
+  		
     
 
 }

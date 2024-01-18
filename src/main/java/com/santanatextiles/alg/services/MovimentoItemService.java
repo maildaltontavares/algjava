@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
@@ -23,7 +24,7 @@ public class MovimentoItemService {
 		private MovimentoItemRepository repo;		
 		
 		@Autowired
-		private TesteQualidadeService serviceCQ;
+		private TesteQualidadeService serviceCQ;  
 		
 		@Autowired
 		private EstoqueMPService serviceEstoqueMP;		
@@ -47,6 +48,40 @@ public class MovimentoItemService {
 			 List<MovimentoItem> obj = repo.findByIdfil(filial ) ;	  
 			 return obj;
 		}	  
+		
+		
+		
+		
+		public MovimentoItem update(MovimentoItem obj,String atualizaEstoque,
+				   String atualizaItem,String pesoCalculadoInformado ) throws ParseException{  
+			
+		    MovimentoItem movItem = repo.save(configuraMovimentoItemAlteracao(obj)); 
+		    
+		    /// Atualiza o saldo de estoque
+		    if(atualizaEstoque.equals("S")) {    
+			    SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(movItem.getIdfil(), movItem.getIdMovimento());
+			    serviceEstoqueMP.atualizaEstoque(movItem.getIdfil(),movItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());			    
+		    }
+		    
+		    return movItem;
+		    
+		}	
+		
+		private MovimentoItem configuraMovimentoItemAlteracao(MovimentoItem obj) throws ParseException { 
+			
+			MovimentoItem movItem = obj;
+			
+			LocalDate dataAtual = LocalDate.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+			String dataFormatada = dataAtual.format(formatter); 
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+		    		    
+		    movItem.setDataAlteracao(dateFormat.parse(dataFormatada));
+		    
+			
+		    return movItem;
+		     
+		}		
 		
 		
 		public MovimentoItem insert(MovimentoItem obj,String atualizaEstoque,
@@ -90,12 +125,39 @@ public class MovimentoItemService {
 		}
 		
 		
+		@Transactional	
+		 public void deletaMovimentoItem(Double id){	 
+		 	  repo.deleteByIdItem(id)  ;  
+		}	
 		
-		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha ) {
+		public List<MovimentoItem> findByIdCab(Double idCab ){	 
+			 List<MovimentoItem> obj = repo.findByIdCab(idCab ) ;	  
+			 return obj;
+		}	 
+		
+		
+		
+		
+		
+		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha  ) {
 			
-			MovimentoItem movimentoItem = new MovimentoItem(); 
+			MovimentoItem movimentoItem = new MovimentoItem();  
+			Double novoMovimentoItem;
 			
-			Double novoMovimentoItem = repo.codigoNovoMovimentoItem();
+			if(objDTO.getIdItem() == null) {
+				novoMovimentoItem = repo.codigoNovoMovimentoItem();
+			}else {
+				novoMovimentoItem = objDTO.getIdItem();
+			}
+				
+			movimentoItem.setIdItem(novoMovimentoItem) ;	
+			
+			if(atualizaItem.equals("S")) {
+				movimentoItem.setIdMovimento(novoMovimentoItem); 
+			}else {
+				movimentoItem.setIdMovimento(objDTO.getIdMovimento()); 
+			} 			
+			
 			
 			///// Testa se já foi feito teste no lote deste produtor
 			
@@ -174,7 +236,7 @@ public class MovimentoItemService {
 				   
 			   } 
 			
-			movimentoItem.setId(novoMovimentoItem) ;			
+					
 			movimentoItem.setIdfil(objDTO.getIdfil());  
 			movimentoItem.setNotaFiscal(objDTO.getNotaFiscal());	 
 			movimentoItem.setFornecedor(objDTO.getFornecedor());	  
@@ -220,16 +282,11 @@ public class MovimentoItemService {
 				movimentoItem.setVlUnitario(0.0);
 				
 			}
-			//movimentoItem.setVlUnitario(objDTO.getVlUnitario()); 
-			
-			
-			if(atualizaItem.equals("S")) {
-				movimentoItem.setIdMovimento(novoMovimentoItem); 
-			}else {
-				movimentoItem.setIdMovimento(objDTO.getIdMovimento()); 
-			} 
+ 
 			
 			movimentoItem.setPesoMedio(objDTO.getPesoMedio()); 
+			movimentoItem.setStatusItem(objDTO.getStatusItem());
+			movimentoItem.setStatusItemOriginal(objDTO.getStatusItemOriginal());
 					
 			return movimentoItem;  
 				

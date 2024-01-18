@@ -23,7 +23,13 @@ public class FornecedorService {
 		nome = nome.toUpperCase();
 		List<Fornecedor> obj = repo.buscaFornecedorPorNomeReduzido(idfil,nome); 
 		return  obj;							 
-	}		
+	}	
+	
+	public List<Fornecedor> buscaFornecedorPorCodigo(String idfil, String codigo){	 
+		
+		List<Fornecedor> obj = repo.buscaFornecedorPorCodigo(idfil,codigo); 
+		return  obj;							 
+	}	
 	
     
 	

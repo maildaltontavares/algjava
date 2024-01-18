@@ -24,7 +24,7 @@ public interface TipoMovimentoRepository extends JpaRepository<TipoMovimento, Ti
 					" M5ATLITE 	,   " +
 					" M5PESATL	    " +	 
 				    " FROM CPFM5_DBF M5 "  +
-				    " where m5.idfil =  STL.FN_STL_IDFIL('CPFM5',?1)  order by M5CDMOV"
+				    " where m5.idfil =  STL.FN_STL_IDFIL('CPFM5',?1)  order by M5CDMOV desc"
 				,nativeQuery = true)
         List<TipoMovimento> buscaTipoMovimentoPorParametros(@Param("idfil") String idfil) ; 	
 
@@ -43,7 +43,7 @@ public interface TipoMovimentoRepository extends JpaRepository<TipoMovimento, Ti
 					" M5ATLITE 	,   " +
 					" M5PESATL	    " +	 
 				    " FROM CPFM5_DBF M5 "  +
-				    " where m5.idfil =  STL.FN_STL_IDFIL('CPFM5',?1) and  trim(M5CDMOV) = trim(?2)"
+				    " where m5.idfil =  STL.FN_STL_IDFIL('CPFM5',?1) and  trim(M5CDMOV) = trim(?2) order by M5CDMOV desc"
 				,nativeQuery = true)
          TipoMovimento  findByIdfilAndCodigo(String idfil,String codigo) ; 			
 	    

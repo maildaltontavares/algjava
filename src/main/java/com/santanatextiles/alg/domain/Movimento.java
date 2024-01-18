@@ -47,9 +47,10 @@ public class Movimento implements Serializable {
 	private String fornecedor;	 
 	
 	 
-	@Column(name="M2TPMOV")
+	@Column(name="M2TPMOV",length = 5)
+ 
+	///@Column()
 	private String tipoMovimento;	 
-	
 	 
 	@Column(name="M2TPMP")
 	private String tipoMP;	 	
@@ -140,11 +141,14 @@ public class Movimento implements Serializable {
 
 	@ManyToOne 
 	@JoinColumnsOrFormulas({
-		@JoinColumnOrFormula(column=@JoinColumn(name="M2TPMOV", referencedColumnName="M5CDMOV", insertable = false, updatable = false)),
+	 @JoinColumnOrFormula(column=@JoinColumn(name="M2TPMOV", referencedColumnName="M5CDMOV", insertable = false, updatable = false)), 
+		//@JoinColumnOrFormula(formula=@JoinFormula(value="M2TPMOV", referencedColumnName="M5CDMOV"))	,
+		//@JoinColumnOrFormula(column=@JoinColumn(name="M2TPMOV", referencedColumnName="M5CDMOV", insertable = false, updatable = false)), 
+		///@JoinColumnOrFormula(formula=@JoinFormula(value="(select TRIM(M5.M5CDMOV)  from CPF.CPFM5_DBF M5 where TRIM(M5.M5CDMOV) = TRIM(M2TPMOV) )"  )), 
 		@JoinColumnOrFormula(formula=@JoinFormula(value="stl.fn_stl_idfil('CPFM5',idfil)", referencedColumnName="idfil"))	
 	})	
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private TipoMovimento fkTipoMovimento	;	
+	private TipoMovimentoView fkTipoMovimento	;	
 	
 	
 	@ManyToOne 
@@ -193,7 +197,7 @@ public class Movimento implements Serializable {
 			String usuarioInclusao, String usuarioAlteracao, Date dataInclusao, Date dataAlteracao,
 			Set<MovimentoItem> itemMovimento, Set<MovimentoItemDTO> itemMovimentoDTO, String nomeFornecedor,
 			String nomeProdutor, String nomeProcedencia, String nomeTipoMateriaPrima, String nomeTipoMovimento,
-			TipoMovimento fkTipoMovimento, Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia,
+			TipoMovimentoView fkTipoMovimento, Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia,
 			TipoMateriaPrima fkTipoMP) {
 		super();
 		this.id = id;
@@ -557,12 +561,12 @@ public class Movimento implements Serializable {
 	}
 
 
-	public TipoMovimento getFkTipoMovimento() {
+	public TipoMovimentoView getFkTipoMovimento() {
 		return fkTipoMovimento;
 	}
 
 
-	public void setFkTipoMovimento(TipoMovimento fkTipoMovimento) {
+	public void setFkTipoMovimento(TipoMovimentoView fkTipoMovimento) {
 		this.fkTipoMovimento = fkTipoMovimento;
 	}
 

@@ -87,6 +87,22 @@ public class MovimentoResource {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		} 		
 	}  	 	
+
+ 	
+ 	@CrossOrigin
+	@RequestMapping(method=RequestMethod.PUT)
+	public ResponseEntity<String> update (@Valid @RequestBody List<MovimentoDTO> objDTO){   
+ 		try {  
+		    String resultado = service.update(objDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(resultado);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+	}  	
+ 	
+ 
+ 	
+ 	
  	 
  	@CrossOrigin
 	@RequestMapping(value="/movim", method=RequestMethod.POST)
@@ -100,6 +116,17 @@ public class MovimentoResource {
 		} 		
 	}  	
  	
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/novoitem", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > codigoNovoMovimento (){ 
+ 		try {
+	 		Double novoId = service.codigoNovoMovimento() ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body(novoId);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	} 	 	
 	 
     		
 	

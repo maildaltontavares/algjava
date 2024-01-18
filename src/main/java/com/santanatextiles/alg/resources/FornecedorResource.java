@@ -45,6 +45,17 @@ public class FornecedorResource {
 			
 	}	
 	
+	@RequestMapping(value="/pesquisacod/{filial}/{codigo}", method=RequestMethod.GET)
+	public ResponseEntity<?> buscaFornecedorPorCodigo(@PathVariable String filial,@PathVariable String codigo){  
+		try {
+			List<Fornecedor> listaFornecedor = service.buscaFornecedorPorCodigo(filial, codigo); 
+			return ResponseEntity.status(HttpStatus.OK).body(listaFornecedor);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+			
+	}	
+	
 	
 	
 

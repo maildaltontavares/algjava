@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.santanatextiles.alg.domain.TipoMateriaPrima;
+import com.santanatextiles.alg.domain.TipoMovimento;
 import com.santanatextiles.alg.repositories.TipoMateriaPrimaRepository;
 
 @Service
@@ -35,7 +36,10 @@ public class TipoMateriaPrimaService {
 			 return obj;
 		}			
 			
-		
+		public  TipoMateriaPrima  buscaTipoMPByCodigo(String filial,String codigo ){	 
+			TipoMateriaPrima  obj = repo.findByIdfilAndCodigo(filial, codigo);  
+			 return obj;
+		}			
 		
 		
 

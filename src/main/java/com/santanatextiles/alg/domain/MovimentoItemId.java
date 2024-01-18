@@ -7,28 +7,28 @@ public class MovimentoItemId implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
 	 
-	private Double id;	  
+	private Double idItem;	  
 	
 	public MovimentoItemId() {
 		
 	}
 
-	public MovimentoItemId(Double id) {
+	public MovimentoItemId(Double idItem) {
 		super();
-		this.id = id;
+		this.idItem = idItem;
 	}
 
-	public Double getId() {
-		return id;
+	public Double getidItem() {
+		return idItem;
 	}
 
-	public void setId(Double id) {
-		this.id = id;
+	public void setId(Double idItem) {
+		this.idItem = idItem;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idItem);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class MovimentoItemId implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MovimentoItemId other = (MovimentoItemId) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(idItem, other.idItem);
 	}
  
 	

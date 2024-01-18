@@ -32,4 +32,10 @@ public class MisturaPadraoItemService {
 		}		 
 	
 
+		public List<MisturaPadraoItem> buscaMisturaPorId(Double id ){	 
+			 List<MisturaPadraoItem> obj = repo.buscaMisturaPorId( id ) ;	  
+			 return obj;
+		}			
+		
+		
 }

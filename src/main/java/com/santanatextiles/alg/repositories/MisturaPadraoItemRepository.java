@@ -28,6 +28,21 @@ public interface MisturaPadraoItemRepository extends JpaRepository<MisturaPadrao
     List<MisturaPadraoItem> buscaMisturaPadraoItemPorParametros(@Param("idfil") String idfil ) ;    
 	
 	
+    @Query(value = "SELECT 	" +
+	" IDFIL	 , " +
+	" T2MIST,	  " +
+	" T2ID	,  " +
+	" T2QTDE,	  " +
+	" T2DTINC	,  " +
+	" T2USRINC,	  " +
+	" T2DTALT,	  " +
+	" T2USRALT	  "  +
+	" FROM CPF.CPFT2_DBF T2    "  +
+    " where T2ID =  ?1  "
+	,nativeQuery = true)
+    List<MisturaPadraoItem> buscaMisturaPorId(@Param("id") Double id ) ;        
+    
+    
 
 
 }	

@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.EstoqueMPId;
 import com.santanatextiles.alg.projections.SaldoIdMovtoProjection;
+import com.santanatextiles.alg.projections.SaldoPesquisaIdProjection;
+
+import jakarta.persistence.Column;
 
 @Repository
 public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPId>{
@@ -101,6 +104,88 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " GROUP BY IDMOV  "	 
 	     ,nativeQuery = true)
 	    List<SaldoIdMovtoProjection> buscaSaldoIdMovto(String filial, Double idMovto) ;
+	    
+	     
+	     
+	    
+	    
+	     	    
+	    @Query(value =  
+	    "SELECT   " +   
+	    " M4.M4ID idmov,             " +    
+	    " TRIM(M6desc) PRODUTOR,  " +    
+	    "  M4PILHA PILHA,          " +
+	    " substr(M4LOTE,1,10) LOTE,  " +  
+	    " TRIM(TO_CHAR(M4QTDE)) QTDE,     " +
+	    " DECODE(TRIM(B2NOMREDUZ),'',TRIM(SUBSTR(B2NOME,1,15))  ,B2NOMREDUZ) NMFORN,  " +   
+	    " m4item ITEM,                                                                " +    
+	    " m4descf nomeItem,                                                          " +  
+	    " M4UM UM,                                                                    " +   
+	    " TRIM(M4.M4PROCED) PROCEDENCIA,                                                   " +        
+	    " M4NF NF,  " +   
+	    " M4FORN FORNECEDOR,  " +   
+	    " M4PESO PESO,  " +   
+	    " NVL(M4VLEST,0) VLEST ,  " +    
+	    " M4PESMED PESOMEDIO,  " +
+	    " M4TAM TAMANHO  " +	    
+	    " FROM CPF.CPFM4_DBF M4  " +       
+	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
+	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
+	    " WHERE M4.IDFIL = :filial   AND " +
+	    " trim(M4.M4ITEM) = :item   AND " + 
+        " (:produtor IS NULL  OR   M6COD  = :produtor)  AND " +
+        " (:lote     IS NULL  OR   M4LOTE like %:lote%    )  AND " + 
+	    "  M4QTDE <> 0  " +   
+	    " ORDER BY M6desc, M4.M4LOTE  "  
+	    ,nativeQuery = true)
+	    List<SaldoPesquisaIdProjection> pesquisaSaldoId(  
+			@Param("filial") String filial ,
+		    @Param("produtor") String produtor  ,
+		    @Param("lote") String lote   ,
+		    @Param("item") String item     
+			
+		) ;
+	    
+	 // " (:produtor IS NULL  OR  UPPER(TRIM(M6DESC)) like %:produtor% )  " +
+	    
+
+	    
+	    @Query(value =  
+	    "SELECT   " +   
+	    " M4.M4ID idmov,             " +    
+	    " TRIM(M6desc) PRODUTOR,  " +    
+	    "  M4PILHA PILHA,          " +
+	    " substr(M4LOTE,1,10) LOTE,  " +  
+	    " TRIM(TO_CHAR(M4QTDE)) QTDE,     " +
+	    " DECODE(TRIM(B2NOMREDUZ),'',TRIM(SUBSTR(B2NOME,1,15))  ,B2NOMREDUZ) NMFORN,  " +   
+	    " m4item ITEM,                                                                " +    
+	    " m4descf nomeItem,                                                          " +  
+	    " M4UM UM,                                                                    " +   
+	    " TRIM(M4.M4PROCED) PROCEDENCIA,                                                   " +        
+	    " M4NF NF,  " +   
+	    " M4FORN FORNECEDOR,  " +   
+	    " M4PESO PESO,  " +   
+	    " NVL(M4VLEST,0) VLEST ,  " +    
+	    " M4PESMED PESOMEDIO,  " +
+	    " M4TAM TAMANHO  " +	    
+	    " FROM CPF.CPFM4_DBF M4  " +       
+	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
+	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
+	    " WHERE M4.M4ID = :id  "  
+	    ,nativeQuery = true)
+	    List<SaldoPesquisaIdProjection> buscaEstoqueMPPorId(  
+		 
+		    @Param("id") Double id    
+			
+		) ;
+	    	    
+	    
+		@Transactional
+		Double deleteById(Double id ); 	    
+	    
+	    
+	    
+	    
 	    
 	    
 	     

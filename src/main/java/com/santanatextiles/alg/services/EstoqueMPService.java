@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.dto.SaldoIdMovtoDTO;
+import com.santanatextiles.alg.dto.SaldoPesquisaIdDTO;
 import com.santanatextiles.alg.projections.SaldoIdMovtoProjection;
+import com.santanatextiles.alg.projections.SaldoPesquisaIdProjection;
 import com.santanatextiles.alg.repositories.EstoqueMPRepository; 
 	
 @Service
@@ -31,6 +33,37 @@ public class EstoqueMPService {
 	public List<EstoqueMP> buscaEstoqueMPPorParametros(String filial ){	   
 		 List<EstoqueMP> obj = repo.buscaEstoqueMPPorParametros(filial ) ;	  
 		 return obj;
+	}		
+	
+	public SaldoPesquisaIdDTO buscaEstoqueMPPorId(Double id ){ 
+		
+		List<SaldoPesquisaIdProjection> saldoPesquisaIdP = repo.buscaEstoqueMPPorId(id); 
+		
+		List<SaldoPesquisaIdDTO> listaSaldoPesquisaId = saldoPesquisaIdP.stream().map(x-> new SaldoPesquisaIdDTO(x)).toList();  		
+		
+		SaldoPesquisaIdDTO saldoPesquisaId = new SaldoPesquisaIdDTO(); 
+		
+		for (SaldoPesquisaIdDTO saldoPesquisaIdDTO : listaSaldoPesquisaId) {
+			
+			saldoPesquisaId.setIdMov(saldoPesquisaIdDTO.getIdMov());
+			saldoPesquisaId.setLote(saldoPesquisaIdDTO.getLote());
+			saldoPesquisaId.setTamanho(saldoPesquisaIdDTO.getTamanho());
+			saldoPesquisaId.setPesoMedio(saldoPesquisaIdDTO.getPesoMedio());
+			saldoPesquisaId.setItem(saldoPesquisaIdDTO.getItem());
+			saldoPesquisaId.setNomeItem(saldoPesquisaIdDTO.getNomeItem());
+			saldoPesquisaId.setPilha(saldoPesquisaIdDTO.getPilha());
+			saldoPesquisaId.setUm(saldoPesquisaIdDTO.getUm());
+			saldoPesquisaId.setQtde(saldoPesquisaIdDTO.getQtde());
+			saldoPesquisaId.setProdutor(saldoPesquisaIdDTO.getProdutor());
+			
+			saldoPesquisaId.setNmForn(saldoPesquisaIdDTO.getNmForn());
+			saldoPesquisaId.setProcedencia(saldoPesquisaIdDTO.getProcedencia());
+			saldoPesquisaId.setNf(saldoPesquisaIdDTO.getNf());
+			saldoPesquisaId.setFornecedor(saldoPesquisaIdDTO.getFornecedor());
+			 		
+         }	 
+	   
+		  return saldoPesquisaId;
 	}		
 	
 	 
@@ -69,7 +102,7 @@ public class EstoqueMPService {
 		    itemEstoque.setDescFio(obj.getDescFio());		
 		    itemEstoque.setQuantidade(obj.getQuantidade()); 
 		    itemEstoque.setPeso(obj.getPeso());	 
-		    itemEstoque.setId(obj.getId());	 
+		    itemEstoque.setId(obj.getIdItem());	 
 		    itemEstoque.setUnidadeMedida(obj.getUnidadeMedida()); 
 		    itemEstoque.setPilha(obj.getPilha());
 		    itemEstoque.setValorEstoque(obj.getVlUnitario() * obj.getQuantidade()); 	 
@@ -126,6 +159,40 @@ public class EstoqueMPService {
 		return sldIdMovimento;
 		
 	}
+	
+	public  List<SaldoPesquisaIdDTO>  pesquisaLotePorParametros(String idfil,String produtor , String lote , String item ){
+		
+		produtor = produtor.toUpperCase();
+		
+		List<SaldoPesquisaIdProjection> saldoPesquisaIdP = repo.pesquisaSaldoId(idfil, produtor, lote , item); 
+		
+		List<SaldoPesquisaIdDTO> listaSaldoPesquisaId = saldoPesquisaIdP.stream().map(x-> new SaldoPesquisaIdDTO(x)).toList();  
+		
+		
+		/*
+		SaldoPesquisaIdDTO saldoPesquisaId = new SaldoPesquisaIdDTO();
+		
+		for (SaldoPesquisaIdDTO saldoPesquisaIdDTO : listaSaldoPesquisaId) {
+			
+			saldoPesquisaId.setIdMov(saldoPesquisaIdDTO.getIdMov()); 
+        }
+        */
+		
+		return listaSaldoPesquisaId;
+		
+	}
+	
+	@Transactional	
+	 public void deletaEstoque(Double id){  
+	 	  repo.deleteById(id);  
+	}		
+		
+	
+	
+	
+	
+	
+	
 
 	 
 

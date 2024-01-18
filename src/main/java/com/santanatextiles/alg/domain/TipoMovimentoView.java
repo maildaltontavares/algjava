@@ -10,10 +10,10 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="CPFM5_DBF",schema="CPF")
+@Table(name="V_CPFM5",schema="CPF")
 @IdClass(TipoMovimentoId.class)
 
-public class TipoMovimento implements Serializable {	
+public class TipoMovimentoView implements Serializable {	
 
 	private static final long serialVersionUID = 1L;  
 	
@@ -43,12 +43,12 @@ public class TipoMovimento implements Serializable {
 	@Column(name="M5ATLITE")
 	private String atualizaItem;
 	
-	public TipoMovimento() {
+	public TipoMovimentoView() {
 		
 		
 	}
 
-	public TipoMovimento(String idfil, String codigo, String desricao, String entradaSaida, String atualizaEstoque,
+	public TipoMovimentoView(String idfil, String codigo, String desricao, String entradaSaida, String atualizaEstoque,
 			String loteInternObrigatorio, String pesoCalculadoInformado, String atualizaItem) {
 		super();
 		this.idfil = idfil;
@@ -138,7 +138,7 @@ public class TipoMovimento implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TipoMovimento other = (TipoMovimento) obj;
+		TipoMovimentoView other = (TipoMovimentoView) obj;
 		return Objects.equals(codigo, other.codigo) && Objects.equals(idfil, other.idfil);
 	}  
 	

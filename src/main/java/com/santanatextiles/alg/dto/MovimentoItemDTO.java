@@ -9,7 +9,7 @@ public class MovimentoItemDTO  implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
  
-	private Double id; 
+	private Double idItem; 
 	private String  idfil;
 	private String notaFiscal;
 	private String fornecedor;	
@@ -57,20 +57,24 @@ public class MovimentoItemDTO  implements Serializable {
 	private Double trcnt;	 
 	private Double trar; 
 	private Double pesoMedio;
+	private String statusItem;
+	private String statusItemOriginal;
 	
-	public MovimentoItemDTO() {}
 	
-	
-	public MovimentoItemDTO(Double id, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
-			String procedencia, String lote, String qualidade, String tamanho, String descFio,
+	public MovimentoItemDTO() {} 
+
+
+	public MovimentoItemDTO(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
+			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
 			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
 			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
 			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
 			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
-			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio) {
+			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String statusItem,
+			String statusItemOriginal) {
 		super();
-		this.id = id;
+		this.idItem = idItem;
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
 		this.fornecedor = fornecedor;
@@ -116,16 +120,22 @@ public class MovimentoItemDTO  implements Serializable {
 		this.trcnt = trcnt;
 		this.trar = trar;
 		this.pesoMedio = pesoMedio;
+		this.statusItem = statusItem;
+		this.statusItemOriginal = statusItemOriginal;
 	}
 
 
-	public Double getId() {
-		return id;
+
+
+
+
+	public Double getIdItem() {
+		return idItem;
 	}
 
 
-	public void setId(Double id) {
-		this.id = id;
+	public void setIdItem(Double idItem) {
+		this.idItem = idItem;
 	}
 
 
@@ -576,10 +586,32 @@ public class MovimentoItemDTO  implements Serializable {
 
 	public void setPesoMedio(Double pesoMedio) {
 		this.pesoMedio = pesoMedio;
-	}	
-	
-	
-	
+	}
+
+
+	public String getStatusItem() {
+		return statusItem;
+	}
+
+
+	public void setStatusItem(String statusItem) {
+		this.statusItem = statusItem;
+	}
+
+
+	public String getStatusItemOriginal() {
+		return statusItemOriginal;
+	}
+
+
+	public void setStatusItemOriginal(String statusItemOriginal) {
+		this.statusItemOriginal = statusItemOriginal;
+	}
+
+
+
+
+	 
 	
 	
 	

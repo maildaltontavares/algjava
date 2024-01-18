@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.TipoMateriaPrima;
+import com.santanatextiles.alg.domain.TipoMovimento;
 import com.santanatextiles.alg.services.TipoMateriaPrimaService;
 
 @RestController
@@ -44,7 +45,16 @@ public class TipoMateriaPrimaResource {
 	} 
 	
 	
-	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/{filial}/{codigo}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > buscaTipoMPByCodigo (@PathVariable String filial,@PathVariable String codigo){ 
+ 		try {
+ 			TipoMateriaPrima tipoMP = service.buscaTipoMPByCodigo(filial, codigo);
+	 		return ResponseEntity.status(HttpStatus.OK).body(tipoMP);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	} 	
 	
 	
 	

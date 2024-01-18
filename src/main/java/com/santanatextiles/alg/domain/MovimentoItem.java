@@ -21,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity 
 @Table(name="CPFM3_DBF",schema="CPF")
@@ -31,7 +32,7 @@ public class MovimentoItem implements Serializable {
 	
 	@Id
 	@Column(name="M3ID")
-	private Double id;		
+	private Double idItem;		
 
 	@Column(name="IDFIL")
 	private String  idfil;
@@ -178,6 +179,12 @@ public class MovimentoItem implements Serializable {
 	@Column(name="M3PSMDNF")
 	private Double pesoMedio;	 
 	
+	@Transient
+	private String statusItem;	 
+	
+	@Transient
+	private String statusItemOriginal;	 	
+	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({	   
@@ -214,9 +221,9 @@ public class MovimentoItem implements Serializable {
  
 	public MovimentoItem() {}  
 	
- 
+ /*
 
-	public MovimentoItem(Double id, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, String descFio,
 			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
 			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
@@ -226,7 +233,7 @@ public class MovimentoItem implements Serializable {
 			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, Movimento movimento,
 			Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia) {
 		super();
-		this.id = id;
+		this.idItem = idItem;
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
 		this.fornecedor = fornecedor;
@@ -284,7 +291,7 @@ public class MovimentoItem implements Serializable {
 
 
 
-	public MovimentoItem(Double id, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, String descFio,
 			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
 			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
@@ -293,7 +300,7 @@ public class MovimentoItem implements Serializable {
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio) {
 		super();
-		this.id = id;
+		this.idItem = idItem;
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
 		this.fornecedor = fornecedor;
@@ -341,25 +348,163 @@ public class MovimentoItem implements Serializable {
 		this.pesoMedio = pesoMedio;
 	}
 
+*/
 
-
-	public Double getId() {
-		return id;
+	/*
+	public Double getIdItem() {
+		return idItem;
 	}
 
 
 
-	public void setId(Double id) {
-		this.id = id;
+	public void setId(Double idItem) {
+		this.idItem = idItem;
 	}
 
-
+*/
+	
+	
+	
+	
+	
+	
+	
 
 	public String getIdfil() {
 		return idfil;
 	}
+ 
 
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
+		String procedencia, String lote, String qualidade, String tamanho, String descFio,
+		String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
+		Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
+		String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario, Double idMovimento,
+		Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat, Double ui, Double sf,
+		Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml, Double rs, Double b,
+		Double trcnt, Double trar, Double pesoMedio, String statusItem, String statusItemOriginal, Movimento movimento,
+		Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia) {
+	super();
+	this.idItem = idItem;
+	this.idfil = idfil;
+	this.notaFiscal = notaFiscal;
+	this.fornecedor = fornecedor;
+	this.item = item;
+	this.produtor = produtor;
+	this.procedencia = procedencia;
+	this.lote = lote;
+	this.qualidade = qualidade;
+	this.tamanho = tamanho;
+	this.descFio = descFio;
+	this.pesoCalculadoInformado = pesoCalculadoInformado;
+	this.observacao = observacao;
+	this.unidadeMedida = unidadeMedida;
+	this.pilha = pilha;
+	this.dataInclusao = dataInclusao;
+	this.dataAlteracao = dataAlteracao;
+	this.usuarioInclusao = usuarioInclusao;
+	this.usuarioAlteracao = usuarioAlteracao;
+	this.movimentoAutomatico = movimentoAutomatico;
+	this.movimentoDePilha = movimentoDePilha;
+	this.quantidade = quantidade;
+	this.peso = peso;
+	this.idCab = idCab;
+	this.vlUnitario = vlUnitario;
+	this.idMovimento = idMovimento;
+	this.sac = sac;
+	this.trid = trid;
+	this.pim = pim;
+	this.sc = sc;
+	this.mst = mst;
+	this.mic = mic;
+	this.mat = mat;
+	this.ui = ui;
+	this.sf = sf;
+	this.str = str;
+	this.elg = elg;
+	this.tipo = tipo;
+	this.sic = sic;
+	this.idAutomatico = idAutomatico;
+	this.uhml = uhml;
+	this.rs = rs;
+	this.b = b;
+	this.trcnt = trcnt;
+	this.trar = trar;
+	this.pesoMedio = pesoMedio;
+	this.statusItem = statusItem;
+	this.statusItemOriginal = statusItemOriginal;
+	this.movimento = movimento;
+	this.fkFornecedor = fkFornecedor;
+	this.fkProdutor = fkProdutor;
+	this.fkProcedencia = fkProcedencia;
+}
+	
+	
+	
+	
+	
 
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
+			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
+			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
+			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
+			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
+			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
+			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
+			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String statusItem,
+			String statusItemOriginal) {
+		super();
+		this.idItem = idItem;
+		this.idfil = idfil;
+		this.notaFiscal = notaFiscal;
+		this.fornecedor = fornecedor;
+		this.item = item;
+		this.produtor = produtor;
+		this.procedencia = procedencia;
+		this.lote = lote;
+		this.qualidade = qualidade;
+		this.tamanho = tamanho;
+		this.descFio = descFio;
+		this.pesoCalculadoInformado = pesoCalculadoInformado;
+		this.observacao = observacao;
+		this.unidadeMedida = unidadeMedida;
+		this.pilha = pilha;
+		this.dataInclusao = dataInclusao;
+		this.dataAlteracao = dataAlteracao;
+		this.usuarioInclusao = usuarioInclusao;
+		this.usuarioAlteracao = usuarioAlteracao;
+		this.movimentoAutomatico = movimentoAutomatico;
+		this.movimentoDePilha = movimentoDePilha;
+		this.quantidade = quantidade;
+		this.peso = peso;
+		this.idCab = idCab;
+		this.vlUnitario = vlUnitario;
+		this.idMovimento = idMovimento;
+		this.sac = sac;
+		this.trid = trid;
+		this.pim = pim;
+		this.sc = sc;
+		this.mst = mst;
+		this.mic = mic;
+		this.mat = mat;
+		this.ui = ui;
+		this.sf = sf;
+		this.str = str;
+		this.elg = elg;
+		this.tipo = tipo;
+		this.sic = sic;
+		this.idAutomatico = idAutomatico;
+		this.uhml = uhml;
+		this.rs = rs;
+		this.b = b;
+		this.trcnt = trcnt;
+		this.trar = trar;
+		this.pesoMedio = pesoMedio;
+		this.statusItem = statusItem;
+		this.statusItemOriginal = statusItemOriginal;
+	}
+	
+	
 
 	public void setIdfil(String idfil) {
 		this.idfil = idfil;
@@ -941,11 +1086,39 @@ public class MovimentoItem implements Serializable {
 		this.fkProcedencia = fkProcedencia;
 	}
 
+	
 
+
+	public Double getIdItem() {
+		return idItem;
+	}
+
+	public void setIdItem(Double idItem) {
+		this.idItem = idItem;
+	}
+
+	public String getStatusItem() {
+		return statusItem;
+	}
+
+	public void setStatusItem(String statusItem) {
+		this.statusItem = statusItem;
+	}
+	
+	
+	
+
+	public String getStatusItemOriginal() {
+		return statusItemOriginal;
+	}
+
+	public void setStatusItemOriginal(String statusItemOriginal) {
+		this.statusItemOriginal = statusItemOriginal;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idItem);
 	}
 
 	@Override
@@ -957,7 +1130,7 @@ public class MovimentoItem implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MovimentoItem other = (MovimentoItem) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(idItem, other.idItem);
 	}
 
 	 

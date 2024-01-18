@@ -29,5 +29,17 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Forneced
 			      
 			      ,nativeQuery = true)
 			    List<Fornecedor> buscaFornecedorPorNomeReduzido(String filial, String nome) ;  
+	   
+	   
+	   @Query(value =  
+			      "Select IDFIL,B2COD ,B2NOME,B2TIPO ,B2CGCCPF,B2TPENTIDA   " +
+			      " from ccp.ccpb2_dbf b2 " +
+			      " where b2.idfil =  STL.FN_STL_IDFIL('CCPB2',?1)" + 		
+			      " AND  B2COD = ?2 " +
+			      " AND B2NOMREDUZ IS NOT NULL   " +			      
+				  " ORDER BY B2NOME"  
+			      
+			      ,nativeQuery = true)
+			    List<Fornecedor> buscaFornecedorPorCodigo(String filial, String codigo) ;  	   
 
 }

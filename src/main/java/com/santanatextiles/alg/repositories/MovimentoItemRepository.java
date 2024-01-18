@@ -71,8 +71,14 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
 		    List<MovimentoItem>  findByIdfil(String idfil);       
 	    
     		@Query(value="SELECT CPF.CPFM3_ID_SQ.NEXTVAL FROM DUAL", nativeQuery = true)
-    		Double codigoNovoMovimentoItem(); 		    
+    		Double codigoNovoMovimentoItem(); 	
+    		
+    		@Transactional
+    		Double deleteByIdItem(Double idItem ); 	    		
 		    
 	
+		    @Transactional(readOnly=true)
+		    List<MovimentoItem>  findByIdCab(Double idCab);    
+    		
   	
 }
