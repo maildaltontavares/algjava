@@ -167,7 +167,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " M4PESO PESO,  " +   
 	    " NVL(M4VLEST,0) VLEST ,  " +    
 	    " M4PESMED PESOMEDIO,  " +
-	    " M4TAM TAMANHO  " +	    
+	    " M4TAM TAMANHO  "  +
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    

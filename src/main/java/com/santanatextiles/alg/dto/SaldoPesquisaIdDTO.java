@@ -21,6 +21,7 @@ public class SaldoPesquisaIdDTO {
 	Double pesoMedio;
 	String tamanho;
 	
+	
 	public SaldoPesquisaIdDTO() {};
 	
 	public SaldoPesquisaIdDTO(SaldoPesquisaIdProjection  projection ) { 

@@ -164,7 +164,9 @@ public class MovimentoService {
 			}			
 			
 			 
-			public Movimento updateMovimento( Movimento  obj ) throws ParseException, ObjectNotFoundException{	  
+			public Movimento updateMovimento( Movimento  obj ) throws ParseException, ObjectNotFoundException{	
+				
+				    List<String> listaDeIds = new ArrayList<>();
 				  
 				    TipoMovimento tipoMovto = serviceTipoMovto.buscaTipoMovimentoByCodigo(obj.getIdfil(),obj.getTipoMovimento());
 				    
@@ -196,6 +198,14 @@ public class MovimentoService {
 								movimento.getMovimentoAutomatico(),
 								movimento.getMovimentoPilha()) ;
 						
+						// Valida duplicidade de idMovimento no documento
+						if (!listaDeIds.contains(movimentoItem.getIdMovimento().toString())) {						
+							listaDeIds.add(movimentoItem.getIdMovimento().toString());
+						}else {
+							throw new ObjectNotFoundException("Lote: " + movimentoItem.getLote() + " duplicado no documento.");							
+							
+						}						
+						
 						if(movimentoItem.getStatusItemOriginal().equals("Inclusão")) {
 							
 						    serviceItem.insert(movimentoItem, tipoMovto.getAtualizaEstoque(),
@@ -210,23 +220,40 @@ public class MovimentoService {
 								
 								if(tipoMovto.getAtualizaEstoque().equals("S")) {
 									
-									List<MisturaPadraoItem> misturaPadraoItem = serviceMisturaItem.buscaMisturaPorId(movimentoItem.getIdItem());
 									
-									// Nao pertence a mistura padrao
-									if(misturaPadraoItem != null) { 
-										throw new ObjectNotFoundException("Lote: " + movimentoItem.getLote() + " já pertence a mistura padrão."); 
-									}
+									 if(movimentoItem.getIdMovimento().equals(movimentoItem.getIdItem())) { 
+									
+											List<MisturaPadraoItem> misturaPadraoItem = serviceMisturaItem.buscaMisturaPorId(movimentoItem.getIdItem());
+											
+											// Nao pertence a mistura padrao
+											if(!misturaPadraoItem.isEmpty()  ) { 
+												throw new ObjectNotFoundException("Lote: " + movimentoItem.getLote() + " já pertence a mistura padrão. Registro não pode ser excluido."); 
+											}  
+											
+											// Verifica se tem mais movimentos com esse ID. Se sim não poderá ser excluido.
+											Double totMovItem =  serviceItem.contarMovimentoItem(movimentoItem.getIdfil(),movimentoItem.getIdItem());
+											
+											if(totMovItem != null ) {
+												if(totMovItem > 1 ) {
+												    throw new ObjectNotFoundException("Existem outros movimentos do lote: " + movimentoItem.getLote() + ". Registro não pode ser excluido.");
+												}    
+											} 											
+									
+											serviceEstoqueMP.deletaEstoque(movimentoItem.getIdItem());
+									 } 
+									
+							         
+							         
+							         serviceItem.deletaMovimentoItem(movimentoItem,tipoMovto.getAtualizaEstoque()); 						
 									
 									
-								}else {
-									
-									//// Não atualiza estoque
-									
-									  serviceEstoqueMP.deletaEstoque(movimentoItem.getIdItem());
-									  serviceItem.deletaMovimentoItem(movimentoItem.getIdItem());
+								} else { 
+							
+							         serviceEstoqueMP.deletaEstoque(movimentoItem.getIdItem());
+							         serviceItem.deletaMovimentoItem(movimentoItem,tipoMovto.getAtualizaEstoque());
 									  
-									
 								}
+								 
 								
 							 
 							}
@@ -237,6 +264,8 @@ public class MovimentoService {
 			   
 				    return movimento;
 			}	
+			
+			 
 			
 			private Movimento configuraMovimentoAlteracao(Movimento obj) throws ParseException { 
 				

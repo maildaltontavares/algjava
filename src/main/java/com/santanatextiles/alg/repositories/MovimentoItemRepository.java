@@ -67,6 +67,9 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
     		List<MovimentoItem> buscaMovimentoItemPorParametros(@Param("idfil") String idfil) ;  
     
     
+			@Query(value="SELECT COUNT(*) NUM_REG  FROM CPF.CPFM3_DBF M3 WHERE IDFIL = ?1 AND M3IDMOV = ?2", nativeQuery = true)
+			Double contarMovimentoItem(String idfil,Double idItem);  
+    
 		    @Transactional(readOnly=true)
 		    List<MovimentoItem>  findByIdfil(String idfil);       
 	    

@@ -19,6 +19,7 @@ public interface SaldoPesquisaIdProjection {
 	Double getVlEst();
 	Double getPesoMedio(); 
 	String getTamanho();
+	Double getVlUnitario(); 
 	
 	 
 }

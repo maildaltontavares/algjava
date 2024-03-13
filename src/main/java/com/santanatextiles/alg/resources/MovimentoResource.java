@@ -52,7 +52,7 @@ public class MovimentoResource {
  	
  	@CrossOrigin
  	@RequestMapping(value="/filial/{filial}", method=RequestMethod.GET)
- 	public  ResponseEntity< ? > buscaMisturaPadraoPorFilial (@PathVariable String filial){ 
+ 	public  ResponseEntity< ? > buscaMovPorFilial (@PathVariable String filial){ 
  		try {
 	 		List<Movimento> Movimento = service.buscaMovimentoByFilial(filial) ; 
 	 		return ResponseEntity.status(HttpStatus.OK).body(Movimento);

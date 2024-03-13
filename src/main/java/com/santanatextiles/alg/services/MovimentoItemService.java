@@ -15,7 +15,8 @@ import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.dto.SaldoIdMovtoDTO;
-import com.santanatextiles.alg.repositories.MovimentoItemRepository; 
+import com.santanatextiles.alg.repositories.MovimentoItemRepository;
+import com.santanatextiles.alg.resources.exception.ObjectNotFoundException; 
 	
 @Service
 public class MovimentoItemService {
@@ -47,10 +48,7 @@ public class MovimentoItemService {
 		public List<MovimentoItem> buscaMovimentoItemByFilial(String filial ){	 
 			 List<MovimentoItem> obj = repo.findByIdfil(filial ) ;	  
 			 return obj;
-		}	  
-		
-		
-		
+		}	   
 		
 		public MovimentoItem update(MovimentoItem obj,String atualizaEstoque,
 				   String atualizaItem,String pesoCalculadoInformado ) throws ParseException{  
@@ -59,8 +57,9 @@ public class MovimentoItemService {
 		    
 		    /// Atualiza o saldo de estoque
 		    if(atualizaEstoque.equals("S")) {    
-			    SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(movItem.getIdfil(), movItem.getIdMovimento());
-			    serviceEstoqueMP.atualizaEstoque(movItem.getIdfil(),movItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());			    
+			    //SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(movItem.getIdfil(), movItem.getIdMovimento());
+			    //serviceEstoqueMP.atualizaEstoque(movItem.getIdfil(),movItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());	
+		    	atlzEstok(movItem);
 		    }
 		    
 		    return movItem;
@@ -96,13 +95,27 @@ public class MovimentoItemService {
 		    
 		    /// Atualiza o saldo de estoque
 		    if(atualizaEstoque.equals("S")) {    
-			    SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(movItem.getIdfil(), movItem.getIdMovimento());
-			    serviceEstoqueMP.atualizaEstoque(movItem.getIdfil(),movItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());			    
+		    	atlzEstok(movItem);
 		    }
 		    
 		    return movItem;
 		    
-		}	 		
+		}	 
+		
+		
+		public void atlzEstok(MovimentoItem pMovItem) {
+			
+			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
+			
+			if(sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1) {
+				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());				
+			}else {
+				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
+			}
+				
+				
+		    
+		}
 		
 		
 		private MovimentoItem configuraMovimentoItem(MovimentoItem obj) throws ParseException { 
@@ -125,9 +138,19 @@ public class MovimentoItemService {
 		}
 		
 		
+	 
+		
+		
 		@Transactional	
-		 public void deletaMovimentoItem(Double id){	 
-		 	  repo.deleteByIdItem(id)  ;  
+		 public void deletaMovimentoItem(MovimentoItem pMovItemEst,String atualizaEstoque){	 
+			
+		 	    repo.deleteByIdItem(pMovItemEst.getIdItem())  ;  
+		 	  
+			    if(atualizaEstoque.equals("S")) {    
+			    	atlzEstok(pMovItemEst);
+			    }		 	  
+		 	  
+		 	  
 		}	
 		
 		public List<MovimentoItem> findByIdCab(Double idCab ){	 
@@ -135,6 +158,10 @@ public class MovimentoItemService {
 			 return obj;
 		}	 
 		
+		public Double contarMovimentoItem(String idfil,Double idMovto ){	 
+			 Double obj = repo.contarMovimentoItem(idfil,idMovto)	 ; 
+			 return obj;
+		}	 		
 		
 		
 		
@@ -144,6 +171,14 @@ public class MovimentoItemService {
 			MovimentoItem movimentoItem = new MovimentoItem();  
 			Double novoMovimentoItem;
 			
+			if(atualizaItem.equals("N")) {   // Nao gera novo item na CPFM4 
+			  if(objDTO.getIdMovimento().equals(0) || objDTO.getIdMovimento() == null) {
+					throw new ObjectNotFoundException("Id do Lote: " + objDTO.getLote() + " inválido.");
+			  }				
+			
+			}
+			
+			
 			if(objDTO.getIdItem() == null) {
 				novoMovimentoItem = repo.codigoNovoMovimentoItem();
 			}else {
@@ -152,7 +187,7 @@ public class MovimentoItemService {
 				
 			movimentoItem.setIdItem(novoMovimentoItem) ;	
 			
-			if(atualizaItem.equals("S")) {
+			if(atualizaItem.equals("S")) { 
 				movimentoItem.setIdMovimento(novoMovimentoItem); 
 			}else {
 				movimentoItem.setIdMovimento(objDTO.getIdMovimento()); 
