@@ -37,8 +37,8 @@ public class TesteQualidadeService {
 	
 		public TesteQualidade buscaTesteQualidadeByLote(String filial, String produtor, String pLote ){	
 			
-			 String lote = String.format("%-35s", pLote); 
-			 TesteQualidade obj = repo.findByIdfilAndProdutorAndLote(filial, produtor, lote ) ;	  
+			 //String lote = String.format("%-35s", pLote); 
+			 TesteQualidade obj = repo.buscaTesteQualidadePorProdutorLote(filial, produtor, pLote ) ;	  
 			 return obj;
 		}			
 		

@@ -239,12 +239,14 @@ public class MovimentoService {
 												}    
 											} 											
 									
-											serviceEstoqueMP.deletaEstoque(movimentoItem.getIdItem());
-									 } 
-									
+											
+									 }  
 							         
+							         serviceItem.deletaMovimentoItem(movimentoItem,tipoMovto.getAtualizaEstoque()); 
 							         
-							         serviceItem.deletaMovimentoItem(movimentoItem,tipoMovto.getAtualizaEstoque()); 						
+							         if(movimentoItem.getIdMovimento().equals(movimentoItem.getIdItem())) {
+							        	 serviceEstoqueMP.deletaEstoque(movimentoItem.getIdItem());
+							         }
 									
 									
 								} else { 
@@ -408,7 +410,8 @@ public class MovimentoService {
 			movimento.setDataEmissao(objDTO.getDataEmissao());	 
 			movimento.setEntradaSaida(objDTO.getEntradaSaida());  
             
-	        movimento.setLoteFiacao(objDTO.getLoteFiacao());	 
+	        movimento.setLoteFiacao(objDTO.getLoteFiacao());
+	        movimento.setNumVolumes(objDTO.getNumVolumes());
 		    movimento.setPesoMedio(objDTO.getPesoMedio());	 
 		    movimento.setPesoTotal(objDTO.getPesoTotal());	 
 		    movimento.setProdutor(objDTO.getProdutor());	 

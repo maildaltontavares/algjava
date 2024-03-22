@@ -3,6 +3,7 @@ package com.santanatextiles.alg.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,5 +84,11 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
 		    @Transactional(readOnly=true)
 		    List<MovimentoItem>  findByIdCab(Double idCab);    
     		
-  	
+		    @Modifying
+			@Query(value="UPDATE CPF.CPFM3_DBF M3 SET  M3PESO = M3QTDE * :pesoMedio   ,  M3PSMDNF = :pesoMedio  " +
+				"	WHERE  IDFIL = :idfil  AND M3IDMOV = :idMovto" 	 
+			, nativeQuery = true)
+			int atualizaPesoMedMovtos(@Param("idfil") String idfil ,@Param("idMovto") Double idMovto ,    @Param("pesoMedio") Double pesoMedio  );	    
+		     
+		    
 }

@@ -19,7 +19,7 @@ import com.santanatextiles.alg.repositories.EstoqueMPRepository;
 public class EstoqueMPService {
 		
 	@Autowired
-	private EstoqueMPRepository repo;		
+	private EstoqueMPRepository repo;	 
 	
 	@Value("${spring.datasource.url}")
 	private String JDBC_URL;
@@ -77,12 +77,24 @@ public class EstoqueMPService {
 		 List<EstoqueMP> obj = repo.findByIdfil(filial);
 		return obj ;
 	}	 
+	
+	public EstoqueMP findById(Double id) {  
+		  EstoqueMP  obj = repo.findById(id);
+		return obj ;
+	}	
  	
 	
-	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque) {
-		return repo.atualizaEstoque(idfil, idMovto, quantidade, peso, vlEstoque);
+	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt ) {
+		
+		if(atualizaIt.equals("S")) { 
+			return repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
+		}else {
+			return repo.atualizaEstoque(idfil, idMovto, quantidade, peso, vlEstoque );	
+		}
+		
 	}
 	
+ 
 	public EstoqueMP insert (MovimentoItem obj ){ 
 		
 	        String nf = String.format("%-10s", obj.getNotaFiscal());  

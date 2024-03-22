@@ -139,6 +139,8 @@ public class Movimento implements Serializable {
 	private String nomeTipoMovimento;	
 	
 
+	
+
 	@ManyToOne 
 	@JoinColumnsOrFormulas({
 	 @JoinColumnOrFormula(column=@JoinColumn(name="M2TPMOV", referencedColumnName="M5CDMOV", insertable = false, updatable = false)), 

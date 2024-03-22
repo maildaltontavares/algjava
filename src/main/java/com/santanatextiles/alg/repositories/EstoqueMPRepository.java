@@ -75,6 +75,16 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		, nativeQuery = true)
 		int atualizaEstoque(@Param("idfil") String idfil , @Param("idMovto") Double idMovto , @Param("quantidade") Double quantidade ,  @Param("peso") Double peso ,   @Param("vlEstoque") Double vlEstoque );	    
     	 
+	    @Modifying
+		@Query(value="UPDATE CPF.CPFM4_DBF M4 SET M4QTDE = :quantidade  ,  M4PESO = :peso  ,  M4VLEST = :vlEstoque , M4PESMED = :pesoMedio  " +
+			"	WHERE IDFIL = :idfil  AND M4ID = :idMovto" 	 
+		, nativeQuery = true)
+		int atualizaEstoqueEPesoMedio(@Param("idfil") String idfil , @Param("idMovto") Double idMovto , @Param("quantidade") Double quantidade ,  @Param("peso") Double peso ,   @Param("vlEstoque") Double vlEstoque ,   @Param("pesoMedio") Double pesoMedio  );	    
+	    
+	    
+	 
+	    
+	    
 	    @Query(value =  
 	    "SELECT IDMOV,SUM(QTDE) QTDE,SUM(PESO) PESO,SUM(VLEST) VLEST " +
 	    " FROM " +
@@ -173,15 +183,15 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
 	    " WHERE M4.M4ID = :id  "  
 	    ,nativeQuery = true)
-	    List<SaldoPesquisaIdProjection> buscaEstoqueMPPorId(  
-		 
-		    @Param("id") Double id    
-			
-		) ;
+	    List<SaldoPesquisaIdProjection> buscaEstoqueMPPorId( @Param("id") Double id  ) ;
 	    	    
 	    
 		@Transactional
 		Double deleteById(Double id ); 	    
+		
+		
+		@Transactional
+		EstoqueMP findById(Double id ); 	  
 	    
 	    
 	    

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
@@ -56,15 +57,26 @@ public class MovimentoItemService {
 		    MovimentoItem movItem = repo.save(configuraMovimentoItemAlteracao(obj)); 
 		    
 		    /// Atualiza o saldo de estoque
-		    if(atualizaEstoque.equals("S")) {    
-			    //SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(movItem.getIdfil(), movItem.getIdMovimento());
-			    //serviceEstoqueMP.atualizaEstoque(movItem.getIdfil(),movItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());	
-		    	atlzEstok(movItem);
+		    if(atualizaEstoque.equals("S")) { 
+		    	 
+		           
+		           if(atualizaItem.equals("S")) { 
+		        	   atualizaPesoMedMovtos(obj.getIdfil(),obj.getIdMovimento(),obj.getPesoMedio());
+		           }
+		           
+		           atlzEstok(movItem,atualizaItem );
+		    	 
 		    }
 		    
 		    return movItem;
 		    
 		}	
+		
+		private Integer atualizaPesoMedMovtos(String idfil,Double IdMovtoIt,Double pesoMedio) {
+			
+			return repo.atualizaPesoMedMovtos( idfil,IdMovtoIt,pesoMedio);
+			
+		}
 		
 		private MovimentoItem configuraMovimentoItemAlteracao(MovimentoItem obj) throws ParseException { 
 			
@@ -89,31 +101,55 @@ public class MovimentoItemService {
 		    MovimentoItem movItem = repo.save(configuraMovimentoItem(obj));
 		    
 		    /// Permite inserir novos itens de estoque (IDs)
-		    if(atualizaItem.equals("S")) {    
+		    if(atualizaItem.equals("S")) {        // NFE e EST+
 			    serviceEstoqueMP.insert(movItem);	 
 		    }
 		    
 		    /// Atualiza o saldo de estoque
-		    if(atualizaEstoque.equals("S")) {    
-		    	atlzEstok(movItem);
+		    if(atualizaEstoque.equals("S")) {  
+		    	// Na insercao nao precisa atualizar o peso medio pois ja inseriu tudo certinho 
+		    	   atlzEstok(movItem,"N" );
+		     
 		    }
 		    
 		    return movItem;
 		    
 		}	 
 		
-		
-		public void atlzEstok(MovimentoItem pMovItem) {
+/*		
+		// Chamado pelo Update
+		public void atlzEstok(MovimentoItem pMovItem, String atualizaItem) {
 			
 			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
 			
 			if(sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1) {
-				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());				
+				
+				if(atualizaItem.equals("N")){
+				    serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());				    
+				}else{
+					serviceEstoqueMP.atualizaEstoqueEPesoMedio(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());					
+				}
+				
 			}else {
 				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
-			}
-				
-				
+			} 
+		    
+		}		
+*/		
+		public void atlzEstok(MovimentoItem pMovItem, String atualzMovto) {
+			
+			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
+			
+			if(sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1) {
+				/*
+		        BigDecimal bd = BigDecimal.valueOf(sldIdMovto.getPeso()/sldIdMovto.getQtde());
+		        bd = bd.setScale(4, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
+		        double pesMed = bd.doubleValue();				
+				*/
+				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst(),pMovItem.getPesoMedio(),atualzMovto);				
+			}else {
+				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
+			} 
 		    
 		}
 		
@@ -142,12 +178,16 @@ public class MovimentoItemService {
 		
 		
 		@Transactional	
-		 public void deletaMovimentoItem(MovimentoItem pMovItemEst,String atualizaEstoque){	 
+		 public void deletaMovimentoItem(MovimentoItem pMovItemEst,String atualizaEstoque ){	 
 			
-		 	    repo.deleteByIdItem(pMovItemEst.getIdItem())  ;  
-		 	  
-			    if(atualizaEstoque.equals("S")) {    
-			    	atlzEstok(pMovItemEst);
+		 	    repo.deleteByIdItem(pMovItemEst.getIdItem())  ;   
+		 	    
+			    if(atualizaEstoque.equals("S")) {
+			    	
+			    	// Nao atualiza estoque quando o item for ser totalmente excluido
+			    	if(!(pMovItemEst.getIdMovimento().equals(pMovItemEst.getIdItem()))   ) { 
+			    		atlzEstok(pMovItemEst,"N" );
+			    	}    
 			    }		 	  
 		 	  
 		 	  
@@ -193,100 +233,151 @@ public class MovimentoItemService {
 				movimentoItem.setIdMovimento(objDTO.getIdMovimento()); 
 			} 			
 			
-			
-			///// Testa se já foi feito teste no lote deste produtor
-			
-			if(objDTO.getMat() ==null ||
-			   objDTO.getSic() ==null ||
-			   objDTO.getMic() ==null ||
-			   objDTO.getUhml()==null   ) {
-				
-			   TesteQualidade testeCq = serviceCQ.buscaTesteQualidadeByLote(objDTO.getIdfil(),objDTO.getProdutor(),objDTO.getLote());	
-			   
-			   if( testeCq != null ) {
-				   
-					movimentoItem.setSac(testeCq.getSac());
-					movimentoItem.setTrid(testeCq.getTrid());			
-					movimentoItem.setPim(testeCq.getPim());
-					movimentoItem.setSc(testeCq.getSc());	 
-					movimentoItem.setMst(testeCq.getMst()); 
-					movimentoItem.setMic(testeCq.getMic());	   
-					movimentoItem.setMat(testeCq.getMat());
-					movimentoItem.setUi(testeCq.getUi());
-					movimentoItem.setSf(testeCq.getSf());	 
-					movimentoItem.setStr(testeCq.getStr());	 
-					movimentoItem.setElg(testeCq.getElg());	 
-					movimentoItem.setTipo(testeCq.getTipo());	 
-					movimentoItem.setSic(testeCq.getSic());	  
-					movimentoItem.setUhml(testeCq.getUhml());
-					movimentoItem.setRs(testeCq.getRs());	 
-					movimentoItem.setB(testeCq.getB());	 
-					movimentoItem.setTrcnt(testeCq.getTrcnt());	 
-					movimentoItem.setTrar(testeCq.getTrar());	 
-				    
-			   }else {
-				   
-					movimentoItem.setSac(objDTO.getSac());
-					movimentoItem.setTrid(objDTO.getTrid());			
-					movimentoItem.setPim(objDTO.getPim());
-					movimentoItem.setSc(objDTO.getSc());	 
-					movimentoItem.setMst(objDTO.getMst()); 
-					movimentoItem.setMic(objDTO.getMic());	   
-					movimentoItem.setMat(objDTO.getMat());
-					movimentoItem.setUi(objDTO.getUi());
-					movimentoItem.setSf(objDTO.getSf());	 
-					movimentoItem.setStr(objDTO.getStr());	 
-					movimentoItem.setElg(objDTO.getElg());	 
-					movimentoItem.setTipo(objDTO.getTipo());	 
-					movimentoItem.setSic(objDTO.getSic());	  
-					movimentoItem.setUhml(objDTO.getUhml());
-					movimentoItem.setRs(objDTO.getRs());	 
-					movimentoItem.setB(objDTO.getB());	 
-					movimentoItem.setTrcnt(objDTO.getTrcnt());	 
-					movimentoItem.setTrar(objDTO.getTrar());		 
-				   
-			   } 
+			if(atualizaItem.equals("S")) {
 				
 				
-			} else {
-				   
-					movimentoItem.setSac(objDTO.getSac());
-					movimentoItem.setTrid(objDTO.getTrid());			
-					movimentoItem.setPim(objDTO.getPim());
-					movimentoItem.setSc(objDTO.getSc());	 
-					movimentoItem.setMst(objDTO.getMst()); 
-					movimentoItem.setMic(objDTO.getMic());	   
-					movimentoItem.setMat(objDTO.getMat());
-					movimentoItem.setUi(objDTO.getUi());
-					movimentoItem.setSf(objDTO.getSf());	 
-					movimentoItem.setStr(objDTO.getStr());	 
-					movimentoItem.setElg(objDTO.getElg());	 
-					movimentoItem.setTipo(objDTO.getTipo());	 
-					movimentoItem.setSic(objDTO.getSic());	  
-					movimentoItem.setUhml(objDTO.getUhml());
-					movimentoItem.setRs(objDTO.getRs());	 
-					movimentoItem.setB(objDTO.getB());	 
-					movimentoItem.setTrcnt(objDTO.getTrcnt());	 
-					movimentoItem.setTrar(objDTO.getTrar());		 
-				   
-			   } 
-			
+		     		movimentoItem.setNotaFiscal(objDTO.getNotaFiscal());	 
+					movimentoItem.setFornecedor(objDTO.getFornecedor()); 
+					movimentoItem.setItem(objDTO.getItem());
+					movimentoItem.setProdutor(objDTO.getProdutor());
+					movimentoItem.setProcedencia(objDTO.getProcedencia());	 
+					movimentoItem.setLote(objDTO.getLote());
+					movimentoItem.setQualidade(objDTO.getQualidade());
+					movimentoItem.setTamanho(objDTO.getTamanho());
+					movimentoItem.setDescFio(objDTO.getDescFio());			
+					movimentoItem.setUnidadeMedida(objDTO.getUnidadeMedida()); 
+					movimentoItem.setPilha(objDTO.getPilha());	 
+					movimentoItem.setPesoMedio(objDTO.getPesoMedio()); 	
 					
-			movimentoItem.setIdfil(objDTO.getIdfil());  
-			movimentoItem.setNotaFiscal(objDTO.getNotaFiscal());	 
-			movimentoItem.setFornecedor(objDTO.getFornecedor());	  
-			movimentoItem.setItem(objDTO.getItem());
-			movimentoItem.setProdutor(objDTO.getProdutor());
-			movimentoItem.setProcedencia(objDTO.getProcedencia());	 
-			movimentoItem.setLote(objDTO.getLote());
-			movimentoItem.setQualidade(objDTO.getQualidade());
-			movimentoItem.setTamanho(objDTO.getTamanho());
-			movimentoItem.setDescFio(objDTO.getDescFio());	 
-			movimentoItem.setPesoCalculadoInformado(objDTO.getPesoCalculadoInformado());
-			
-			
-			movimentoItem.setUnidadeMedida(objDTO.getUnidadeMedida()); 
-			movimentoItem.setPilha(objDTO.getPilha());
+
+				
+			///// Testa se já foi feito teste no lote deste produtor
+					
+					if(objDTO.getMat().equals(0.0) ||
+					   objDTO.getSic().equals(0.0) ||
+					   objDTO.getMic().equals(0.0)  ||
+					   objDTO.getUhml().equals(0.0))  {
+						
+					   TesteQualidade testeCq = serviceCQ.buscaTesteQualidadeByLote(objDTO.getIdfil(),objDTO.getProdutor(),objDTO.getLote());	
+					   
+					   if( testeCq != null ) {
+						   
+							movimentoItem.setSac(testeCq.getSac());
+							movimentoItem.setTrid(testeCq.getTrid());			
+							movimentoItem.setPim(testeCq.getPim());
+							movimentoItem.setSc(testeCq.getSc());	 
+							movimentoItem.setMst(testeCq.getMst()); 
+							movimentoItem.setMic(testeCq.getMic());	   
+							movimentoItem.setMat(testeCq.getMat());
+							movimentoItem.setUi(testeCq.getUi());
+							movimentoItem.setSf(testeCq.getSf());	 
+							movimentoItem.setStr(testeCq.getStr());	 
+							movimentoItem.setElg(testeCq.getElg());	 
+							movimentoItem.setTipo(testeCq.getTipo());	 
+							movimentoItem.setSic(testeCq.getSic());	  
+							movimentoItem.setUhml(testeCq.getUhml());
+							movimentoItem.setRs(testeCq.getRs());	 
+							movimentoItem.setB(testeCq.getB());	 
+							movimentoItem.setTrcnt(testeCq.getTrcnt());	 
+							movimentoItem.setTrar(testeCq.getTrar());	 
+						    
+					   }else {
+						   
+							movimentoItem.setSac(objDTO.getSac());
+							movimentoItem.setTrid(objDTO.getTrid());			
+							movimentoItem.setPim(objDTO.getPim());
+							movimentoItem.setSc(objDTO.getSc());	 
+							movimentoItem.setMst(objDTO.getMst()); 
+							movimentoItem.setMic(objDTO.getMic());	   
+							movimentoItem.setMat(objDTO.getMat());
+							movimentoItem.setUi(objDTO.getUi());
+							movimentoItem.setSf(objDTO.getSf());	 
+							movimentoItem.setStr(objDTO.getStr());	 
+							movimentoItem.setElg(objDTO.getElg());	 
+							movimentoItem.setTipo(objDTO.getTipo());	 
+							movimentoItem.setSic(objDTO.getSic());	  
+							movimentoItem.setUhml(objDTO.getUhml());
+							movimentoItem.setRs(objDTO.getRs());	 
+							movimentoItem.setB(objDTO.getB());	 
+							movimentoItem.setTrcnt(objDTO.getTrcnt());	 
+							movimentoItem.setTrar(objDTO.getTrar());		 
+						   
+					   } 
+						
+						
+					} else {
+						   
+							movimentoItem.setSac(objDTO.getSac());
+							movimentoItem.setTrid(objDTO.getTrid());			
+							movimentoItem.setPim(objDTO.getPim());
+							movimentoItem.setSc(objDTO.getSc());	 
+							movimentoItem.setMst(objDTO.getMst()); 
+							movimentoItem.setMic(objDTO.getMic());	   
+							movimentoItem.setMat(objDTO.getMat());
+							movimentoItem.setUi(objDTO.getUi());
+							movimentoItem.setSf(objDTO.getSf());	 
+							movimentoItem.setStr(objDTO.getStr());	 
+							movimentoItem.setElg(objDTO.getElg());	 
+							movimentoItem.setTipo(objDTO.getTipo());	 
+							movimentoItem.setSic(objDTO.getSic());	  
+							movimentoItem.setUhml(objDTO.getUhml());
+							movimentoItem.setRs(objDTO.getRs());	 
+							movimentoItem.setB(objDTO.getB());	 
+							movimentoItem.setTrcnt(objDTO.getTrcnt());	 
+							movimentoItem.setTrar(objDTO.getTrar());  
+						   
+					   } 
+			}else {
+				
+				//// Não atualiza o item
+				
+				 EstoqueMP e = serviceEstoqueMP.findById(objDTO.getIdMovimento());
+				 
+				 if(e != null) {
+					 
+			     		movimentoItem.setNotaFiscal(e.getNotaFiscal());	 
+						movimentoItem.setFornecedor(e.getFornecedor()); 
+						movimentoItem.setItem(e.getItem());
+						movimentoItem.setProdutor(e.getProdutor());
+						movimentoItem.setProcedencia(e.getProcedencia());	 
+						movimentoItem.setLote(e.getLote());
+						movimentoItem.setQualidade(e.getQualidade());
+						movimentoItem.setTamanho(e.getTamanho());
+						movimentoItem.setDescFio(e.getDescFio());			
+						movimentoItem.setUnidadeMedida(e.getUnidadeMedida()); 
+						movimentoItem.setPilha(e.getPilha());	 
+						movimentoItem.setPesoMedio(e.getPesoMedio());   
+					 
+						movimentoItem.setSac(e.getSac());
+						movimentoItem.setTrid(e.getTrid());			
+						movimentoItem.setPim(e.getPim());
+						movimentoItem.setSc(e.getSc());	 
+						movimentoItem.setMst(e.getMst()); 
+						movimentoItem.setMic(e.getMic());	   
+						movimentoItem.setMat(e.getMat());
+						movimentoItem.setUi(e.getUi());
+						movimentoItem.setSf(e.getSf());	 
+						movimentoItem.setStr(e.getStr());	 
+						movimentoItem.setElg(e.getElg());	 
+						movimentoItem.setTipo(e.getTipo());	 
+						movimentoItem.setSic(e.getSic());	  
+						movimentoItem.setUhml(e.getUhml());
+						movimentoItem.setRs(e.getRs());	 
+						movimentoItem.setB(e.getB());	 
+						movimentoItem.setTrcnt(e.getTrcnt());	 
+						movimentoItem.setTrar(e.getTrar());					 
+					 
+					 
+				 }else {
+					 
+						throw new ObjectNotFoundException("Id do lote: " + objDTO.getLote() + " não encontrado.");
+				 }  
+				 
+				
+			}  
+					
+			movimentoItem.setIdfil(objDTO.getIdfil());   
+			movimentoItem.setPesoCalculadoInformado(objDTO.getPesoCalculadoInformado()); 
 			movimentoItem.setDataInclusao(objDTO.getDataInclusao());
 			movimentoItem.setDataAlteracao(objDTO.getDataAlteracao());	 
 			movimentoItem.setUsuarioInclusao(objDTO.getUsuarioInclusao());	 
@@ -307,19 +398,17 @@ public class MovimentoItemService {
 				movimentoItem.setMovimentoDePilha(movimentoPilha);
 			}	 
 			
-			movimentoItem.setQuantidade(objDTO.getQuantidade());	 
-			movimentoItem.setPeso(objDTO.getPeso());
-			movimentoItem.setIdCab(idCab);	
 			
 			if(objDTO.getVlUnitario() != null) {
 				movimentoItem.setVlUnitario(objDTO.getVlUnitario());  
 			}else {
 				movimentoItem.setVlUnitario(0.0);
 				
-			}
- 
+			} 			
 			
-			movimentoItem.setPesoMedio(objDTO.getPesoMedio()); 
+			movimentoItem.setQuantidade(objDTO.getQuantidade());	 
+			movimentoItem.setPeso(objDTO.getPeso()); 
+			movimentoItem.setIdCab(idCab); 
 			movimentoItem.setStatusItem(objDTO.getStatusItem());
 			movimentoItem.setStatusItemOriginal(objDTO.getStatusItemOriginal());
 					
