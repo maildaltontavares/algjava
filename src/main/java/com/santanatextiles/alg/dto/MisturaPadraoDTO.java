@@ -2,6 +2,8 @@ package com.santanatextiles.alg.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MisturaPadraoDTO  implements Serializable {
 
@@ -15,18 +17,21 @@ public class MisturaPadraoDTO  implements Serializable {
 	private Date   dataFinal;		
     private Double totalMisturas;	
 	private Date   dataInclusao;
-    private String usarioInclusao;	 
+    private String usuarioInclusao;	 
 	private Date   dataAlteracao;
-    private String usarioAlteracao;		 
+    private String usuarioAlteracao;		 
     private String numMisturasLiberadas;		 	
     private String observacao;	 
-    private Double numFardos;
+    private Double numFardos; 
     
-	public MisturaPadraoDTO() {}    
+    private Set<MisturaPadraoItemDTO> misturaPadraoItemDTO = new HashSet<>();	
     
+	public MisturaPadraoDTO() {}
+
 	public MisturaPadraoDTO(String idfil, String mistura, String lote, String status, Date dataInicial, Date dataFinal,
-			Double totalMisturas, Date dataInclusao, String usarioInclusao, Date dataAlteracao, String usarioAlteracao,
-			String numMisturasLiberadas, String observacao, Double numFardos) {
+			Double totalMisturas, Date dataInclusao, String usuarioInclusao, Date dataAlteracao, String usuarioAlteracao,
+			String numMisturasLiberadas, String observacao, Double numFardos,
+			Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
 		super();
 		this.idfil = idfil;
 		this.mistura = mistura;
@@ -36,12 +41,13 @@ public class MisturaPadraoDTO  implements Serializable {
 		this.dataFinal = dataFinal;
 		this.totalMisturas = totalMisturas;
 		this.dataInclusao = dataInclusao;
-		this.usarioInclusao = usarioInclusao;
+		this.usuarioInclusao = usuarioInclusao;
 		this.dataAlteracao = dataAlteracao;
-		this.usarioAlteracao = usarioAlteracao;
+		this.usuarioAlteracao = usuarioAlteracao;
 		this.numMisturasLiberadas = numMisturasLiberadas;
 		this.observacao = observacao;
 		this.numFardos = numFardos;
+		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
 	}
 
 	public String getIdfil() {
@@ -108,12 +114,12 @@ public class MisturaPadraoDTO  implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public String getUsarioInclusao() {
-		return usarioInclusao;
+	public String getUsuarioInclusao() {
+		return usuarioInclusao;
 	}
 
-	public void setUsarioInclusao(String usarioInclusao) {
-		this.usarioInclusao = usarioInclusao;
+	public void setUsuarioInclusao(String usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 	public Date getDataAlteracao() {
@@ -124,12 +130,12 @@ public class MisturaPadraoDTO  implements Serializable {
 		this.dataAlteracao = dataAlteracao;
 	}
 
-	public String getUsarioAlteracao() {
-		return usarioAlteracao;
+	public String getUsuarioAlteracao() {
+		return usuarioAlteracao;
 	}
 
-	public void setUsarioAlteracao(String usarioAlteracao) {
-		this.usarioAlteracao = usarioAlteracao;
+	public void setUsuarioAlteracao(String usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 	public String getNumMisturasLiberadas() {
@@ -154,7 +160,16 @@ public class MisturaPadraoDTO  implements Serializable {
 
 	public void setNumFardos(Double numFardos) {
 		this.numFardos = numFardos;
-	}	 
+	}
+
+	public Set<MisturaPadraoItemDTO> getMisturaPadraoItemDTO() {
+		return misturaPadraoItemDTO;
+	}
+
+	public void setMisturaPadraoItemDTO(Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
+		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
+	}   
+	
 	
 
 }

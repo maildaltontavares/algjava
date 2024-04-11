@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.MovimentoItemId;
 
+import jakarta.persistence.Column;
+
  
 	
 public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, MovimentoItemId>{
@@ -61,7 +63,14 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
 			" M3RS 	   		, " +	
 			" M3B 	   		, " +	
 			" M3TRCNT 	    , " +	
-			" M3TRAR 	      " +
+			" M3TRAR 	    , " + 
+			" M3TPQ 	    , " +
+			" M3CLASQ 	    , " +
+			" M3COLOR 	    , " +
+			" M3IDFARD 	    , " +
+			" M3TPMIC 	    , " +
+			" M3DEST 	    , " +
+			" M3TRAR 	      " + 
 			" FROM CPF.CPFM3_DBF M3  "  +
 		    " where m3.idfil =  STL.FN_STL_IDFIL('CPFM3',?1)  "
 			,nativeQuery = true)

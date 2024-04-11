@@ -242,14 +242,21 @@ public class MovimentoItemService {
 					movimentoItem.setProdutor(objDTO.getProdutor());
 					movimentoItem.setProcedencia(objDTO.getProcedencia());	 
 					movimentoItem.setLote(objDTO.getLote());
-					movimentoItem.setQualidade(objDTO.getQualidade());
+					
 					movimentoItem.setTamanho(objDTO.getTamanho());
 					movimentoItem.setDescFio(objDTO.getDescFio());			
 					movimentoItem.setUnidadeMedida(objDTO.getUnidadeMedida()); 
 					movimentoItem.setPilha(objDTO.getPilha());	 
-					movimentoItem.setPesoMedio(objDTO.getPesoMedio()); 	
+					movimentoItem.setPesoMedio(objDTO.getPesoMedio());
 					
-
+					movimentoItem.setTipoQualidade(objDTO.getTipoQualidade()); 
+					movimentoItem.setClassifQualidade(objDTO.getClassifQualidade());
+					movimentoItem.setQualidade(objDTO.getTipoQualidade() + ' ' + objDTO.getClassifQualidade()) ;
+					movimentoItem.setLoteAdicional(objDTO.getLoteAdicional());  
+					movimentoItem.setColoracao(objDTO.getColoracao());
+					movimentoItem.setIdVolume(objDTO.getIdVolume()); 
+					movimentoItem.setTipoMic(objDTO.getTipoMic());
+					movimentoItem.setDestino(objDTO.getDestino()); 
 				
 			///// Testa se já foi feito teste no lote deste produtor
 					

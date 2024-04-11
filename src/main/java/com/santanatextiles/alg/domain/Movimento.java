@@ -101,6 +101,12 @@ public class Movimento implements Serializable {
 	
 	@Column(name="M2SEQMST")
 	private String sequenciaMistura;	 
+	
+	@Column(name="M2Q1C")
+	private String qual1;
+	
+	@Column(name="M2Q2C")
+	private String qual2;	 
 	 
 	@Column(name="M2USRINC")
 	private String usuarioInclusao;	
@@ -189,14 +195,14 @@ public class Movimento implements Serializable {
 	
 	public Movimento() {
 		
-	}    
+	}     
 	
-	
+
 	public Movimento(Double id, String idfil, String notaFiscal, String fornecedor, String tipoMovimento, String tipoMP,
 			Date dataBase, Date dataEmissao, String entradaSaida, String loteFiacao, Double pesoMedio, Double pesoTotal,
 			Double numVolumes, String produtor, String procedencia, String linhaAbertura, Double idAutomatico,
-			String movimentoAutomatico, String movimentoPilha, String mistura, String sequenciaMistura,
-			String usuarioInclusao, String usuarioAlteracao, Date dataInclusao, Date dataAlteracao,
+			String movimentoAutomatico, String movimentoPilha, String mistura, String sequenciaMistura, String qual1,
+			String qual2, String usuarioInclusao, String usuarioAlteracao, Date dataInclusao, Date dataAlteracao,
 			Set<MovimentoItem> itemMovimento, Set<MovimentoItemDTO> itemMovimentoDTO, String nomeFornecedor,
 			String nomeProdutor, String nomeProcedencia, String nomeTipoMateriaPrima, String nomeTipoMovimento,
 			TipoMovimentoView fkTipoMovimento, Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia,
@@ -223,6 +229,8 @@ public class Movimento implements Serializable {
 		this.movimentoPilha = movimentoPilha;
 		this.mistura = mistura;
 		this.sequenciaMistura = sequenciaMistura;
+		this.qual1 = qual1;
+		this.qual2 = qual2;
 		this.usuarioInclusao = usuarioInclusao;
 		this.usuarioAlteracao = usuarioAlteracao;
 		this.dataInclusao = dataInclusao;
@@ -239,7 +247,9 @@ public class Movimento implements Serializable {
 		this.fkProdutor = fkProdutor;
 		this.fkProcedencia = fkProcedencia;
 		this.fkTipoMP = fkTipoMP;
-	} 
+	}
+
+
 
 
 
@@ -610,6 +620,26 @@ public class Movimento implements Serializable {
 
 	public void setFkTipoMP(TipoMateriaPrima fkTipoMP) {
 		this.fkTipoMP = fkTipoMP;
+	} 
+	
+
+	public String getQual1() {
+		return qual1;
+	}
+
+
+	public void setQual1(String qual1) {
+		this.qual1 = qual1;
+	}
+
+
+	public String getQual2() {
+		return qual2;
+	}
+
+
+	public void setQual2(String qual2) {
+		this.qual2 = qual2;
 	}
 
 

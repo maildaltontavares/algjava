@@ -8,6 +8,8 @@ import com.santanatextiles.alg.domain.Fornecedor;
 import com.santanatextiles.alg.domain.Procedencia;
 import com.santanatextiles.alg.domain.Produtor;
 
+import jakarta.persistence.Column;
+
 public class EstoqueMPDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
@@ -58,9 +60,20 @@ public class EstoqueMPDTO implements Serializable {
 	private Double trar;	
 	private Fornecedor fkFornecedo;	
 	private Produtor fkProdutor;	
-	private Procedencia fkProcedencia;
+	private Procedencia fkProcedencia; 
+    private String tipoQualidade; 
+    private String classifQualidade;
+	private String coloracao;
+	private String loteAdicional;
+    private String idVolume; 
+    private String tipoMic;	 
+    private String destino;	  	
+	
+	
 	
 	public EstoqueMPDTO() {}
+
+	 
 
 	public EstoqueMPDTO(String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, Double quantidade, Double peso,
@@ -69,7 +82,8 @@ public class EstoqueMPDTO implements Serializable {
 			String usuarioAlteracao, Double pesoMedio, Double sac, Double trid, Double pim, Double sc, Double mst,
 			Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Fornecedor fkFornecedo, Produtor fkProdutor,
-			Procedencia fkProcedencia) {
+			Procedencia fkProcedencia, String tipoQualidade, String classifQualidade, String coloracao,
+			String loteAdicional, String idVolume, String tipoMic, String destino) {
 		super();
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
@@ -115,7 +129,16 @@ public class EstoqueMPDTO implements Serializable {
 		this.fkFornecedo = fkFornecedo;
 		this.fkProdutor = fkProdutor;
 		this.fkProcedencia = fkProcedencia;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
 	}
+
+
 
 	public String getIdfil() {
 		return idfil;
@@ -468,6 +491,93 @@ public class EstoqueMPDTO implements Serializable {
 	public void setFkProcedencia(Procedencia fkProcedencia) {
 		this.fkProcedencia = fkProcedencia;
 	}
+
+
+
+	public String getTipoQualidade() {
+		return tipoQualidade;
+	}
+
+
+
+	public void setTipoQualidade(String tipoQualidade) {
+		this.tipoQualidade = tipoQualidade;
+	}
+
+
+
+	public String getClassifQualidade() {
+		return classifQualidade;
+	}
+
+
+
+	public void setClassifQualidade(String classifQualidade) {
+		this.classifQualidade = classifQualidade;
+	}
+
+
+
+	public String getColoracao() {
+		return coloracao;
+	}
+
+
+
+	public void setColoracao(String coloracao) {
+		this.coloracao = coloracao;
+	}
+
+
+
+	public String getLoteAdicional() {
+		return loteAdicional;
+	}
+
+
+
+	public void setLoteAdicional(String loteAdicional) {
+		this.loteAdicional = loteAdicional;
+	}
+
+
+
+	public String getIdVolume() {
+		return idVolume;
+	}
+
+
+
+	public void setIdVolume(String idVolume) {
+		this.idVolume = idVolume;
+	}
+
+
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+
+
+	public String getDestino() {
+		return destino;
+	}
+
+
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+	
+	
+	
  
 	
 

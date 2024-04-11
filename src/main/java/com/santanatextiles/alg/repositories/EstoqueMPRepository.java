@@ -11,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.EstoqueMPId;
+import com.santanatextiles.alg.projections.MisturaPadraoProjection;
 import com.santanatextiles.alg.projections.SaldoIdMovtoProjection;
 import com.santanatextiles.alg.projections.SaldoPesquisaIdProjection;
-
-import jakarta.persistence.Column;
 
 @Repository
 public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPId>{
@@ -60,11 +59,20 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4RS,     " +
 		" M4B,      " +
 		" M4TRCNT,  " +
-		" M4TRAR    " +
+		" M4TRAR  , " +
+		" M4TPQ    ," +
+		" M4CLASQ  ," +
+		" M4COLOR  ," +
+		" M4LTADIC, " +
+		" M4IDFARD," +
+		" M4TPMIC ," +
+		" M4TPMIC  " +		
 		" FROM CPF.CPFM4_DBF M4    "  +
         " where m4.idfil =  STL.FN_STL_IDFIL('CPFM4',?1) and M4QTDE > 0  order by M4ID"
 		,nativeQuery = true)
 	    List<EstoqueMP> buscaEstoqueMPPorParametros(@Param("idfil") String idfil ) ;   
+    
+    
     
 	    @Transactional(readOnly=true)
 	    List<EstoqueMP>  findByIdfil(String idfil);   
@@ -114,12 +122,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " GROUP BY IDMOV  "	 
 	     ,nativeQuery = true)
 	    List<SaldoIdMovtoProjection> buscaSaldoIdMovto(String filial, Double idMovto) ;
-	    
-	     
-	     
-	    
-	    
-	     	    
+	      
 	    @Query(value =  
 	    "SELECT   " +   
 	    " M4.M4ID idmov,             " +    
@@ -137,7 +140,14 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " M4PESO PESO,  " +   
 	    " NVL(M4VLEST,0) VLEST ,  " +    
 	    " M4PESMED PESOMEDIO,  " +
-	    " M4TAM TAMANHO  " +	    
+	    " M4TAM TAMANHO  ," +	 
+		" M4TPQ tipoQualidade   ," +
+		" M4CLASQ classifQualidade ," +
+		" M4COLOR coloracao ," +
+		" M4LTADIC loteAdicional, " +
+		" M4IDFARD idVolume," +
+		" M4TPMIC tipoMic," +
+		" M4DEST destino" + 
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
@@ -177,7 +187,15 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " M4PESO PESO,  " +   
 	    " NVL(M4VLEST,0) VLEST ,  " +    
 	    " M4PESMED PESOMEDIO,  " +
-	    " M4TAM TAMANHO  "  +
+	    " M4TAM TAMANHO  ,"  +
+	    " M4TPQ tipoQualidade   ," +
+		" M4CLASQ classifQualidade ," +
+		" M4COLOR coloracao ," +
+		" M4LTADIC loteAdicional, " +
+		" M4IDFARD idVolume," +
+		" M4TPMIC tipoMic," +
+		" M4DEST destino," +
+		" M4QUAL qualidade" + 
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
@@ -192,6 +210,96 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		
 		@Transactional
 		EstoqueMP findById(Double id ); 	  
+		
+		
+		
+	    @Query(value = 
+		"SELECT DECODE(TRIM(B2NOMREDUZ),'',TRIM(SUBSTR(B2NOME,1,30))  ,B2NOMREDUZ) FORN, " +  
+		" M6.M6DESC PRODUT,M6.M6COD COD_PROD,M4LOTE LOTE, M4PILHA PI,   " +
+		" ROUND(M4QTDE,0) ESTOQUE,   "+ 
+		" reserv.frd_reserv , qtde_mist QTDE, (M4QTDE  - nvl(reserv.frd_reserv,0) ) Disponivel, "+  
+		" nvl(mis_util.total_mist_util,0)  total_mist_util ,  " +
+		" M4ID ,   " +
+		" M4NF,    " +
+		" M4DESCF,  "  +
+		" M4ITEM,   "  +   
+		" M4UM ,  " +
+		" M4PESMED , " +   
+		" M4PROCED , " +    
+		" M4TAM  , "  +    
+		" M4QUAL, " +     
+		" M4FORN, " +     
+		" M4ELG ELG,M4MAT MAT,M4MIC MIC,M4MST MST,M4SF SF,M4SIC SIC,M4STR STR,M4TIPO TIPO, M4UI UI, " +              
+		" M4SAC SAC,M4TRID TRID,M4PIM PIM,M4SC SC, " +    
+	    " M4B, " +    
+	    " M4RS, "  +    
+		" M4TRAR, " +    
+		" M4TRCNT, " +    
+		" M4UHML , " + 
+		" Mistura , M4COLOR, M4TPMIC,M4DEST " + 
+		" from  " +
+		" (  " +
+		"     select '' tipo, ?2 mistura ,0 qtde_mist ,m4.* from cpf.CPFM4_DBF m4 " +  
+		"     where   " +
+		"     m4.idfil = ?1 " +   
+		"     and m4id not in   " +
+		"         (  " + 
+		"         Select t2id from cpf.cpft2_dbf t2 " +  
+		"         where t2.idfil = ?1  and T2MIST = ?2   " +
+		"          )  " +
+		"     and m4qtde > 0 " +      
+		"     union all " +  
+		"     select 'M' tipo ,t2mist mistura, t2qtde qtde_mist ,m4.* from cpf.CPFM4_DBF m4 "  +  
+		"     inner join cpf.cpft2_dbf t2 on t2.idfil = m4.idfil and t2.t2id = m4.m4id " +   
+		"     where   " +
+		"     t2.idfil = ?1  and T2MIST = ?2   " +  
+		" ) Est_mist " +  
+		" left join   " +
+     	"   (  " +
+			"         Select  idfil, t2id ,sum(fardos_reserv) frd_reserv " +  
+			"         from  " +
+			"         (  " +
+			"                 select " +   
+			"                 t2.idfil, t2id , t2mist, " +  
+			"                 sum(nvl(mist_utiliz.total,0)) mist_utilizadas, " +  
+			"                 sum( t1qtde) total_misturas ,  " +
+			"                 (sum( t1qtde) - sum(nvl(mist_utiliz.total,0))) saldo_misturas , " +  
+			"                 sum( t2qtde) num_fardos  ,  " +
+			"                 ((sum( t1qtde) - sum(nvl(mist_utiliz.total,0))) * sum( t2qtde) ) fardos_reserv " +   
+			"                 from cpft2_dbf t2  " +
+			"                 inner join cpf.cpft1_dbf t1 on t1.idfil = t2.idfil and t1.t1mist = t2.t2mist " +  
+			"                 left  join (  " +
+			"                             select count(*) total, t1.t1mist,t1.idfil " +   
+			"                             from   " +
+			"                             cpft1_dbf t1 " +   
+			"                             inner join cpf.cpfm2_dbf m2 on m2.idfil = t1.idfil and t1.t1mist = m2.m2mist " +  
+			"                             where   " +
+			"                             t1.idfil = ?1  and " +  
+			"                             t1.t1status    in ('E','L') " +    
+			"                             group by t1.t1mist,t1.idfil  " +		
+			"                            ) mist_utiliz on mist_utiliz.t1mist = t1.t1mist and mist_utiliz.idfil = t1.idfil " +    
+			"                 where T2.IDFIL = ?1  AND T2MIST <> ?2    " +
+			"                 and t1.t1status   in ('E','L')  " +
+			"                 group by t2id , t2mist, t2.idfil  " +
+			"         )  " +
+			"         group by  idfil, t2id " +        
+	     "  ) reserv on est_mist.idfil = reserv.idfil and est_mist.m4id = reserv.t2id " +  
+		" LEFT join CCP.CCPB2_DBF B2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', est_mist.IDFIL) and trim(est_mist.M4FORN) = b2.B2COD " +   
+		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = ?1  AND M6COD = est_mist.M4ORIG  " +
+		" LEFT JOIN ( " +
+			"            select count(*) total_mist_util, t1.t1mist,t1.idfil " +
+				"        from  " +
+				"        cpf.cpft1_dbf t1 " +
+				"        inner join cpf.cpfm2_dbf m2 on m2.idfil = t1.idfil and t1.t1mist = m2.m2mist " +     
+				"        where " +
+				"        t1.idfil = ?1  and m2.m2mist = ?2 " +   
+				"        group by t1.t1mist,t1.idfil " +                 
+		"           ) mis_util on Est_mist.idfil = mis_util.idfil  and mis_util.t1mist  = Est_mist.mistura " + 
+				"    where  est_mist.idfil = ?1 AND " + 
+		        "   (?3  IS NULL  OR TRIM(est_mist.M4DEST) = ?3 )   " + 				
+		"  ORDER BY M6.M6DESC,M4LOTE,1 	" 
+		,nativeQuery = true)
+ 		List<MisturaPadraoProjection> buscaEstoqueMPMistura( String idfil , String mistura   ,String tipoFardo    ) ;
 	    
 	    
 	    

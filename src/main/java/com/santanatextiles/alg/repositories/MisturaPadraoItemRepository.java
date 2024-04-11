@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.MisturaPadraoItemId;
@@ -42,7 +43,8 @@ public interface MisturaPadraoItemRepository extends JpaRepository<MisturaPadrao
 	,nativeQuery = true)
     List<MisturaPadraoItem> buscaMisturaPorId(@Param("id") Double id ) ;        
     
-    
+	@Transactional
+	Double deleteByIdfilAndMistura(String idfil ,String mistura ); 	    
 
 
 }	

@@ -179,6 +179,40 @@ public class MovimentoItem implements Serializable {
 	@Column(name="M3PSMDNF")
 	private Double pesoMedio;	 
 	
+	@Column(name="M3TPQ")
+	private String tipoQualidade;
+	
+	@Column(name="M3CLASQ")
+	private String classifQualidade;
+	
+	@Column(name="M3COLOR")
+	private String coloracao;	
+	
+	@Column(name="M3LTADIC")
+	private String loteAdicional;	
+	
+	@Column(name="M3IDFARD")
+	private String idVolume;	
+	
+	@Column(name="M3TPMIC")
+	private String tipoMic;	
+	
+	@Column(name="M3DEST")
+	private String destino;		
+	
+	
+/*	
+	M3TPQ
+	M3CLASQ
+	M3COLOR
+	M3LTADIC
+	M3IDFARD
+	M3TPMIC
+	M3DEST
+	
+*/	
+	
+	
 	@Transient
 	private String statusItem;	 
 	
@@ -218,20 +252,28 @@ public class MovimentoItem implements Serializable {
 	private Procedencia fkProcedencia	;		
 	 	
 
+	@ManyToOne 
+	@JoinColumnsOrFormulas({
+		@JoinColumnOrFormula(column=@JoinColumn(name="M3COLOR", referencedColumnName="N4COD", insertable = false, updatable = false)),
+		@JoinColumnOrFormula(formula=@JoinFormula(value="stl.fn_stl_idfil('CPFN4',idfil)", referencedColumnName="idfil"))	
+	})		 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	private Coloracao fkColoracao	;		
  
-	public MovimentoItem() {}  
+	public MovimentoItem() {}    
 	
- /*
 
-	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
-			String procedencia, String lote, String qualidade, String tamanho, String descFio,
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
+			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
 			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
 			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
 			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
 			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
-			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, Movimento movimento,
-			Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia) {
+			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String tipoQualidade,
+			String classifQualidade, String coloracao, String loteAdicional, String idVolume, String tipoMic,
+			String destino, String statusItem, String statusItemOriginal, Movimento movimento, Fornecedor fkFornecedor,
+			Produtor fkProdutor, Procedencia fkProcedencia, Coloracao fkColoracao) {
 		super();
 		this.idItem = idItem;
 		this.idfil = idfil;
@@ -279,168 +321,21 @@ public class MovimentoItem implements Serializable {
 		this.trcnt = trcnt;
 		this.trar = trar;
 		this.pesoMedio = pesoMedio;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
+		this.statusItem = statusItem;
+		this.statusItemOriginal = statusItemOriginal;
 		this.movimento = movimento;
 		this.fkFornecedor = fkFornecedor;
 		this.fkProdutor = fkProdutor;
 		this.fkProcedencia = fkProcedencia;
-	}
-	
-	
-	
-	
-
-
-
-	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
-			String procedencia, String lote, String qualidade, String tamanho, String descFio,
-			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
-			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
-			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
-			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
-			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
-			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio) {
-		super();
-		this.idItem = idItem;
-		this.idfil = idfil;
-		this.notaFiscal = notaFiscal;
-		this.fornecedor = fornecedor;
-		this.item = item;
-		this.produtor = produtor;
-		this.procedencia = procedencia;
-		this.lote = lote;
-		this.qualidade = qualidade;
-		this.tamanho = tamanho;
-		this.descFio = descFio;
-		this.pesoCalculadoInformado = pesoCalculadoInformado;
-		this.observacao = observacao;
-		this.unidadeMedida = unidadeMedida;
-		this.pilha = pilha;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
-		this.usuarioInclusao = usuarioInclusao;
-		this.usuarioAlteracao = usuarioAlteracao;
-		this.movimentoAutomatico = movimentoAutomatico;
-		this.movimentoDePilha = movimentoDePilha;
-		this.quantidade = quantidade;
-		this.peso = peso;
-		this.idCab = idCab;
-		this.vlUnitario = vlUnitario;
-		this.idMovimento = idMovimento;
-		this.sac = sac;
-		this.trid = trid;
-		this.pim = pim;
-		this.sc = sc;
-		this.mst = mst;
-		this.mic = mic;
-		this.mat = mat;
-		this.ui = ui;
-		this.sf = sf;
-		this.str = str;
-		this.elg = elg;
-		this.tipo = tipo;
-		this.sic = sic;
-		this.idAutomatico = idAutomatico;
-		this.uhml = uhml;
-		this.rs = rs;
-		this.b = b;
-		this.trcnt = trcnt;
-		this.trar = trar;
-		this.pesoMedio = pesoMedio;
-	}
-
-*/
-
-	/*
-	public Double getIdItem() {
-		return idItem;
-	}
-
-
-
-	public void setId(Double idItem) {
-		this.idItem = idItem;
-	}
-
-*/
-	
-	
-	
-	
-	
-	
-	
-
-	public String getIdfil() {
-		return idfil;
-	}
- 
-
-	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
-		String procedencia, String lote, String qualidade, String tamanho, String descFio,
-		String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
-		Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
-		String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario, Double idMovimento,
-		Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat, Double ui, Double sf,
-		Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml, Double rs, Double b,
-		Double trcnt, Double trar, Double pesoMedio, String statusItem, String statusItemOriginal, Movimento movimento,
-		Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia) {
-	super();
-	this.idItem = idItem;
-	this.idfil = idfil;
-	this.notaFiscal = notaFiscal;
-	this.fornecedor = fornecedor;
-	this.item = item;
-	this.produtor = produtor;
-	this.procedencia = procedencia;
-	this.lote = lote;
-	this.qualidade = qualidade;
-	this.tamanho = tamanho;
-	this.descFio = descFio;
-	this.pesoCalculadoInformado = pesoCalculadoInformado;
-	this.observacao = observacao;
-	this.unidadeMedida = unidadeMedida;
-	this.pilha = pilha;
-	this.dataInclusao = dataInclusao;
-	this.dataAlteracao = dataAlteracao;
-	this.usuarioInclusao = usuarioInclusao;
-	this.usuarioAlteracao = usuarioAlteracao;
-	this.movimentoAutomatico = movimentoAutomatico;
-	this.movimentoDePilha = movimentoDePilha;
-	this.quantidade = quantidade;
-	this.peso = peso;
-	this.idCab = idCab;
-	this.vlUnitario = vlUnitario;
-	this.idMovimento = idMovimento;
-	this.sac = sac;
-	this.trid = trid;
-	this.pim = pim;
-	this.sc = sc;
-	this.mst = mst;
-	this.mic = mic;
-	this.mat = mat;
-	this.ui = ui;
-	this.sf = sf;
-	this.str = str;
-	this.elg = elg;
-	this.tipo = tipo;
-	this.sic = sic;
-	this.idAutomatico = idAutomatico;
-	this.uhml = uhml;
-	this.rs = rs;
-	this.b = b;
-	this.trcnt = trcnt;
-	this.trar = trar;
-	this.pesoMedio = pesoMedio;
-	this.statusItem = statusItem;
-	this.statusItemOriginal = statusItemOriginal;
-	this.movimento = movimento;
-	this.fkFornecedor = fkFornecedor;
-	this.fkProdutor = fkProdutor;
-	this.fkProcedencia = fkProcedencia;
-}
-	
-	
-	
+		this.fkColoracao = fkColoracao;
+	}  
 	
 	
 
@@ -451,8 +346,9 @@ public class MovimentoItem implements Serializable {
 			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
 			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
-			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String statusItem,
-			String statusItemOriginal) {
+			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String tipoQualidade,
+			String classifQualidade, String coloracao, String loteAdicional, String idVolume, String tipoMic,
+			String destino, String statusItem, String statusItemOriginal, Movimento movimento) {
 		super();
 		this.idItem = idItem;
 		this.idfil = idfil;
@@ -500,11 +396,18 @@ public class MovimentoItem implements Serializable {
 		this.trcnt = trcnt;
 		this.trar = trar;
 		this.pesoMedio = pesoMedio;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
 		this.statusItem = statusItem;
 		this.statusItemOriginal = statusItemOriginal;
+		this.movimento = movimento;
 	}
-	
-	
+
 
 	public void setIdfil(String idfil) {
 		this.idfil = idfil;
@@ -1115,6 +1018,95 @@ public class MovimentoItem implements Serializable {
 	public void setStatusItemOriginal(String statusItemOriginal) {
 		this.statusItemOriginal = statusItemOriginal;
 	}
+	
+	
+	
+	
+
+	public String getTipoQualidade() {
+		return tipoQualidade;
+	}
+
+
+	public void setTipoQualidade(String tipoQualidade) {
+		this.tipoQualidade = tipoQualidade;
+	}
+
+
+	public String getClassifQualidade() {
+		return classifQualidade;
+	}
+
+
+	public void setClassifQualidade(String classifQualidade) {
+		this.classifQualidade = classifQualidade;
+	}
+
+
+	public String getColoracao() {
+		return coloracao;
+	}
+
+
+	public void setColoracao(String coloracao) {
+		this.coloracao = coloracao;
+	}
+
+
+	public String getLoteAdicional() {
+		return loteAdicional;
+	}
+
+
+	public void setLoteAdicional(String loteAdicional) {
+		this.loteAdicional = loteAdicional;
+	}
+
+
+	public String getIdVolume() {
+		return idVolume;
+	}
+
+
+	public void setIdVolume(String idVolume) {
+		this.idVolume = idVolume;
+	}
+
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+
+	public String getDestino() {
+		return destino;
+	}
+
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+
+	public Coloracao getFkColoracao() {
+		return fkColoracao;
+	}
+
+
+	public void setFkColoracao(Coloracao fkColoracao) {
+		this.fkColoracao = fkColoracao;
+	}
+
+
+	public String getIdfil() {
+		return idfil;
+	}
+
 
 	@Override
 	public int hashCode() {

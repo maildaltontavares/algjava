@@ -47,7 +47,8 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 				" M9ARQ	     ,  " +
 				" M9PSELO	 ,  " +
 				" M9TPSELO	 ,  " +
-				" M9NSELO	    " +
+				" M9NSELO	 ,  " +
+				" M9TPMIC	    " + 
 				" FROM CPFM9_DBF M9 "  	+
 				" where m9.idfil =  STL.FN_STL_IDFIL('CPFM9',?1) "
 				,nativeQuery = true)	
@@ -96,7 +97,8 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 				" M9ARQ	     ,  " +
 				" M9PSELO	 ,  " +
 				" M9TPSELO	 ,  " +
-				" M9NSELO	    " +
+				" M9NSELO	 ,  " +
+				" M9TPMIC	    " + 
 				" FROM CPFM9_DBF M9 "  	+
 				" where m9.idfil =  STL.FN_STL_IDFIL('CPFM9',?1) and trim(M9ORIG) = ?2 and trim(M9LOTE) =  trim( ?3 )"
 				,nativeQuery = true)	

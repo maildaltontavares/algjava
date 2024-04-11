@@ -44,14 +44,14 @@ public class MisturaPadraoItem   implements Serializable {
 	private Date  dataInclusao;
 		
 	@Column(name="T2USRINC")
-    private String usarioInclusao;	 
+    private String usuarioInclusao;	 
 	
 	@Column(name="T2DTALT")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataAlteracao;
 		
 	@Column(name="T2USRALT")
-    private String usarioAlteracao;
+    private String usuarioAlteracao;
 	
 	 
 	@JsonIgnore
@@ -73,7 +73,7 @@ public class MisturaPadraoItem   implements Serializable {
 	
 
 	public MisturaPadraoItem(String idfil, String mistura, Double idItem, Double quantidade, Date dataInclusao,
-			String usarioInclusao, Date dataAlteracao, String usarioAlteracao, MisturaPadrao misturaPadrao,
+			String usuarioInclusao, Date dataAlteracao, String usuarioAlteracao, MisturaPadrao misturaPadrao,
 			EstoqueMP fkItemMistura) {
 		super();
 		this.idfil = idfil;
@@ -81,9 +81,9 @@ public class MisturaPadraoItem   implements Serializable {
 		this.idItem = idItem;
 		this.quantidade = quantidade;
 		this.dataInclusao = dataInclusao;
-		this.usarioInclusao = usarioInclusao;
+		this.usuarioInclusao = usuarioInclusao;
 		this.dataAlteracao = dataAlteracao;
-		this.usarioAlteracao = usarioAlteracao;
+		this.usuarioAlteracao = usuarioAlteracao;
 		this.misturaPadrao = misturaPadrao;
 		this.fkItemMistura = fkItemMistura;
 	} 
@@ -139,13 +139,13 @@ public class MisturaPadraoItem   implements Serializable {
 	}
 
 
-	public String getUsarioInclusao() {
-		return usarioInclusao;
+	public String getUsuarioInclusao() {
+		return usuarioInclusao;
 	}
 
 
-	public void setUsarioInclusao(String usarioInclusao) {
-		this.usarioInclusao = usarioInclusao;
+	public void setUsuarioInclusao(String usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 
@@ -159,13 +159,13 @@ public class MisturaPadraoItem   implements Serializable {
 	}
 
 
-	public String getUsarioAlteracao() {
-		return usarioAlteracao;
+	public String getUsuarioAlteracao() {
+		return usuarioAlteracao;
 	}
 
 
-	public void setUsarioAlteracao(String usarioAlteracao) {
-		this.usarioAlteracao = usarioAlteracao;
+	public void setUsuarioAlteracao(String usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.santanatextiles.alg.dto.MisturaPadraoDTO;
+import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,14 +56,14 @@ public class MisturaPadrao implements Serializable {
 	private Date  dataInclusao;
 		
 	@Column(name="T1USRINC")
-    private String usarioInclusao;	 
+    private String usuarioInclusao;	 
 	
 	@Column(name="T1DTALT")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataAlteracao;
 		
 	@Column(name="T1USRALT")
-    private String usarioAlteracao;		 
+    private String usuarioAlteracao;		 
 	
 	@Column(name="T1QTDLIB")
     private String numMisturasLiberadas;		 	
@@ -71,23 +72,22 @@ public class MisturaPadrao implements Serializable {
     private String observacao;	 
  
 	@Column(name="T1NUMFAR")
-    private Double numFardos;    
-	
- 
+    private Double numFardos;   
 	
 	@OneToMany(mappedBy="misturaPadrao")
-	private Set<MisturaPadraoItem> misturaPadrao = new HashSet<>();	  
+	private Set<MisturaPadraoItem> misturaPadraoItem = new HashSet<>();	  
 	
 
 	
 	@Transient
-	private Set<MisturaPadraoDTO> misturaPadraoDTO = new HashSet<>();		
+	private Set<MisturaPadraoItemDTO> misturaPadraoItemDTO = new HashSet<>();		
 	
-	public MisturaPadrao() {}    
- 
+	public MisturaPadrao() {}   
+	 
 	public MisturaPadrao(String idfil, String mistura, String lote, String status, Date dataInicial, Date dataFinal,
-			Double totalMisturas, Date dataInclusao, String usarioInclusao, Date dataAlteracao, String usarioAlteracao,
-			String numMisturasLiberadas, String observacao, Double numFardos, Set<MisturaPadraoDTO> misturaPadraoDTO) {
+			Double totalMisturas, Date dataInclusao, String usuarioInclusao, Date dataAlteracao,
+			String usuarioAlteracao, String numMisturasLiberadas, String observacao, Double numFardos,
+			Set<MisturaPadraoItem> misturaPadraoItem, Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
 		super();
 		this.idfil = idfil;
 		this.mistura = mistura;
@@ -97,14 +97,16 @@ public class MisturaPadrao implements Serializable {
 		this.dataFinal = dataFinal;
 		this.totalMisturas = totalMisturas;
 		this.dataInclusao = dataInclusao;
-		this.usarioInclusao = usarioInclusao;
+		this.usuarioInclusao = usuarioInclusao;
 		this.dataAlteracao = dataAlteracao;
-		this.usarioAlteracao = usarioAlteracao;
+		this.usuarioAlteracao = usuarioAlteracao;
 		this.numMisturasLiberadas = numMisturasLiberadas;
 		this.observacao = observacao;
 		this.numFardos = numFardos;
-		this.misturaPadraoDTO = misturaPadraoDTO;
+		this.misturaPadraoItem = misturaPadraoItem;
+		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
 	} 
+
 
 	public String getIdfil() {
 		return idfil;
@@ -170,12 +172,12 @@ public class MisturaPadrao implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public String getUsarioInclusao() {
-		return usarioInclusao;
+	public String getUsuarioInclusao() {
+		return usuarioInclusao;
 	}
 
-	public void setUsarioInclusao(String usarioInclusao) {
-		this.usarioInclusao = usarioInclusao;
+	public void setUsuarioInclusao(String usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 	public Date getDataAlteracao() {
@@ -186,12 +188,12 @@ public class MisturaPadrao implements Serializable {
 		this.dataAlteracao = dataAlteracao;
 	}
 
-	public String getUsarioAlteracao() {
-		return usarioAlteracao;
+	public String getUsuarioAlteracao() {
+		return usuarioAlteracao;
 	}
 
-	public void setUsarioAlteracao(String usarioAlteracao) {
-		this.usarioAlteracao = usarioAlteracao;
+	public void setUsuarioAlteracao(String usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 	public String getNumMisturasLiberadas() {
@@ -218,20 +220,20 @@ public class MisturaPadrao implements Serializable {
 		this.numFardos = numFardos;
 	}
 
-	public Set<MisturaPadraoItem> getMisturaPadrao() {
-		return misturaPadrao;
+	public Set<MisturaPadraoItem> getMisturaPadraoItem() {
+		return misturaPadraoItem;
 	}
 
-	public void setMisturaPadrao(Set<MisturaPadraoItem> misturaPadrao) {
-		this.misturaPadrao = misturaPadrao;
+	public void setMisturaPadraoItem(Set<MisturaPadraoItem> misturaPadraoItem) {
+		this.misturaPadraoItem = misturaPadraoItem;
 	}
 
-	public Set<MisturaPadraoDTO> getMisturaPadraoDTO() {
-		return misturaPadraoDTO;
+	public Set<MisturaPadraoItemDTO> getMisturaPadraoItemDTO() {
+		return misturaPadraoItemDTO;
 	}
 
-	public void setMisturaPadraoDTO(Set<MisturaPadraoDTO> misturaPadraoDTO) {
-		this.misturaPadraoDTO = misturaPadraoDTO;
+	public void setMisturaPadraoItemDTO(Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
+		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
 	}
 
 	@Override

@@ -20,6 +20,14 @@ public class SaldoPesquisaIdDTO {
 	Double vlEst;
 	Double pesoMedio;
 	String tamanho;
+	String tipoQualidade; 
+	String classifQualidade;
+	String coloracao;
+	String loteAdicional;
+	String idVolume; 
+	String tipoMic;	 
+	String destino;
+	String qualidade;	
 	
 	
 	public SaldoPesquisaIdDTO() {};
@@ -42,15 +50,25 @@ public class SaldoPesquisaIdDTO {
 		this.vlEst = projection.getVlEst();
 		this.pesoMedio = projection.getPesoMedio();
 		this.tamanho = projection.getTamanho();  
+		this.tipoQualidade = projection.getTipoQualidade();
+		this.classifQualidade = projection.getClassifQualidade();
+		this.coloracao = projection.getColoracao();
+		this.loteAdicional = projection.getLoteAdicional();
+		this.idVolume = projection.getIdVolume();
+		this.tipoMic = projection.getTipoMic();
+		this.destino = projection.getDestino();
+		this.qualidade = projection.getQualidade();		
 		
 	}	
 	
  
 
+ 
 
 	public SaldoPesquisaIdDTO(Double idMov, String produtor, String pilha, String lote, Double qtde, String nmForn,
 			String item, String nomeItem, String um, String procedencia, String nf, String fornecedor, Double peso,
-			Double vlEst, Double pesoMedio, String tamanho) {
+			Double vlEst, Double pesoMedio, String tamanho, String tipoQualidade, String classifQualidade,
+			String coloracao, String loteAdicional, String idVolume, String tipoMic, String destino, String qualidade) {
 		super();
 		this.idMov = idMov;
 		this.produtor = produtor;
@@ -68,6 +86,14 @@ public class SaldoPesquisaIdDTO {
 		this.vlEst = vlEst;
 		this.pesoMedio = pesoMedio;
 		this.tamanho = tamanho;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
+		this.qualidade = qualidade;
 	}
 
 	public Double getIdMov() {
@@ -226,6 +252,70 @@ public class SaldoPesquisaIdDTO {
 
 	public void setTamanho(String tamanho) {
 		this.tamanho = tamanho;
+	}
+
+	public String getTipoQualidade() {
+		return tipoQualidade;
+	}
+
+	public void setTipoQualidade(String tipoQualidade) {
+		this.tipoQualidade = tipoQualidade;
+	}
+
+	public String getClassifQualidade() {
+		return classifQualidade;
+	}
+
+	public void setClassifQualidade(String classifQualidade) {
+		this.classifQualidade = classifQualidade;
+	}
+
+	public String getColoracao() {
+		return coloracao;
+	}
+
+	public void setColoracao(String coloracao) {
+		this.coloracao = coloracao;
+	}
+
+	public String getLoteAdicional() {
+		return loteAdicional;
+	}
+
+	public void setLoteAdicional(String loteAdicional) {
+		this.loteAdicional = loteAdicional;
+	}
+
+	public String getIdVolume() {
+		return idVolume;
+	}
+
+	public void setIdVolume(String idVolume) {
+		this.idVolume = idVolume;
+	}
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+
+	public String getQualidade() {
+		return qualidade;
+	}
+
+	public void setQualidade(String qualidade) {
+		this.qualidade = qualidade;
 	}	
 	
 	

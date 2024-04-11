@@ -419,13 +419,17 @@ public class MovimentoService {
 	        movimento.setLinhaAbertura(objDTO.getLinhaAbertura());  
 	        
 	        movimento.setMovimentoAutomatico(objDTO.getMovimentoAutomatico());		 
-		    movimento.setMovimentoPilha(objDTO.getMovimentoPilha());  
+		    movimento.setMovimentoPilha(objDTO.getMovimentoPilha());
+		    movimento.setQual1(objDTO.getQual1());
+		    movimento.setQual2(objDTO.getQual2());
 		    
 		    movimento.setMistura(objDTO.getMistura());	 
 		    movimento.setSequenciaMistura(objDTO.getSequenciaMistura());	 
+		    
 		    movimento.setUsuarioInclusao(objDTO.getUsuarioInclusao());	 
 		    movimento.setUsuarioAlteracao(objDTO.getUsuarioAlteracao());  
 		    
+		    movimento.setDataInclusao(objDTO.getDataInclusao());
 		    movimento.setDataAlteracao(objDTO.getDataAlteracao());	   
 		    movimento.setItemMovimentoDTO(objDTO.getItemMovimentoDTO()); 
 			

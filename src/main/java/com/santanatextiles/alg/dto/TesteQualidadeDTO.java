@@ -42,15 +42,17 @@ public class TesteQualidadeDTO    implements Serializable {
     private String possuiSelo; 
     private String tipoSelo; 
     private String numeroSelo;
+    private String tipoMic;
     
     
-	public TesteQualidadeDTO() {}    
-    
+	public TesteQualidadeDTO() {}     
+
 	public TesteQualidadeDTO(String idfil, String produtor, String lote, Date dataTeste, Double numVolumes, Double sac,
 			Double mst, Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo, Double trid,
 			Double sc, Double pim, String hvi, String benef, String obs, Date dataInclusao, String usarioInclusao,
 			Date dataAlteracao, String usarioAlteracao, Double sic, Double uhml, Double rs, Double b, Double trcnt,
-			Double trar, String prdint, String arqImportacao, String possuiSelo, String tipoSelo, String numeroSelo) {
+			Double trar, String prdint, String arqImportacao, String possuiSelo, String tipoSelo, String numeroSelo,
+			String tipoMic) {
 		super();
 		this.idfil = idfil;
 		this.produtor = produtor;
@@ -87,7 +89,9 @@ public class TesteQualidadeDTO    implements Serializable {
 		this.possuiSelo = possuiSelo;
 		this.tipoSelo = tipoSelo;
 		this.numeroSelo = numeroSelo;
-	}
+		this.tipoMic = tipoMic;
+	} 
+
 
 	public String getIdfil() {
 		return idfil;

@@ -20,6 +20,14 @@ public interface SaldoPesquisaIdProjection {
 	Double getPesoMedio(); 
 	String getTamanho();
 	Double getVlUnitario(); 
+	String getQualidade(); 
+	String getTipoQualidade(); 
+    String getClassifQualidade(); 
+	String getColoracao();  
+	String getLoteAdicional(); 
+	String getIdVolume();  
+	String getTipoMic(); 	 
+	String getDestino(); 		
 	
 	 
 }

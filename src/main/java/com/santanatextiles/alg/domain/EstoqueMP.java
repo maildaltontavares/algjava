@@ -166,6 +166,27 @@ public class EstoqueMP implements Serializable {
 	@Column(name="M4TRAR")
 	private Double trar;	
 	
+	@Column(name="M4TPQ")
+	private String tipoQualidade;
+	
+	@Column(name="M4CLASQ")
+	private String classifQualidade;
+	
+	@Column(name="M4COLOR")
+	private String coloracao;	
+	
+	@Column(name="M4LTADIC")
+	private String loteAdicional;	
+	
+	@Column(name="M4IDFARD")
+	private String idVolume;	
+	
+	@Column(name="M4TPMIC")
+	private String tipoMic;	
+	
+	@Column(name="M4DEST")
+	private String destino;	  
+	
 	@Transient
 	private String dsFornecedor;	
 	
@@ -202,10 +223,7 @@ public class EstoqueMP implements Serializable {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private Procedencia fkProcedencia	;
 	
-	public EstoqueMP() {}  
-
- 
-	  
+	public EstoqueMP() {}   
 
 
 	public EstoqueMP(Double id, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
@@ -214,8 +232,10 @@ public class EstoqueMP implements Serializable {
 			Date dataAlteracao, Date dataMovimentacao, String usuarioInclusao, String usuarioAlteracao,
 			Double pesoMedio, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double uhml, Double rs, Double b,
-			Double trcnt, Double trar, String dsFornecedor, String dsProdutor, String dsProcedencia,
-			Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia) {
+			Double trcnt, Double trar, String tipoQualidade, String classifQualidade, String coloracao,
+			String loteAdicional, String idVolume, String tipoMic, String destino, String dsFornecedor,
+			String dsProdutor, String dsProcedencia, Fornecedor fkFornecedor, Produtor fkProdutor,
+			Procedencia fkProcedencia) {
 		super();
 		this.id = id;
 		this.idfil = idfil;
@@ -258,6 +278,13 @@ public class EstoqueMP implements Serializable {
 		this.b = b;
 		this.trcnt = trcnt;
 		this.trar = trar;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
 		this.dsFornecedor = dsFornecedor;
 		this.dsProdutor = dsProdutor;
 		this.dsProcedencia = dsProcedencia;
@@ -267,8 +294,10 @@ public class EstoqueMP implements Serializable {
 	}
 
 
-	
-	
+
+
+
+
 
 
 
@@ -1018,10 +1047,77 @@ public class EstoqueMP implements Serializable {
 
 	public void setFkProcedencia(Procedencia fkProcedencia) {
 		this.fkProcedencia = fkProcedencia;
+	} 
+
+
+	public String getTipoQualidade() {
+		return tipoQualidade;
 	}
 
 
+	public void setTipoQualidade(String tipoQualidade) {
+		this.tipoQualidade = tipoQualidade;
+	}
 
+
+	public String getClassifQualidade() {
+		return classifQualidade;
+	}
+
+
+	public void setClassifQualidade(String classifQualidade) {
+		this.classifQualidade = classifQualidade;
+	}
+
+
+	public String getColoracao() {
+		return coloracao;
+	}
+
+
+	public void setColoracao(String coloracao) {
+		this.coloracao = coloracao;
+	}
+
+
+	public String getLoteAdicional() {
+		return loteAdicional;
+	}
+
+
+	public void setLoteAdicional(String loteAdicional) {
+		this.loteAdicional = loteAdicional;
+	}
+
+
+	public String getIdVolume() {
+		return idVolume;
+	}
+
+
+	public void setIdVolume(String idVolume) {
+		this.idVolume = idVolume;
+	}
+
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+
+	public String getDestino() {
+		return destino;
+	}
+
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
 
 
 	@Override

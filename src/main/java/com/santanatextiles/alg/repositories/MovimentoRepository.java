@@ -37,7 +37,9 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
 			" M2MOVPIL 	,  " + 
 			" M2IDAUTO 	,  " + 
 			" M2MIST 	,  " + 
-			" M2SEQMST 	  "  +
+			" M2SEQMST,	  "  +
+			" M2Q1C,	  "  +
+			" M2Q2C 	  "  +   
 			" FROM CPF.CPFM2_DBF M2  "    +
 			" where M2.idfil =  STL.FN_STL_IDFIL('CPFM2',?1) "
 			,nativeQuery = true)
@@ -69,7 +71,9 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
 			" M2MOVPIL 	,  " + 
 			" M2IDAUTO 	,  " + 
 			" M2MIST 	,  " + 
-			" M2SEQMST 	   "  + 
+			" M2SEQMST,	  "  +
+			" M2Q1C,	  "  +
+			" M2Q2C 	  "  +   
 			" FROM CPF.CPFM2_DBF M2  "    +   
 			" where M2.idfil =  STL.FN_STL_IDFIL('CPFM2',:idfil) AND " +
 		    "(:dataInicial IS NULL   OR TO_CHAR(M2DTBASE,'YYYYMMDD') >= :dataInicial )   and " +

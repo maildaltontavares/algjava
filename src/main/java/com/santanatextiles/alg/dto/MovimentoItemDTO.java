@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.Column;
+
 public class MovimentoItemDTO  implements Serializable {	
 
 	private static final long serialVersionUID = 1L;  
@@ -58,11 +60,17 @@ public class MovimentoItemDTO  implements Serializable {
 	private Double trar; 
 	private Double pesoMedio;
 	private String statusItem;
-	private String statusItemOriginal;
+	private String statusItemOriginal; 
+    private String tipoQualidade; 
+	private String classifQualidade; 
+	private String coloracao; 
+	private String loteAdicional;	 
+	private String idVolume; 
+	private String tipoMic;	 
+	private String destino;		
 	
 	
-	public MovimentoItemDTO() {} 
-
+	public MovimentoItemDTO() {}  
 
 	public MovimentoItemDTO(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
 			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
@@ -72,7 +80,8 @@ public class MovimentoItemDTO  implements Serializable {
 			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String statusItem,
-			String statusItemOriginal) {
+			String statusItemOriginal, String tipoQualidade, String classifQualidade, String coloracao,
+			String loteAdicional, String idVolume, String tipoMic, String destino) {
 		super();
 		this.idItem = idItem;
 		this.idfil = idfil;
@@ -122,8 +131,14 @@ public class MovimentoItemDTO  implements Serializable {
 		this.pesoMedio = pesoMedio;
 		this.statusItem = statusItem;
 		this.statusItemOriginal = statusItemOriginal;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
 	}
-
 
 
 
@@ -606,6 +621,62 @@ public class MovimentoItemDTO  implements Serializable {
 
 	public void setStatusItemOriginal(String statusItemOriginal) {
 		this.statusItemOriginal = statusItemOriginal;
+	}
+
+	public String getTipoQualidade() {
+		return tipoQualidade;
+	}
+
+	public void setTipoQualidade(String tipoQualidade) {
+		this.tipoQualidade = tipoQualidade;
+	}
+
+	public String getClassifQualidade() {
+		return classifQualidade;
+	}
+
+	public void setClassifQualidade(String classifQualidade) {
+		this.classifQualidade = classifQualidade;
+	}
+
+	public String getColoracao() {
+		return coloracao;
+	}
+
+	public void setColoracao(String coloracao) {
+		this.coloracao = coloracao;
+	}
+
+	public String getLoteAdicional() {
+		return loteAdicional;
+	}
+
+	public void setLoteAdicional(String loteAdicional) {
+		this.loteAdicional = loteAdicional;
+	}
+
+	public String getIdVolume() {
+		return idVolume;
+	}
+
+	public void setIdVolume(String idVolume) {
+		this.idVolume = idVolume;
+	}
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
 	}
 
 

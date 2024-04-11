@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.dto.EstoqueMPDTO;
+import com.santanatextiles.alg.dto.MisturaProjectionDTO;
 import com.santanatextiles.alg.dto.SaldoPesquisaIdDTO;
 import com.santanatextiles.alg.services.EstoqueMPService;
 
@@ -70,7 +71,18 @@ public class EstoqueMPResource {
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
-	} 	
+	} 
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/mistura/{filial}/{mistura}/{tipoFardo}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > buscaEstoqueMPMistura (@PathVariable String filial,@PathVariable String mistura, @PathVariable String tipoFardo){ 
+ 		try {
+ 			List<MisturaProjectionDTO> estoqueMP = service.buscaEstoqueMPMistura(filial, mistura, tipoFardo); 
+	 		return ResponseEntity.status(HttpStatus.OK).body(estoqueMP);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
  	
  	
  	/*

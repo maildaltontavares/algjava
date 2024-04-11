@@ -2,22 +2,23 @@ package com.santanatextiles.alg.dto;
 
 import java.io.Serializable;
 
-public class PilhaDTO  implements Serializable {
+public class ColoracaoDTO  implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
  
 	private String idfil;  
 	private String codigo;	  
 	private String desricao;
+	private String chave;
 	
+	public ColoracaoDTO() {}
 	
-	public PilhaDTO() {}	
-	
-	public PilhaDTO(String idfil, String codigo, String desricao) {
+	public ColoracaoDTO(String idfil, String codigo, String desricao, String chave) {
 		super();
 		this.idfil = idfil;
 		this.codigo = codigo;
 		this.desricao = desricao;
+		this.chave = chave;
 	}
 
 	public String getIdfil() {
@@ -43,9 +44,19 @@ public class PilhaDTO  implements Serializable {
 	public void setDesricao(String desricao) {
 		this.desricao = desricao;
 	}
+
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
+	}
+ 
 	
 	
-	
+
+ 
 	
 	
 	

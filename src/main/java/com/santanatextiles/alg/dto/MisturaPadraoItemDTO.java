@@ -10,26 +10,26 @@ public class MisturaPadraoItemDTO   implements Serializable {
  
 	private String  idfil;
 	private String mistura;	
-	private String idItem;	
+	private Double idItem;	
 	private Double quantidade;
  	private Date  dataInclusao; 
-    private String usarioInclusao;	   
+    private String usuarioInclusao;	   
 	private Date  dataAlteracao; 
-    private String usarioAlteracao;
+    private String usuarioAlteracao;
     
-	public MisturaPadraoItemDTO() {}    
-    
-	public MisturaPadraoItemDTO(String idfil, String mistura, String idItem, Double quantidade, Date dataInclusao,
-			String usarioInclusao, Date dataAlteracao, String usarioAlteracao) {
+	public MisturaPadraoItemDTO() {}
+
+	public MisturaPadraoItemDTO(String idfil, String mistura, Double idItem, Double quantidade, Date dataInclusao,
+			String usuarioInclusao, Date dataAlteracao, String usuarioAlteracao) {
 		super();
 		this.idfil = idfil;
 		this.mistura = mistura;
 		this.idItem = idItem;
 		this.quantidade = quantidade;
 		this.dataInclusao = dataInclusao;
-		this.usarioInclusao = usarioInclusao;
+		this.usuarioInclusao = usuarioInclusao;
 		this.dataAlteracao = dataAlteracao;
-		this.usarioAlteracao = usarioAlteracao;
+		this.usuarioAlteracao = usuarioAlteracao;
 	}
 
 	public String getIdfil() {
@@ -48,11 +48,11 @@ public class MisturaPadraoItemDTO   implements Serializable {
 		this.mistura = mistura;
 	}
 
-	public String getIdItem() {
+	public Double getIdItem() {
 		return idItem;
 	}
 
-	public void setIdItem(String idItem) {
+	public void setIdItem(Double idItem) {
 		this.idItem = idItem;
 	}
 
@@ -72,12 +72,12 @@ public class MisturaPadraoItemDTO   implements Serializable {
 		this.dataInclusao = dataInclusao;
 	}
 
-	public String getUsarioInclusao() {
-		return usarioInclusao;
+	public String getUsuarioInclusao() {
+		return usuarioInclusao;
 	}
 
-	public void setUsarioInclusao(String usarioInclusao) {
-		this.usarioInclusao = usarioInclusao;
+	public void setUsuarioInclusao(String usuarioInclusao) {
+		this.usuarioInclusao = usuarioInclusao;
 	}
 
 	public Date getDataAlteracao() {
@@ -88,14 +88,15 @@ public class MisturaPadraoItemDTO   implements Serializable {
 		this.dataAlteracao = dataAlteracao;
 	}
 
-	public String getUsarioAlteracao() {
-		return usarioAlteracao;
+	public String getUsuarioAlteracao() {
+		return usuarioAlteracao;
 	}
 
-	public void setUsarioAlteracao(String usarioAlteracao) {
-		this.usarioAlteracao = usarioAlteracao;
-	}
-	
+	public void setUsuarioAlteracao(String usuarioAlteracao) {
+		this.usuarioAlteracao = usuarioAlteracao;
+	}    
+    
+	 
 	
     
     

@@ -57,13 +57,14 @@ public class MovimentoDTO implements Serializable {
 	private String nomeTipoMovimento;	 
 	private String dataInicial; 
 	private String dataFinal;
+	private String qual1;
+	private String qual2;
 	
 	private Set<MovimentoItemDTO> itemMovimentoDTO = new HashSet<>();
 	
 	
-	public MovimentoDTO() {} 
+	public MovimentoDTO() {}   
 	
- 
 	public MovimentoDTO(String idfil, String notaFiscal, String fornecedor, String tipoMovimento, String tipoMP,
 			Date dataBase, Date dataEmissao, Double id, String entradaSaida, String loteFiacao, Double pesoMedio,
 			Double pesoTotal, String produtor, String procedencia, String linhaAbertura, Double idAutomatico,
@@ -72,7 +73,7 @@ public class MovimentoDTO implements Serializable {
 			TipoMovimento fkTipoMovimento, Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia,
 			TipoMateriaPrima fkTipoMP, Double numVolumes, String nomeFornecedor, String nomeProdutor,
 			String nomeProcedencia, String nomeTipoMateriaPrima, String nomeTipoMovimento, String dataInicial,
-			String dataFinal, Set<MovimentoItemDTO> itemMovimentoDTO) {
+			String dataFinal, String qual1, String qual2, Set<MovimentoItemDTO> itemMovimentoDTO) {
 		super();
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
@@ -111,8 +112,13 @@ public class MovimentoDTO implements Serializable {
 		this.nomeTipoMovimento = nomeTipoMovimento;
 		this.dataInicial = dataInicial;
 		this.dataFinal = dataFinal;
+		this.qual1 = qual1;
+		this.qual2 = qual2;
 		this.itemMovimentoDTO = itemMovimentoDTO;
-	} 
+	}
+
+
+
 
 
 
@@ -493,6 +499,22 @@ public class MovimentoDTO implements Serializable {
 
 	public void setItemMovimentoDTO(Set<MovimentoItemDTO> itemMovimentoDTO) {
 		this.itemMovimentoDTO = itemMovimentoDTO;
+	}
+
+	public String getQual1() {
+		return qual1;
+	}
+
+	public void setQual1(String qual1) {
+		this.qual1 = qual1;
+	}
+
+	public String getQual2() {
+		return qual2;
+	}
+
+	public void setQual2(String qual2) {
+		this.qual2 = qual2;
 	}
 
  
