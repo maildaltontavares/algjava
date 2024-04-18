@@ -17,6 +17,7 @@ import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TipoMovimento;
+import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
 import com.santanatextiles.alg.dto.MovimentoDTO;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.repositories.MovimentoRepository;
@@ -196,7 +197,8 @@ public class MovimentoService {
 								tipoMovto.getAtualizaItem(),
 								movimento.getIdAutomatico(),
 								movimento.getMovimentoAutomatico(),
-								movimento.getMovimentoPilha()) ;
+								movimento.getMovimentoPilha(), 
+								tipoMovto.getAtualizaEstoque()) ;
 						
 						// Valida duplicidade de idMovimento no documento
 						if (!listaDeIds.contains(movimentoItem.getIdMovimento().toString())) {						
@@ -343,13 +345,18 @@ public class MovimentoService {
 				Iterator<MovimentoItemDTO> it = obj.getItemMovimentoDTO().iterator();
 				 
 				while (it.hasNext()) {
+//					/it.next(),
+					MovimentoItemDTO misturaIt =   it.next();
+					
 					MovimentoItem movimentoItem = serviceItem.fromDTO(
-							it.next(),
+							
+							misturaIt,
 							movimento.getId(),
 							tipoMovto.getAtualizaItem(),
 							movimento.getIdAutomatico(),
 							movimento.getMovimentoAutomatico(),
-							movimento.getMovimentoPilha()
+							movimento.getMovimentoPilha(), 
+							tipoMovto.getAtualizaEstoque()
 							) ;
 					
 					serviceItem.insert(movimentoItem, tipoMovto.getAtualizaEstoque(),
@@ -358,7 +365,7 @@ public class MovimentoService {
 		   
 			    return movimento;
 		}	 
-
+ 
  
 	 
 		private Movimento configuraMovimentoInclusao(Movimento obj) throws ParseException { 

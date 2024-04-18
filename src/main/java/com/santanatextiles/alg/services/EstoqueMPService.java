@@ -1,5 +1,6 @@
 package com.santanatextiles.alg.services;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +17,14 @@ import com.santanatextiles.alg.dto.SaldoPesquisaIdDTO;
 import com.santanatextiles.alg.projections.MisturaPadraoProjection;
 import com.santanatextiles.alg.projections.SaldoIdMovtoProjection;
 import com.santanatextiles.alg.projections.SaldoPesquisaIdProjection;
-import com.santanatextiles.alg.repositories.EstoqueMPRepository; 
+import com.santanatextiles.alg.repositories.EstoqueMPRepository;
+import com.santanatextiles.alg.resources.exception.ObjectNotFoundException; 
 	
 @Service
 public class EstoqueMPService {
 		
 	@Autowired
-	private EstoqueMPRepository repo;	 
+	private EstoqueMPRepository repo; 
 	
 	@Value("${spring.datasource.url}")
 	private String JDBC_URL;
@@ -96,8 +98,10 @@ public class EstoqueMPService {
 	}	
  	
 	
-	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt ) {
+	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt   ) {
 		
+		
+		 
 		if(atualizaIt.equals("S")) { 
 			return repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
 		}else {
@@ -107,7 +111,7 @@ public class EstoqueMPService {
 	}
 	
  
-	public EstoqueMP insert (MovimentoItem obj ){ 
+	public EstoqueMP insert (MovimentoItem obj, String atualizaEstoque ){ 
 		
 	        String nf = String.format("%-10s", obj.getNotaFiscal());  
 	        obj.setNotaFiscal(nf);   
@@ -123,13 +127,26 @@ public class EstoqueMPService {
 		    itemEstoque.setLote(obj.getLote());
 		    itemEstoque.setQualidade(obj.getQualidade());
 		    itemEstoque.setTamanho(obj.getTamanho());
-		    itemEstoque.setDescFio(obj.getDescFio());		
-		    itemEstoque.setQuantidade(obj.getQuantidade()); 
-		    itemEstoque.setPeso(obj.getPeso());	 
+		    itemEstoque.setDescFio(obj.getDescFio());	
+		    
+		    
+		    if(atualizaEstoque.equals("S")) {
+			    itemEstoque.setQuantidade(obj.getQuantidade()); 
+			    itemEstoque.setPeso(obj.getPeso());	 		 
+			    itemEstoque.setValorEstoque(obj.getVlUnitario() * obj.getQuantidade()); 	
+		    	
+		    }else {
+			    itemEstoque.setQuantidade(0.0); 
+			    itemEstoque.setPeso(0.0);	 	
+			    itemEstoque.setValorEstoque(0.0); 
+		    	
+		    }
+ 
+		    
 		    itemEstoque.setId(obj.getIdItem());	 
 		    itemEstoque.setUnidadeMedida(obj.getUnidadeMedida()); 
 		    itemEstoque.setPilha(obj.getPilha());
-		    itemEstoque.setValorEstoque(obj.getVlUnitario() * obj.getQuantidade()); 	 
+		     
 		    itemEstoque.setDataInclusao(obj.getDataInclusao());
 		    itemEstoque.setDataAlteracao(obj.getDataAlteracao());	 
 		    itemEstoque.setUsuarioInclusao(obj.getUsuarioInclusao());
@@ -172,8 +189,26 @@ public class EstoqueMPService {
 	
 	    }
 	
+	 
+		public Integer quantidadeDestinos(String idfil,String mistura) throws ParseException {
+			Integer obj = repo.quantidadeDestinos(idfil, mistura);
+			return obj;
+		}		
 	
-	   public List<MisturaProjectionDTO> buscaEstoqueMPMistura( String idfil , String mistura   ,String tipoFardo ){ 
+	
+	
+	   public List<MisturaProjectionDTO> buscaEstoqueMPMistura( String idfil , String mistura   ,String tipoFardo ) throws ParseException{ 
+		   
+		    
+		   if(!tipoFardo.equals("T")) {
+		    
+			       Integer totDestinos =  quantidadeDestinos(idfil, mistura);
+			   
+				   if(totDestinos > 1) {
+					   throw new ObjectNotFoundException("Mistura possui fardos de destinos diferentes. Destino deve ser TODOS.");  
+				   }
+
+		   }  
 		   
 		    List<MisturaPadraoProjection> saldoPesquisaMistura;
 		    

@@ -151,7 +151,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
-	    " WHERE M4.IDFIL = :filial   AND " +
+	    " WHERE M4.IDFIL = :filial  AND " +
 	    " trim(M4.M4ITEM) = :item   AND " + 
         " (:produtor IS NULL  OR   M6COD  = :produtor)  AND " +
         " (:lote     IS NULL  OR   M4LOTE like %:lote%    )  AND " + 
@@ -167,6 +167,17 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		) ;
 	    
 	 // " (:produtor IS NULL  OR  UPPER(TRIM(M6DESC)) like %:produtor% )  " +
+
+	    
+	    @Query(value =  
+	    	     "Select count(*) qtdDest from " +
+	    	     " ( " +
+	    	     "    Select m4dest from cpf.cpft2_dbf t2  " +
+	    	     "    inner join cpf.cpfm4_dbf m4 on t2.t2id = m4.m4id " +
+	    	     "    where t2.idfil = ?1  and trim(t2mist) =  ?2 "    +
+	    	     "    group by m4dest " +
+	    	     " )  ",nativeQuery = true)
+	  Integer quantidadeDestinos(String filial,String mistura) ;  	    
 	    
 
 	    
@@ -236,7 +247,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4TRAR, " +    
 		" M4TRCNT, " +    
 		" M4UHML , " + 
-		" Mistura , M4COLOR, M4TPMIC,M4DEST " + 
+		" Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST " + 
 		" from  " +
 		" (  " +
 		"     select '' tipo, ?2 mistura ,0 qtde_mist ,m4.* from cpf.CPFM4_DBF m4 " +  
@@ -247,7 +258,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		"         Select t2id from cpf.cpft2_dbf t2 " +  
 		"         where t2.idfil = ?1  and T2MIST = ?2   " +
 		"          )  " +
-		"     and m4qtde > 0 " +      
+		"     and m4qtde > 0 AND M4ORIG IS NOT NULL" +      
 		"     union all " +  
 		"     select 'M' tipo ,t2mist mistura, t2qtde qtde_mist ,m4.* from cpf.CPFM4_DBF m4 "  +  
 		"     inner join cpf.cpft2_dbf t2 on t2.idfil = m4.idfil and t2.t2id = m4.m4id " +   
@@ -285,7 +296,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 			"         group by  idfil, t2id " +        
 	     "  ) reserv on est_mist.idfil = reserv.idfil and est_mist.m4id = reserv.t2id " +  
 		" LEFT join CCP.CCPB2_DBF B2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', est_mist.IDFIL) and trim(est_mist.M4FORN) = b2.B2COD " +   
-		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = ?1  AND M6COD = est_mist.M4ORIG  " +
+		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', est_mist.IDFIL)  AND M6COD = est_mist.M4ORIG  " +
 		" LEFT JOIN ( " +
 			"            select count(*) total_mist_util, t1.t1mist,t1.idfil " +
 				"        from  " +

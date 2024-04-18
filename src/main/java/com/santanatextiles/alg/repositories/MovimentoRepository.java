@@ -82,7 +82,8 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
 		    "(:tipoMP IS NULL        OR M2TPMP = :tipoMP )   and " + 
 		    "(:codFornecedor IS NULL OR m2forn = :codFornecedor )   and " +
 		    "(:notaFiscal IS NULL    OR M2NF = :notaFiscal )    and " +
-		    "(:produtor IS NULL      OR M2ORIG = :produtor )    " 	     
+		    "(:produtor IS NULL      OR M2ORIG = :produtor )    "+
+		    " order by M2.idfil,M2NF"
 			,nativeQuery = true)
           List<Movimento> pesquisaMovimentoPorParametros(
         		  @Param("idfil")         String idfil, 

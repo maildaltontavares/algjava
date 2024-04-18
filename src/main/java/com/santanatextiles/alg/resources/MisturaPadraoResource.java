@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.MisturaPadrao;
+import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.dto.MisturaPadraoCabecDTO;
 import com.santanatextiles.alg.dto.MisturaPadraoDTO;
 import com.santanatextiles.alg.services.MisturaPadraoService;
@@ -49,6 +50,28 @@ public class MisturaPadraoResource {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
 	} 
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/abaixar/{filial}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > buscaMisturasABaixar(@PathVariable String filial){ 
+ 		try {
+	 		List<MisturaPadrao> misturaPadrao = service.buscaMisturasABaixar(filial) ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body(misturaPadrao);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/full/{filial}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > buscaMisturasFull (@PathVariable String filial){ 
+ 		try {
+	 		List<MisturaPadrao> misturaPadrao = service.buscaMisturasFull(filial) ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body(misturaPadrao);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
  	
  	@CrossOrigin
  	@RequestMapping(value="/calc/{filial}/{mistura}", method=RequestMethod.GET)
@@ -91,7 +114,32 @@ public class MisturaPadraoResource {
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
-	}
+	} 
+ 	
+ 	@CrossOrigin 
+ 	@RequestMapping(value="/baixar", method=RequestMethod.POST)
+ 	public  ResponseEntity< ? > baixarMistura (@Valid @RequestBody  MisturaPadraoDTO misturaDTO){ 
+ 		try {
+
+ 			String mistura = service.baixarMistura(misturaDTO) ; 
+ 			
+	 		return ResponseEntity.status(HttpStatus.OK).body(mistura);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}   
+ 	
+ 	
+ 	@CrossOrigin 
+ 	@RequestMapping(value="/reabrir", method=RequestMethod.POST)
+ 	public  ResponseEntity< ? > reabrirMistura (@Valid @RequestBody  MisturaPadraoDTO misturaDTO){ 
+ 		try {
+	 		String mistura = service.reabrirMistura(misturaDTO) ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body(mistura);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
  	
  	@CrossOrigin 
  	@RequestMapping(value="/alterar", method=RequestMethod.PUT)
@@ -103,6 +151,7 @@ public class MisturaPadraoResource {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
 	} 
+ 	
  	
 	@CrossOrigin
 	@RequestMapping(value="/excluir/{idfil}/{mistura}",method=RequestMethod.DELETE)

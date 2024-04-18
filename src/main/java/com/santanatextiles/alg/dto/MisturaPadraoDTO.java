@@ -22,15 +22,20 @@ public class MisturaPadraoDTO  implements Serializable {
     private String usuarioAlteracao;		 
     private String numMisturasLiberadas;		 	
     private String observacao;	 
-    private Double numFardos; 
+    private Double numFardos;
+    private Double pesoTotal; 
     
     private Set<MisturaPadraoItemDTO> misturaPadraoItemDTO = new HashSet<>();	
     
 	public MisturaPadraoDTO() {}
 
+	 
+	
+	
+	
 	public MisturaPadraoDTO(String idfil, String mistura, String lote, String status, Date dataInicial, Date dataFinal,
-			Double totalMisturas, Date dataInclusao, String usuarioInclusao, Date dataAlteracao, String usuarioAlteracao,
-			String numMisturasLiberadas, String observacao, Double numFardos,
+			Double totalMisturas, Date dataInclusao, String usuarioInclusao, Date dataAlteracao,
+			String usuarioAlteracao, String numMisturasLiberadas, String observacao, Double numFardos, Double pesoTotal,
 			Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
 		super();
 		this.idfil = idfil;
@@ -47,8 +52,13 @@ public class MisturaPadraoDTO  implements Serializable {
 		this.numMisturasLiberadas = numMisturasLiberadas;
 		this.observacao = observacao;
 		this.numFardos = numFardos;
+		this.pesoTotal = pesoTotal;
 		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
 	}
+
+
+
+
 
 	public String getIdfil() {
 		return idfil;
@@ -168,6 +178,15 @@ public class MisturaPadraoDTO  implements Serializable {
 
 	public void setMisturaPadraoItemDTO(Set<MisturaPadraoItemDTO> misturaPadraoItemDTO) {
 		this.misturaPadraoItemDTO = misturaPadraoItemDTO;
+	} 
+
+	public Double getPesoTotal() {
+		return pesoTotal;
+	} 
+
+
+	public void setPesoTotal(Double pesoTotal) {
+		this.pesoTotal = pesoTotal;
 	}   
 	
 	

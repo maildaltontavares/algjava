@@ -102,41 +102,21 @@ public class MovimentoItemService {
 		    
 		    /// Permite inserir novos itens de estoque (IDs)
 		    if(atualizaItem.equals("S")) {        // NFE e EST+
-			    serviceEstoqueMP.insert(movItem);	 
+			    serviceEstoqueMP.insert(movItem,atualizaEstoque);	 
 		    }
 		    
 		    /// Atualiza o saldo de estoque
 		    if(atualizaEstoque.equals("S")) {  
 		    	// Na insercao nao precisa atualizar o peso medio pois ja inseriu tudo certinho 
-		    	   atlzEstok(movItem,"N" );
+		    	   atlzEstok(movItem,"N"  );
 		     
 		    }
 		    
 		    return movItem;
 		    
 		}	 
-		
-/*		
-		// Chamado pelo Update
-		public void atlzEstok(MovimentoItem pMovItem, String atualizaItem) {
-			
-			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
-			
-			if(sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1) {
-				
-				if(atualizaItem.equals("N")){
-				    serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());				    
-				}else{
-					serviceEstoqueMP.atualizaEstoqueEPesoMedio(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst());					
-				}
-				
-			}else {
-				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
-			} 
-		    
-		}		
-*/		
-		public void atlzEstok(MovimentoItem pMovItem, String atualzMovto) {
+ 	
+		public void atlzEstok(MovimentoItem pMovItem, String atualzMovto ) {
 			
 			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
 			
@@ -146,7 +126,7 @@ public class MovimentoItemService {
 		        bd = bd.setScale(4, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
 		        double pesMed = bd.doubleValue();				
 				*/
-				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst(),pMovItem.getPesoMedio(),atualzMovto);				
+				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst(),pMovItem.getPesoMedio(),atualzMovto );				
 			}else {
 				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
 			} 
@@ -206,7 +186,7 @@ public class MovimentoItemService {
 		
 		
 		
-		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha  ) {
+		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha , String atualizaEstoque  ) {
 			
 			MovimentoItem movimentoItem = new MovimentoItem();  
 			Double novoMovimentoItem;
@@ -413,8 +393,11 @@ public class MovimentoItemService {
 				
 			} 			
 			
+			
 			movimentoItem.setQuantidade(objDTO.getQuantidade());	 
 			movimentoItem.setPeso(objDTO.getPeso()); 
+			 
+			
 			movimentoItem.setIdCab(idCab); 
 			movimentoItem.setStatusItem(objDTO.getStatusItem());
 			movimentoItem.setStatusItemOriginal(objDTO.getStatusItemOriginal());
