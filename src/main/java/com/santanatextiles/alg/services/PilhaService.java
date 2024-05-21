@@ -36,5 +36,10 @@ public class PilhaService {
 			 return obj;
 		}		
 		
+		public Integer totalFardosPilha(String filial, String pilha ){	 
+			Integer obj = repo.totalFardosPilha(filial,	pilha);   
+			 return obj;
+		}			
+		 
 
 }

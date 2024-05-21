@@ -19,6 +19,7 @@ import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.MisturaPadrao;
 import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.Movimento;
+import com.santanatextiles.alg.domain.ProducaoAbertura;
 import com.santanatextiles.alg.dto.MisturaPadraoCabecDTO;
 import com.santanatextiles.alg.dto.MisturaPadraoDTO;
 import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
@@ -41,6 +42,9 @@ public class MisturaPadraoService {
 	
 	@Autowired
 	private EstoqueMPService estoqueService;	
+	
+	@Autowired
+	private  ProducaoAberturaService ProducaoAberturaService;
 
 	@Value("${spring.datasource.url}")
 	private String JDBC_URL;
@@ -244,17 +248,36 @@ public class MisturaPadraoService {
 		   Integer totBaixadas = repo.numMisturasBaixadas(misturaDTO.getIdfil(),misturaDTO.getMistura());  
 		   String totBaixada = String.format("%02d",  totBaixadas );  
 		   
-	       /// Buscar a tital de misturas a baixar 
+	       /// Buscar a total de misturas a baixar 
 		   Integer numMist = qtdeMistura(misturaDTO.getIdfil(),misturaDTO.getMistura());	 
 		   String numMistTotal = String.format("%02d",  numMist );   
 		   
 		   if(misturaDTO.getStatus().equals("L") &&  numMistTotal.equals(totBaixada)) { 
 			   encerrarMistura(misturaDTO.getIdfil(),misturaDTO.getMistura()); 
-		   }
+		   }  		   
 		   
-		   
+		   ProducaoAbertura pa = gravaProducaoMistura(movimGravado.getIdAutomatico(),misturaDTO.getMistura(),movimDTO.getSequenciaMistura(), movimDTO.getIdfil());
+		    
 		   return movimDTO.getNotaFiscal();
 		
+	}
+	
+	
+	private ProducaoAbertura gravaProducaoMistura(Double idAuto, String mistura, String sequencia, String idfil) throws ParseException {
+		 
+		
+		   ProducaoAbertura prodAber = new ProducaoAbertura();
+		   prodAber.setIdfil(idfil);  
+		   prodAber.setMistura(mistura);  
+		   prodAber.setSeq(sequencia);
+		   prodAber.setIdAutomatico(idAuto);
+		   
+		   
+		   ProducaoAberturaService.gravaBaixaMistura(prodAber);
+		   
+		   
+		
+		return prodAber;
 	}
 	
 	private List<MovimentoItemDTO> fromMistDTOToItemMovim(MisturaPadraoDTO misturaDTO) {  
@@ -393,8 +416,10 @@ public class MisturaPadraoService {
 		movimento.setMovimentoPilha("N");  
 		movimento.setMistura(misturaDTO.getMistura());
 		movimento.setSequenciaMistura(novaSequencia);  
+		
 		movimento.setUsuarioInclusao(misturaDTO.getUsuarioInclusao());
 		movimento.setUsuarioAlteracao(misturaDTO.getUsuarioAlteracao());   
+		
 		movimento.setDataBase(dateFormat.parse(dataFormatada));	
 		movimento.setDataEmissao(dateFormat.parse(dataFormatada));	
 	 

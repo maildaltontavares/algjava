@@ -13,11 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TipoMovimento;
-import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
+import com.santanatextiles.alg.dto.MisturaProjectionDTO;
 import com.santanatextiles.alg.dto.MovimentoDTO;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.repositories.MovimentoRepository;
@@ -40,6 +41,9 @@ public class MovimentoService {
 		
 		@Autowired
 		private EstoqueMPService serviceEstoqueMP;			
+		
+		@Autowired
+		private ProducaoAberturaService producaoAberturaService;			
 		
 		
 		@Value("${spring.datasource.url}")
@@ -122,8 +126,14 @@ public class MovimentoService {
 			 Movimento obj = repo.findByIdfilAndFornecedorAndNotaFiscal(filial, fornecedor, notaFiscal);	   
 			 return obj;
 		}
-
-	 
+ 
+		
+		     /////////  GERAR PILHA   ////////
+	    	@Transactional
+		    public String gerarPilha(List<MovimentoDTO> objParam ) throws ParseException{	 
+					insert(objParam);  
+				    return "";
+		    }
 	
 			
 			////////////  METODOS DE ALTERACAO   //////////		
@@ -141,17 +151,34 @@ public class MovimentoService {
 			         while (movimDTO.hasNext()) {
 			     
 			        	    objDTO = movimDTO.next();
-					        Movimento obj = fromDTO(objDTO);  
+					        Movimento obj = fromDTO(objDTO);
+					        
+					        Double numIdAutom = objDTO.getIdAutomatico();
+					        String tipoMovimto = obj.getTipoMovimento();
 					        updateMovimento(obj);
+					        
+					        
 					        
 					        // Deleta o cabecalho do movimento caso todos os itens tenham sido deletados. 
 					        List<MovimentoItem> mvItem = serviceItem.findByIdCab(obj.getId());
-					        if(mvItem == null) {
+					        if(mvItem == null || mvItem.isEmpty()) {
+					        	
 					        	repo.deleteById(obj.getId());
 					        	statusTransacao = "Deletado";
+					        	
+					        	// Via movimentos, a mistura só pode ser deletada. Nunca inserida em alterada.
+					        	if(numIdAutom!=null && tipoMovimto.equals("MIST") ) {	  // Exclui apontamento Mistura				        		
+					        		producaoAberturaService.deleteByIdfilAndIdAutomatico(obj.getIdfil(), numIdAutom);	
+/*					        	}
+					        	
 					        }else if(mvItem.isEmpty()){  
+					        	
 					        	repo.deleteById(obj.getId());
 					        	statusTransacao = "Deletado";
+					        	
+					        	if(numIdAutom!=null && tipoMovimto == "MIST" ) {	  // Exclui apontamento Mistura				        		
+					        		producaoAberturaService.deleteByIdfilAndIdAutomatico(obj.getIdfil(), numIdAutom);	
+	*/				        	}					        	
 					        }
 					        
 						       
@@ -198,7 +225,8 @@ public class MovimentoService {
 								movimento.getIdAutomatico(),
 								movimento.getMovimentoAutomatico(),
 								movimento.getMovimentoPilha(), 
-								tipoMovto.getAtualizaEstoque()) ;
+								tipoMovto.getAtualizaEstoque(),
+								movimento ) ;
 						
 						// Valida duplicidade de idMovimento no documento
 						if (!listaDeIds.contains(movimentoItem.getIdMovimento().toString())) {						
@@ -306,7 +334,7 @@ public class MovimentoService {
 					        if(primeiraIteracao) {
 						        if(obj.getMovimentoAutomatico() != null &&  obj.getMovimentoAutomatico().equals("A")) {
 						        	novoCodigoAutomaticoCab = repo.codigoNovoMovimento(); 
-						        	  
+						        	obj1.setIdAutomatico(novoCodigoAutomaticoCab);  
 						        }else {
 						        	
 						        	novoCodigoAutomaticoCab = null;
@@ -319,7 +347,7 @@ public class MovimentoService {
 					        insertMovimento(obj);
 						       
 			        }
-				    return obj1;
+				    return obj1;   // Retorna o ID automatico no atributo do movimento
 			}				
 	 
 		public Movimento insertMovimento( Movimento  obj ) throws ParseException{	 
@@ -333,7 +361,7 @@ public class MovimentoService {
 					obj.setEntradaSaida(tipoMovto.getEntradaSaida()); 	
 				}  
 			    
-			    Movimento movimento = configuraMovimentoInclusao(obj);
+			    Movimento movimento = configuraMovimentoInclusao(obj); 
 			    
 				
 				if (!this.msg.isEmpty()) {
@@ -346,18 +374,31 @@ public class MovimentoService {
 				 
 				while (it.hasNext()) {
 //					/it.next(),
-					MovimentoItemDTO misturaIt =   it.next();
+					MovimentoItemDTO movimIt =   it.next();
+					
+					
+				    if(movimento.getMovimentoPilha().equals("S")) {
+				    	
+				    	if(movimento.getEntradaSaida().equals("S")){  
+				    		serviceItem.populaItem(movimIt);   
+				    	}					
+					
+				    }
+					
 					
 					MovimentoItem movimentoItem = serviceItem.fromDTO(
 							
-							misturaIt,
+							movimIt,
 							movimento.getId(),
 							tipoMovto.getAtualizaItem(),
 							movimento.getIdAutomatico(),
 							movimento.getMovimentoAutomatico(),
 							movimento.getMovimentoPilha(), 
-							tipoMovto.getAtualizaEstoque()
-							) ;
+							tipoMovto.getAtualizaEstoque(),
+							movimento 
+						 
+							) ; 
+					
 					
 					serviceItem.insert(movimentoItem, tipoMovto.getAtualizaEstoque(),
 							   tipoMovto.getAtualizaItem(),tipoMovto.getPesoCalculadoInformado());
@@ -375,19 +416,32 @@ public class MovimentoService {
 			String dataFormatada = dataAtual.format(formatter); 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
-		    String nf = String.format("%-10s", obj.getNotaFiscal()); 	
+			String nf = String.format("%-10s", obj.getNotaFiscal()); 
+		    	
 		    
 		    if(obj.getId()==null) {
 			    Double novoCodigo = repo.codigoNovoMovimento(); 
-			    obj.setId(novoCodigo);	 
+			    obj.setId(novoCodigo); 
+
 		    }  
 		    
-		    obj.setNotaFiscal(nf); 
-		    
-		    //if(obj.getMovimentoAutomatico() !=null && obj.getMovimentoAutomatico().equals("S")) { 
-			    //Double novoCodigoAutomatico = repo.codigoNovoMovimento(); 
-			    //obj.setIdAutomatico(novoCodigoAutomatico);		 
-		    //}
+		    if(obj.getMovimentoPilha().equals("S")) {
+		    	
+		    	if(obj.getEntradaSaida().equals("S")){ 
+		    		obj.setNotaFiscal("PS" + String.format("%08d", obj.getIdAutomatico().intValue()  ));
+		    	}else{
+		    		obj.setNotaFiscal("PI" + String.format("%08d", obj.getIdAutomatico().intValue() ));
+		    	}
+		     
+		    	obj.setDataBase(dateFormat.parse(dataFormatada));
+		    	obj.setDataEmissao(dateFormat.parse(dataFormatada));
+		    	obj.setDataAlteracao(dateFormat.parse(dataFormatada));
+		    	
+		    	
+		    }else {
+		    	obj.setNotaFiscal(nf);  
+		    }
+		     
 		    
 		    obj.setDataInclusao(dateFormat.parse(dataFormatada));
 			
@@ -399,9 +453,7 @@ public class MovimentoService {
 		@Transactional	
 		 public void deletaMovimento(Double id){	 
 		 	  repo.deleteById(id);  
-		}			
-		
-	
+		}		 
 	
 		public Movimento fromDTO(MovimentoDTO objDTO) throws ParseException {   
 			

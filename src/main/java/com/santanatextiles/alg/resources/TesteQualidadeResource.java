@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.TesteQualidade;
+import com.santanatextiles.alg.dto.LoteDTO;
 import com.santanatextiles.alg.services.TesteQualidadeService;
 
 @RestController
@@ -51,6 +52,18 @@ public class TesteQualidadeResource {
  		try {
 	 		 TesteQualidade  testeQualidade = service.buscaTesteQualidadeByLote(filial, produtor, lote) ; 
 	 		return ResponseEntity.status(HttpStatus.OK).body(testeQualidade);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	} 	 	
+ 	
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/{filial}/{produtor}/{lote}/{item}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > buscaExistenciaLote (@PathVariable String filial,@PathVariable String produtor,@PathVariable String lote,@PathVariable String item){ 
+ 		try {
+	 		 List<LoteDTO>  lotesTestados = service.buscaExistenciaLote(filial, produtor, lote, item);
+	 		return ResponseEntity.status(HttpStatus.OK).body(lotesTestados);
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		

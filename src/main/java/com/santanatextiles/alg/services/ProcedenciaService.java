@@ -32,7 +32,11 @@ public class ProcedenciaService {
 		public List<Procedencia> buscaProcedenciaByFilial(String filial ){	 
 			 List<Procedencia> obj = repo.findByIdfil(filial ) ;	  
 			 return obj;
-		}			
+		}	
+		
+		
+		
+ 
 			
 			
 	

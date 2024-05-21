@@ -44,6 +44,9 @@ public interface MisturaPadraoProjection {
 	 String getM4COLOR();
 	 String getM4TPMIC();
 	 String getM4DEST();
+	 String getM7DESC();
+	 String getM4TPQ();
+	 String getM4CLASQ(); 
 	
 	
 		 

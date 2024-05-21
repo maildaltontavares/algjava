@@ -47,6 +47,9 @@ public class MisturaProjectionDTO {
 	String M4COLOR; 
 	String M4TPMIC;
 	String M4DEST;
+	String M7DESC;	 
+	String M4TPQ;
+	String M4CLASQ; 
 	
 	public MisturaProjectionDTO() {}
 	
@@ -93,17 +96,20 @@ public class MisturaProjectionDTO {
 		this.Mistura  	 = projection.getMistura();
 		this.M4COLOR 	 = projection.getM4COLOR();
 		this.M4TPMIC	 = projection.getM4TPMIC();
-		this.M4DEST 	 = projection.getM4DEST();  
-				  
-	}	
+		this.M4DEST 	 = projection.getM4DEST();
+		this.M7DESC 	 = projection.getM7DESC(); 
+		this.M4TPQ       = projection.getM4TPQ(); 
+		this.M4CLASQ     = projection.getM4CLASQ(); 
+	}	 
 	
+	 
 	public MisturaProjectionDTO(String fORN, String pRODUT, String cOD_PROD, String lOTE, String pI, Double eSTOQUE,
 			Double frd_reserv, Double qTDE, Double disponivel, Double total_mist_util, Double m4id, String m4nf,
 			String m4descf, String m4item, String m4um, Double m4pesmed, String m4proced, String m4tam, String m4qual,
 			String m4forn, Double eLG, Double mAT, Double mIC, Double mST, Double sF, Double sIC, Double sTR,
 			Double tIPO, Double uI, Double sAC, Double tRID, Double pIM, Double sC, Double m4b, Double m4rs,
-			Double m4trar, Double m4trcnt, Double m4uhml, String mistura, String m4color, String m4tpmic,
-			String m4dest) {
+			Double m4trar, Double m4trcnt, Double m4uhml, String mistura, String m4color, String m4tpmic, String m4dest,
+			String m7desc, String m4tpq, String m4clasq) {
 		super();
 		FORN = fORN;
 		PRODUT = pRODUT;
@@ -147,6 +153,9 @@ public class MisturaProjectionDTO {
 		M4COLOR = m4color;
 		M4TPMIC = m4tpmic;
 		M4DEST = m4dest;
+		M7DESC = m7desc;
+		M4TPQ = m4tpq;
+		M4CLASQ = m4clasq;
 	}
 
 	public String getFORN() {
@@ -484,6 +493,31 @@ public class MisturaProjectionDTO {
 	public void setM4DEST(String m4dest) {
 		M4DEST = m4dest;
 	}
+
+	public String getM7DESC() {
+		return M7DESC;
+	}
+
+	public void setM7DESC(String m7desc) {
+		M7DESC = m7desc;
+	}
+
+	public String getM4TPQ() {
+		return M4TPQ;
+	}
+
+	public void setM4TPQ(String m4tpq) {
+		M4TPQ = m4tpq;
+	}
+
+	public String getM4CLASQ() {
+		return M4CLASQ;
+	}
+
+	public void setM4CLASQ(String m4clasq) {
+		M4CLASQ = m4clasq;
+	}
+	
 	
 	
 	

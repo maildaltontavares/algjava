@@ -71,9 +71,16 @@ public class EstoqueMPDTO implements Serializable {
 	
 	
 	
-	public EstoqueMPDTO() {}
-
+	public EstoqueMPDTO() {} 
 	 
+
+	public EstoqueMPDTO(String idfil, Double id, String pilha) {
+		super();
+		this.idfil = idfil;
+		this.id = id;
+		this.pilha = pilha;
+	} 
+
 
 	public EstoqueMPDTO(String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, Double quantidade, Double peso,

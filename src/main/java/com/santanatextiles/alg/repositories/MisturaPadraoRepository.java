@@ -101,7 +101,7 @@ public interface MisturaPadraoRepository extends JpaRepository<MisturaPadrao, Mi
 		    "  ) mist_utiliz on mist_utiliz.t1mist = t1.t1mist and mist_utiliz.idfil = t1.idfil " +  
 	        " where T1.idfil =  STL.FN_STL_IDFIL('CPFT1',?1)    " +
             " and ( "  + 
-            "       (mist_utiliz.total < T1QTDE) and t1.t1status = 'E' and T1.idfil =  STL.FN_STL_IDFIL('CPFT1',?1)  ) or  " +
+            "       (nvl(mist_utiliz.total,0) < T1QTDE) and t1.t1status = 'E' and T1.idfil =  STL.FN_STL_IDFIL('CPFT1',?1)  ) or  " +
             "       (t1.t1status    in ('L') and T1.idfil =  STL.FN_STL_IDFIL('CPFT1',?1)  "  +
             "     )   " +
             " ORDER BY T1.T1MIST DESC "
@@ -168,9 +168,9 @@ public interface MisturaPadraoRepository extends JpaRepository<MisturaPadrao, Mi
     		" T1LOTE loteFiacao ," +
     		" T1QTDE  quantidade," +
     		" T1DTINC dataInclusao ," +
-    		" T1USRINC usarioInclusao ," +
+    		" T1USRINC usuarioInclusao ," +
     		" T1DTALT dataAlteracao ," +
-    		" T1USRALT usarioAlteracao ," +		
+    		" T1USRALT usuarioAlteracao ," +		
     		" T1OBS observacao, " +
     		" T1QTDLIB numMisturasLiberadas, " +
     		" T1NUMFAR numFardos, "   +
@@ -205,15 +205,15 @@ public interface MisturaPadraoRepository extends JpaRepository<MisturaPadrao, Mi
         	
         	
         	@Modifying
-        	@Query(value="UPDATE CPF.CPFT1_DBF T1  SET T1STATUS = 'L' WHERE idfil = :idfil AND T1MIST = :mistura", nativeQuery = true)
-        	Double liberarMistura(@Param("idfil") String idfil,@Param("mistura") String mistura) ;   
+        	@Query(value="UPDATE CPF.CPFT1_DBF T1  SET T1STATUS = 'L', T1QTDLIB = :qtdeMistLiberadas WHERE idfil = :idfil AND T1MIST = :mistura", nativeQuery = true)
+        	Double liberarMistura(@Param("idfil") String idfil,@Param("mistura") String mistura,@Param("qtdeMistLiberadas") String qtdeMistLiberadas) ;   
         	
         	@Modifying
         	@Query(value="UPDATE CPF.CPFT1_DBF T1  SET T1STATUS = 'E' WHERE idfil = :idfil AND T1MIST = :mistura", nativeQuery = true)
         	Integer encerrarMistura(@Param("idfil") String idfil,@Param("mistura") String mistura) ;           	
         	
         	@Modifying
-        	@Query(value="UPDATE CPF.CPFT1_DBF T1  SET T1STATUS = 'A' WHERE idfil = :idfil AND T1MIST = :mistura", nativeQuery = true)
+        	@Query(value="UPDATE CPF.CPFT1_DBF T1  SET T1STATUS = 'A' , T1QTDLIB = 0 WHERE idfil = :idfil AND T1MIST = :mistura", nativeQuery = true)
         	Integer reabrirMistura(@Param("idfil") String idfil,@Param("mistura") String mistura) ; 
     
     

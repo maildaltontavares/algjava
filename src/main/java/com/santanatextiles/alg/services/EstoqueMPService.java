@@ -2,6 +2,7 @@ package com.santanatextiles.alg.services;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
+import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.MovimentoItem;
+import com.santanatextiles.alg.dto.EstoqueMPDTO;
+import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
 import com.santanatextiles.alg.dto.MisturaProjectionDTO;
+import com.santanatextiles.alg.dto.MovimentoDTO;
+import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.dto.SaldoIdMovtoDTO;
 import com.santanatextiles.alg.dto.SaldoPesquisaIdDTO;
 import com.santanatextiles.alg.projections.MisturaPadraoProjection;
@@ -39,6 +45,26 @@ public class EstoqueMPService {
 		 List<EstoqueMP> obj = repo.buscaEstoqueMPPorParametros(filial ) ;	  
 		 return obj;
 	}		
+	
+	
+	
+	
+	@Transactional
+	public List<EstoqueMPDTO> atualizaPilha(List<EstoqueMPDTO> estoqueMPDTO) {		
+		
+		Iterator<EstoqueMPDTO> it = estoqueMPDTO.iterator();
+
+		while (it.hasNext()) {
+			
+			EstoqueMPDTO estDTO = it.next();
+
+			int atlzPilha = repo.atualizaPilha(estDTO.getIdfil(),estDTO.getId(),estDTO.getPilha());
+
+		}
+		 
+		
+		return estoqueMPDTO;
+	}; 
 	
 	public SaldoPesquisaIdDTO buscaEstoqueMPPorId(Double id ){ 
 		
@@ -100,13 +126,15 @@ public class EstoqueMPService {
 	
 	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt   ) {
 		
-		
+		Integer idEst; 
 		 
 		if(atualizaIt.equals("S")) { 
-			return repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
+			 idEst =   repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
 		}else {
-			return repo.atualizaEstoque(idfil, idMovto, quantidade, peso, vlEstoque );	
+			 idEst =  repo.atualizaEstoque(idfil, idMovto, quantidade, peso, vlEstoque );	
 		}
+		
+		return idEst;
 		
 	}
 	
@@ -274,8 +302,210 @@ public class EstoqueMPService {
 	         }	 
 		   
 			  return saldoPesquisaMistLista;
+	} 
+	   
+	   
+
+	   public List<MisturaProjectionDTO> buscaEstoque( String idfil , String produt   ,String lote ,String item, String fornec,String proced, 
+			   String color, String dest,String q1, String q2, String tam,       String pil) throws ParseException{ 
+		    
+		   
+		    String produtor = produt;
+		    if(produtor==null || produtor.equals("")) {
+		    	produtor = null; 
+		    }		   
+		   
+		    String lt = lote;
+		    if(lote==null || lote.equals("")) {
+		    	lt = null; 
+		    }
+		 
+		    String it = item;
+		    if(it==null || it.equals("")) {
+		    	it = null; 
+		    }
+		    
+		    String fornecedor = fornec;
+		    if(fornecedor==null || fornecedor.equals("")) {
+		    	fornecedor = null; 
+		    }	
+		    
+		    String procedencia = proced;
+		    if(procedencia==null || procedencia.equals("")) {
+		    	procedencia = null; 
+		    }
+		    
+		    String coloracao = color;
+		    if(coloracao==null || coloracao.equals("")) {
+		    	coloracao = null; 
+		    }	
+		    
+		    String destino = dest;
+		    if(destino==null || destino.equals("")  || destino.equals("T")) {
+		    	destino = null; 
+		    }		
+		    
+		    String qual1 = q1;
+		    if(qual1==null || qual1.equals("")) {
+		    	qual1 = null; 
+		    }	
+		    
+		    String qual2 = q2;
+		    if(qual2==null || qual2.equals("")) {
+		    	qual2 = null; 
+		    }	
+		    
+		    String tamanho = tam;
+		    if(tamanho==null || tamanho.equals("")) {
+		    	tamanho = null; 
+		    }			    
+		    
+		    
+		    String pilha = pil;
+		    if(pilha==null || pilha.equals("")) {
+		    	pilha = null; 
+		    }	
+		    
+		    
+		    List<MisturaPadraoProjection> saldoPesquisaEstoque; 
+		  
+			saldoPesquisaEstoque = repo.buscaEstoque( idfil ,  produtor   , lt , it, fornecedor, procedencia, coloracao, destino, qual1,  qual2, tamanho, pilha );    
+		   
+			List<MisturaProjectionDTO> listaSaldoPesquisaEstoque = saldoPesquisaEstoque.stream().map(x-> new MisturaProjectionDTO(x)).toList();  		
+			
+			List<MisturaProjectionDTO> saldoPesquisaEstLista =  new ArrayList<>(); 
+			
+			for (MisturaProjectionDTO saldoPesquisaEstPDTO : listaSaldoPesquisaEstoque) {  
+				
+				MisturaProjectionDTO saldoPesquisaEst = new MisturaProjectionDTO();
+				
+				saldoPesquisaEst.setFORN(saldoPesquisaEstPDTO.getFORN()); 
+				saldoPesquisaEst.setPRODUT(saldoPesquisaEstPDTO.getPRODUT());
+				saldoPesquisaEst.setCOD_PROD(saldoPesquisaEstPDTO.getCOD_PROD());
+				saldoPesquisaEst.setLOTE(saldoPesquisaEstPDTO.getLOTE());
+				saldoPesquisaEst.setPI(saldoPesquisaEstPDTO.getPI()) ;
+				saldoPesquisaEst.setESTOQUE(saldoPesquisaEstPDTO.getESTOQUE());
+				saldoPesquisaEst.setFrd_reserv(saldoPesquisaEstPDTO.getFrd_reserv());
+				saldoPesquisaEst.setQTDE(saldoPesquisaEstPDTO.getQTDE());
+				saldoPesquisaEst.setDisponivel(saldoPesquisaEstPDTO.getDisponivel());
+				saldoPesquisaEst.setTotal_mist_util(saldoPesquisaEstPDTO.getTotal_mist_util());
+				saldoPesquisaEst.setM4ID(saldoPesquisaEstPDTO.getM4ID());
+				saldoPesquisaEst.setM4NF(saldoPesquisaEstPDTO.getM4NF());
+				saldoPesquisaEst.setM4DESCF(saldoPesquisaEstPDTO.getM4DESCF());
+				saldoPesquisaEst.setM4ITEM(saldoPesquisaEstPDTO.getM4ITEM());
+				saldoPesquisaEst.setM4UM(saldoPesquisaEstPDTO.getM4UM());
+				saldoPesquisaEst.setM4PESMED(saldoPesquisaEstPDTO.getM4PESMED());
+				saldoPesquisaEst.setM4PROCED(saldoPesquisaEstPDTO.getM4PROCED());
+				saldoPesquisaEst.setM4TAM(saldoPesquisaEstPDTO.getM4TAM());
+				saldoPesquisaEst.setM4QUAL(saldoPesquisaEstPDTO.getM4QUAL());
+				saldoPesquisaEst.setM4FORN(saldoPesquisaEstPDTO.getM4FORN());
+				saldoPesquisaEst.setELG(saldoPesquisaEstPDTO.getELG());
+				saldoPesquisaEst.setMAT(saldoPesquisaEstPDTO.getMAT());
+				saldoPesquisaEst.setMIC(saldoPesquisaEstPDTO.getMIC());
+				saldoPesquisaEst.setMST(saldoPesquisaEstPDTO.getMST());
+				saldoPesquisaEst.setSF(saldoPesquisaEstPDTO.getSF());
+				saldoPesquisaEst.setSIC(saldoPesquisaEstPDTO.getSIC());
+				saldoPesquisaEst.setSTR(saldoPesquisaEstPDTO.getSTR());
+				saldoPesquisaEst.setTIPO(saldoPesquisaEstPDTO.getTIPO());
+				saldoPesquisaEst.setUI(saldoPesquisaEstPDTO.getUI());
+				saldoPesquisaEst.setSAC(saldoPesquisaEstPDTO.getSAC());
+				saldoPesquisaEst.setTRID(saldoPesquisaEstPDTO.getTRID());
+				saldoPesquisaEst.setPIM(saldoPesquisaEstPDTO.getPIM());
+				saldoPesquisaEst.setSC(saldoPesquisaEstPDTO.getSC());
+				saldoPesquisaEst.setM4B(saldoPesquisaEstPDTO.getM4B());
+				saldoPesquisaEst.setM4RS(saldoPesquisaEstPDTO.getM4RS());
+				saldoPesquisaEst.setM4TRAR(saldoPesquisaEstPDTO.getM4TRAR());
+				saldoPesquisaEst.setM4TRCNT(saldoPesquisaEstPDTO.getM4TRCNT());
+				saldoPesquisaEst.setM4UHML(saldoPesquisaEstPDTO.getM4UHML());
+				saldoPesquisaEst.setMistura(saldoPesquisaEstPDTO.getMistura());
+				saldoPesquisaEst.setM4COLOR(saldoPesquisaEstPDTO.getM4COLOR());
+				saldoPesquisaEst.setM4TPMIC(saldoPesquisaEstPDTO.getM4TPMIC());
+				saldoPesquisaEst.setM4DEST(saldoPesquisaEstPDTO.getM4DEST());
+				saldoPesquisaEst.setM7DESC(saldoPesquisaEstPDTO.getM7DESC());   
+				
+				saldoPesquisaEstLista.add(saldoPesquisaEst);
+			 
+	         }	 
+		   
+			  return saldoPesquisaEstLista;
 	}		
-	 
+	   	   
+	   
+	   
+   
+	   public List<MisturaProjectionDTO> buscaEstoqueQualidade( String idfil , String produtor   ,String lote ,String item ) throws ParseException{ 
+		    
+		   
+		    String lt = lote;
+		    if(lote==null || lote.equals("")) {
+		    	lt = null; 
+		    }
+		 
+		    List<MisturaPadraoProjection> saldoPesquisaEstoque; 
+		  
+			saldoPesquisaEstoque = repo.buscaEstoqueQualidade( idfil ,  produtor   , lt , item );    
+		   
+			List<MisturaProjectionDTO> listaSaldoPesquisaEstoque = saldoPesquisaEstoque.stream().map(x-> new MisturaProjectionDTO(x)).toList();  		
+			
+			List<MisturaProjectionDTO> saldoPesquisaEstLista =  new ArrayList<>(); 
+			
+			for (MisturaProjectionDTO saldoPesquisaEstPDTO : listaSaldoPesquisaEstoque) {  
+				
+				MisturaProjectionDTO saldoPesquisaEst = new MisturaProjectionDTO();
+				
+				saldoPesquisaEst.setFORN(saldoPesquisaEstPDTO.getFORN()); 
+				saldoPesquisaEst.setPRODUT(saldoPesquisaEstPDTO.getPRODUT());
+				saldoPesquisaEst.setCOD_PROD(saldoPesquisaEstPDTO.getCOD_PROD());
+				saldoPesquisaEst.setLOTE(saldoPesquisaEstPDTO.getLOTE());
+				saldoPesquisaEst.setPI(saldoPesquisaEstPDTO.getPI()) ;
+				saldoPesquisaEst.setESTOQUE(saldoPesquisaEstPDTO.getESTOQUE());
+				saldoPesquisaEst.setFrd_reserv(saldoPesquisaEstPDTO.getFrd_reserv());
+				saldoPesquisaEst.setQTDE(saldoPesquisaEstPDTO.getQTDE());
+				saldoPesquisaEst.setDisponivel(saldoPesquisaEstPDTO.getDisponivel());
+				saldoPesquisaEst.setTotal_mist_util(saldoPesquisaEstPDTO.getTotal_mist_util());
+				saldoPesquisaEst.setM4ID(saldoPesquisaEstPDTO.getM4ID());
+				saldoPesquisaEst.setM4NF(saldoPesquisaEstPDTO.getM4NF());
+				saldoPesquisaEst.setM4DESCF(saldoPesquisaEstPDTO.getM4DESCF());
+				saldoPesquisaEst.setM4ITEM(saldoPesquisaEstPDTO.getM4ITEM());
+				saldoPesquisaEst.setM4UM(saldoPesquisaEstPDTO.getM4UM());
+				saldoPesquisaEst.setM4PESMED(saldoPesquisaEstPDTO.getM4PESMED());
+				saldoPesquisaEst.setM4PROCED(saldoPesquisaEstPDTO.getM4PROCED());
+				saldoPesquisaEst.setM4TAM(saldoPesquisaEstPDTO.getM4TAM());
+				saldoPesquisaEst.setM4QUAL(saldoPesquisaEstPDTO.getM4QUAL());
+				saldoPesquisaEst.setM4FORN(saldoPesquisaEstPDTO.getM4FORN());
+				saldoPesquisaEst.setELG(saldoPesquisaEstPDTO.getELG());
+				saldoPesquisaEst.setMAT(saldoPesquisaEstPDTO.getMAT());
+				saldoPesquisaEst.setMIC(saldoPesquisaEstPDTO.getMIC());
+				saldoPesquisaEst.setMST(saldoPesquisaEstPDTO.getMST());
+				saldoPesquisaEst.setSF(saldoPesquisaEstPDTO.getSF());
+				saldoPesquisaEst.setSIC(saldoPesquisaEstPDTO.getSIC());
+				saldoPesquisaEst.setSTR(saldoPesquisaEstPDTO.getSTR());
+				saldoPesquisaEst.setTIPO(saldoPesquisaEstPDTO.getTIPO());
+				saldoPesquisaEst.setUI(saldoPesquisaEstPDTO.getUI());
+				saldoPesquisaEst.setSAC(saldoPesquisaEstPDTO.getSAC());
+				saldoPesquisaEst.setTRID(saldoPesquisaEstPDTO.getTRID());
+				saldoPesquisaEst.setPIM(saldoPesquisaEstPDTO.getPIM());
+				saldoPesquisaEst.setSC(saldoPesquisaEstPDTO.getSC());
+				saldoPesquisaEst.setM4B(saldoPesquisaEstPDTO.getM4B());
+				saldoPesquisaEst.setM4RS(saldoPesquisaEstPDTO.getM4RS());
+				saldoPesquisaEst.setM4TRAR(saldoPesquisaEstPDTO.getM4TRAR());
+				saldoPesquisaEst.setM4TRCNT(saldoPesquisaEstPDTO.getM4TRCNT());
+				saldoPesquisaEst.setM4UHML(saldoPesquisaEstPDTO.getM4UHML());
+				saldoPesquisaEst.setMistura(saldoPesquisaEstPDTO.getMistura());
+				saldoPesquisaEst.setM4COLOR(saldoPesquisaEstPDTO.getM4COLOR());
+				saldoPesquisaEst.setM4TPMIC(saldoPesquisaEstPDTO.getM4TPMIC());
+				saldoPesquisaEst.setM4DEST(saldoPesquisaEstPDTO.getM4DEST());
+				saldoPesquisaEst.setM7DESC(saldoPesquisaEstPDTO.getM7DESC());   
+				
+				saldoPesquisaEstLista.add(saldoPesquisaEst);
+			 
+	         }	 
+		   
+			  return saldoPesquisaEstLista;
+	}		
+	   
+	  
+	   
 	 
 	public  SaldoIdMovtoDTO  buscaSaldoIdMovto(String idfil , Double idMovto){
 		
@@ -313,11 +543,63 @@ public class EstoqueMPService {
 	@Transactional	
 	 public void deletaEstoque(Double id){  
 	 	  repo.deleteById(id);  
-	}		
+	}	 
+	
+	
+    ///////// FARDOS EM MISTURA ////////	
+    public List<MisturaProjectionDTO> buscaEstoqueEmMistura(MovimentoDTO objParam ) throws ParseException{   
+	    	 
+	    	Iterator<MovimentoItemDTO> it = objParam.getItemMovimentoDTO().iterator();
+	    	List<String> idFardosSelecionados =  new ArrayList<>();  ;
+	    	String idfil= "";
+	    	
+		 
+		while (it.hasNext()) { 
+			MovimentoItemDTO movimIt =   it.next();			
+			
+			Integer iI =  movimIt.getIdMovimento().intValue();
+			
+			idFardosSelecionados.add( "*" + iI.toString()+ "*" );
+			// idFardosSelecionados += "'*" + iI.toString()+ "*'" + ","; 
+			//idFardosSelecionados += iI.toString() + ",";
+			
+			idfil = movimIt.getIdfil();
+			
+		}	   	   
 		
+		//idFardosSelecionados = idFardosSelecionados.substring(0, idFardosSelecionados.length() - 1); 
+		
+		List<MisturaProjectionDTO> listaIdsEmMistura = buscaEstoqueMistura(idfil,idFardosSelecionados); 
+			
+		return listaIdsEmMistura;
+     }	
 	
 	
-	
+	 public List<MisturaProjectionDTO> buscaEstoqueMistura( String idfil , List<String>  idFardosSelecionados) throws ParseException{  
+		 
+		    List<MisturaPadraoProjection> saldoPesquisaEstoque; 
+		  
+			saldoPesquisaEstoque = repo.buscaEstoqueEmMistura( idfil ,    idFardosSelecionados    );    // 
+		   
+			List<MisturaProjectionDTO> listaSaldoPesquisaEstoque = saldoPesquisaEstoque.stream().map(x-> new MisturaProjectionDTO(x)).toList();  		
+			
+			List<MisturaProjectionDTO> saldoPesquisaEstLista =  new ArrayList<>(); 
+			
+			for (MisturaProjectionDTO saldoPesquisaEstPDTO : listaSaldoPesquisaEstoque) {  
+				
+				MisturaProjectionDTO saldoPesquisaEst = new MisturaProjectionDTO();
+				 
+				saldoPesquisaEst.setLOTE(saldoPesquisaEstPDTO.getLOTE()); 
+				saldoPesquisaEst.setM4ID(saldoPesquisaEstPDTO.getM4ID());  
+				saldoPesquisaEst.setMistura(saldoPesquisaEstPDTO.getMistura());
+				 
+				
+				saldoPesquisaEstLista.add(saldoPesquisaEst);
+			 
+	         }	 
+		   
+			  return saldoPesquisaEstLista;
+	}		
 	
 	
 	

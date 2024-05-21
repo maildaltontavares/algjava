@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
+import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
@@ -108,6 +109,9 @@ public class MovimentoItemService {
 		    /// Atualiza o saldo de estoque
 		    if(atualizaEstoque.equals("S")) {  
 		    	// Na insercao nao precisa atualizar o peso medio pois ja inseriu tudo certinho 
+		    	
+		    	    	
+		    	
 		    	   atlzEstok(movItem,"N"  );
 		     
 		    }
@@ -186,7 +190,7 @@ public class MovimentoItemService {
 		
 		
 		
-		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha , String atualizaEstoque  ) {
+		public MovimentoItem fromDTO(MovimentoItemDTO objDTO,Double idCab,String atualizaItem, Double idAutomatico, String movimentoAutomatico,String movimentoPilha , String atualizaEstoque, Movimento movimento  ) {
 			
 			MovimentoItem movimentoItem = new MovimentoItem();  
 			Double novoMovimentoItem;
@@ -196,7 +200,13 @@ public class MovimentoItemService {
 					throw new ObjectNotFoundException("Id do Lote: " + objDTO.getLote() + " inválido.");
 			  }				
 			
-			}
+			} 
+			
+		    if(movimento.getMovimentoPilha().equals("S")) { 
+		    	if(movimento.getEntradaSaida().equals("E")){
+		    		objDTO.setNotaFiscal( movimento.getNotaFiscal() ); 
+		    	}
+		    }
 			
 			
 			if(objDTO.getIdItem() == null) {
@@ -401,10 +411,84 @@ public class MovimentoItemService {
 			movimentoItem.setIdCab(idCab); 
 			movimentoItem.setStatusItem(objDTO.getStatusItem());
 			movimentoItem.setStatusItemOriginal(objDTO.getStatusItemOriginal());
+			
+			
+		    if(movimento.getMovimentoPilha().equals("S")) { 
+		    	if(movimento.getEntradaSaida().equals("E")){
+		    		
+		    		movimentoItem.setUnidadeMedida("KG"); 
+					movimentoItem.setUsuarioInclusao(movimento.getUsuarioInclusao());	 
+					movimentoItem.setUsuarioAlteracao(movimento.getUsuarioAlteracao()); 
+					movimentoItem.setPesoMedio(movimento.getPesoMedio());
+		    	}
+		    }			
+			
+			
 					
 			return movimentoItem;  
 				
 		}			
+		
+		
+		public MovimentoItemDTO populaItem( MovimentoItemDTO movimentoItem){ 
+			
+			EstoqueMP itemEstoque = serviceEstoqueMP.findById(movimentoItem.getIdMovimento());   
+			
+			movimentoItem.setIdMovimento(movimentoItem.getIdMovimento());   
+			movimentoItem.setIdfil(movimentoItem.getIdfil()); 
+			movimentoItem.setNotaFiscal(itemEstoque.getNotaFiscal()); 
+			movimentoItem.setFornecedor(itemEstoque.getFornecedor()); 
+			movimentoItem.setNotaFiscal(itemEstoque.getNotaFiscal());	 
+			movimentoItem.setFornecedor(itemEstoque.getFornecedor()); 
+			movimentoItem.setItem(itemEstoque.getItem());
+			movimentoItem.setProdutor(itemEstoque.getProdutor());
+			movimentoItem.setProcedencia(itemEstoque.getProcedencia());	 
+			movimentoItem.setLote(itemEstoque.getLote()); 
+			movimentoItem.setTamanho(itemEstoque.getTamanho());
+			movimentoItem.setDescFio(itemEstoque.getDescFio());			
+			movimentoItem.setUnidadeMedida(itemEstoque.getUnidadeMedida()); 
+			movimentoItem.setPilha(itemEstoque.getPilha());	 
+			movimentoItem.setPesoMedio(itemEstoque.getPesoMedio()); 
+			movimentoItem.setTipoQualidade(itemEstoque.getTipoQualidade()); 
+			movimentoItem.setClassifQualidade(itemEstoque.getClassifQualidade());
+			movimentoItem.setQualidade(itemEstoque.getTipoQualidade() ) ;
+			movimentoItem.setLoteAdicional(itemEstoque.getLoteAdicional());  
+			movimentoItem.setColoracao(itemEstoque.getColoracao());
+			movimentoItem.setIdVolume(itemEstoque.getIdVolume()); 
+			movimentoItem.setTipoMic(itemEstoque.getTipoMic());
+			movimentoItem.setDestino(itemEstoque.getDestino());  
+			movimentoItem.setSac(itemEstoque.getSac());
+			movimentoItem.setTrid(itemEstoque.getTrid());			
+			movimentoItem.setPim(itemEstoque.getPim());
+			movimentoItem.setSc(itemEstoque.getSc());	 
+			movimentoItem.setMst(itemEstoque.getMst()); 
+			movimentoItem.setMic(itemEstoque.getMic());	   
+			movimentoItem.setMat(itemEstoque.getMat());
+			movimentoItem.setUi(itemEstoque.getUi());
+			movimentoItem.setSf(itemEstoque.getSf());	 
+			movimentoItem.setStr(itemEstoque.getStr());	 
+			movimentoItem.setElg(itemEstoque.getElg());	 
+			movimentoItem.setTipo(itemEstoque.getTipo());	 
+			movimentoItem.setSic(itemEstoque.getSic());	  
+			movimentoItem.setUhml(itemEstoque.getUhml());
+			movimentoItem.setRs(itemEstoque.getRs());	 
+			movimentoItem.setB(itemEstoque.getB());	 
+			movimentoItem.setTrcnt(itemEstoque.getTrcnt());	 
+			movimentoItem.setTrar(itemEstoque.getTrar()); 
+			movimentoItem.setUsuarioInclusao(itemEstoque.getUsuarioInclusao());	 
+			movimentoItem.setUsuarioAlteracao(itemEstoque.getUsuarioAlteracao());  
+			movimentoItem.setQuantidade(movimentoItem.getQuantidade());	 
+			movimentoItem.setPeso(movimentoItem.getPesoMedio() * movimentoItem.getQuantidade());   
+			movimentoItem.setStatusItem("Inclusão");
+			movimentoItem.setStatusItemOriginal("Inclusão");	 			
+			
+			return movimentoItem; 
+			
+		}		
+		
+		
+		
+		
 	
 
 }

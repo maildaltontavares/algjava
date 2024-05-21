@@ -42,7 +42,18 @@ public class PilhaResource {
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
-	} 	
+	} 
+
+ 	@CrossOrigin
+ 	@RequestMapping(value="/totalfardos/{filial}/{pilha}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > totalFardosPilha (@PathVariable String filial,@PathVariable String pilha){ 
+ 		try {
+	 		Integer totalPilha = service.totalFardosPilha(filial,pilha) ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body(totalPilha);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
 	
 	
 

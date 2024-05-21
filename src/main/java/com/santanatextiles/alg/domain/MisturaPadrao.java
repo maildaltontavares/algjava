@@ -41,6 +41,7 @@ public class MisturaPadrao implements Serializable {
     private String status;		
 	
 	@Column(name="T1DTINI")
+ 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataInicial;	
  

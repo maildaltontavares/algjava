@@ -3,13 +3,16 @@ package com.santanatextiles.alg.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TesteQualidadeDTO    implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
  
 	private String idfil;  
 	private String produtor;	 
-    private String lote;	 
+    private String lote;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataTeste; 
 	private Double numVolumes; 
 	private Double sac;		 
@@ -27,8 +30,10 @@ public class TesteQualidadeDTO    implements Serializable {
     private String hvi;	 
     private String benef; 
     private String obs; 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataInclusao; 
-    private String usarioInclusao;	 
+    private String usarioInclusao;	
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataAlteracao; 
     private String usarioAlteracao;		 
 	private Double sic;	 

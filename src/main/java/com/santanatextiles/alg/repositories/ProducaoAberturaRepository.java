@@ -34,11 +34,14 @@ public interface ProducaoAberturaRepository extends JpaRepository<ProducaoAbertu
 			" FROM CPF.CPFT3_DBF T3  "  +
 		    " where T3.idfil =  STL.FN_STL_IDFIL('CPFT3',?1)  "
 			,nativeQuery = true)
-    		List<ProducaoAbertura> buscaProducaoAberturaPorParametros(@Param("idfil") String idfil) ;  
+    		List<ProducaoAbertura> buscaProducaoAberturaPorFilial(@Param("idfil") String idfil) ;  
     
     
 		    @Transactional(readOnly=true)
-		    List<ProducaoAbertura>  findByIdfil(String idfil);       
+		    List<ProducaoAbertura>  findByIdfil(String idfil);
+		    
+		    @Transactional(readOnly=true)
+		    Double  deleteByIdfilAndIdAutomatico(String idfil,Double idAuto);     
 	    
 	
   	

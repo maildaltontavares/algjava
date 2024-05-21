@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class MisturaPadraoDTO  implements Serializable {
 
 	private static final long serialVersionUID = 1L;  
@@ -12,12 +14,16 @@ public class MisturaPadraoDTO  implements Serializable {
 	private String idfil; 	
 	private String mistura;
 	private String lote;	
-    private String status;		
+    private String status;	
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date   dataInicial;	
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date   dataFinal;		
-    private Double totalMisturas;	
+    private Double totalMisturas;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date   dataInclusao;
     private String usuarioInclusao;	 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date   dataAlteracao;
     private String usuarioAlteracao;		 
     private String numMisturasLiberadas;		 	

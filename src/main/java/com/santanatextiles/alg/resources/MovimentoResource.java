@@ -98,10 +98,7 @@ public class MovimentoResource {
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		} 		
-	}  	
- 	
- 
- 	
+	}  	 
  	
  	 
  	@CrossOrigin
@@ -126,7 +123,20 @@ public class MovimentoResource {
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
-	} 	 	
+	} 	
+ 	
+ 	
+ 	@CrossOrigin 
+ 	@RequestMapping(value="/pilha", method=RequestMethod.POST)
+	public ResponseEntity<String> geraPilha (@Valid @RequestBody List<MovimentoDTO> objDTO){   
+ 		try { 
+		     
+			service.gerarPilha(objDTO);
+			return ResponseEntity.status(HttpStatus.OK).body("OK");
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+	}  	 	
 	 
     		
 	

@@ -3,6 +3,8 @@ package com.santanatextiles.alg.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class MisturaPadraoItemDTO   implements Serializable {	
 
 	private static final long serialVersionUID = 1L;  
@@ -12,8 +14,10 @@ public class MisturaPadraoItemDTO   implements Serializable {
 	private String mistura;	
 	private Double idItem;	
 	private Double quantidade;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
  	private Date  dataInclusao; 
     private String usuarioInclusao;	   
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataAlteracao; 
     private String usuarioAlteracao;
     
