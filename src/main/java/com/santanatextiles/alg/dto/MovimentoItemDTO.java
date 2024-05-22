@@ -138,11 +138,15 @@ public class MovimentoItemDTO  implements Serializable {
 		this.idVolume = idVolume;
 		this.tipoMic = tipoMic;
 		this.destino = destino;
+	} 
+
+	public MovimentoItemDTO(Double idItem, String idfil, String produtor, String lote) {
+		super();
+		this.idItem = idItem;
+		this.idfil = idfil;
+		this.produtor = produtor;
+		this.lote = lote;
 	}
-
-
-
-
 
 	public Double getIdItem() {
 		return idItem;

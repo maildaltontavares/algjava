@@ -5,22 +5,24 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TipoMovimento;
-import com.santanatextiles.alg.dto.MisturaProjectionDTO;
+import com.santanatextiles.alg.dto.LoteDTO;
 import com.santanatextiles.alg.dto.MovimentoDTO;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
+import com.santanatextiles.alg.projections.LotesProjection;
 import com.santanatextiles.alg.repositories.MovimentoRepository;
 import com.santanatextiles.alg.resources.exception.ObjectNotFoundException;  
 	
@@ -494,9 +496,257 @@ public class MovimentoService {
 			
 			
 			return movimento;
+		}	
+		
+		
+        public MovimentoDTO fromDTOMovimentoToMovimentoDTO(Movimento obj) throws ParseException {   
+			
+			MovimentoDTO movimentoDTO = new MovimentoDTO();     
+			
+			movimentoDTO.setId(obj.getId());	 
+			movimentoDTO.setIdfil(obj.getIdfil());  
+			movimentoDTO.setNotaFiscal(obj.getNotaFiscal());	 
+			movimentoDTO.setFornecedor(obj.getFornecedor());	 
+			movimentoDTO.setTipoMovimento(obj.getTipoMovimento());	 
+			movimentoDTO.setTipoMP(obj.getTipoMP());	 	 
+			movimentoDTO.setDataBase(obj.getDataBase());	  
+			movimentoDTO.setDataEmissao(obj.getDataEmissao());	 
+			movimentoDTO.setEntradaSaida(obj.getEntradaSaida());  
+            
+			movimentoDTO.setLoteFiacao(obj.getLoteFiacao());
+			movimentoDTO.setNumVolumes(obj.getNumVolumes());
+			movimentoDTO.setPesoMedio(obj.getPesoMedio());	 
+			movimentoDTO.setPesoTotal(obj.getPesoTotal());	 
+			movimentoDTO.setProdutor(obj.getProdutor());	 
+			movimentoDTO.setProcedencia(obj.getProcedencia());		 
+			movimentoDTO.setLinhaAbertura(obj.getLinhaAbertura());
+			movimentoDTO.setIdAutomatico(obj.getIdAutomatico()); 
+	        
+			movimentoDTO.setMovimentoAutomatico(obj.getMovimentoAutomatico());		 
+			movimentoDTO.setMovimentoPilha(obj.getMovimentoPilha());
+			movimentoDTO.setQual1(obj.getQual1());
+			movimentoDTO.setQual2(obj.getQual2());
+		    
+			movimentoDTO.setMistura(obj.getMistura());	 
+			movimentoDTO.setSequenciaMistura(obj.getSequenciaMistura());	 
+		    
+			movimentoDTO.setUsuarioInclusao(obj.getUsuarioInclusao());	 
+			movimentoDTO.setUsuarioAlteracao(obj.getUsuarioAlteracao());  
+		    
+			movimentoDTO.setDataInclusao(obj.getDataInclusao());
+			movimentoDTO.setDataAlteracao(obj.getDataAlteracao());	   
+			movimentoDTO.setItemMovimentoDTO(obj.getItemMovimentoDTO()); 
+			
+			
+			return movimentoDTO;
 		}			
 		
+		 
+		@Transactional
+		public Double excluirPilha( Double idAutomatico) throws ParseException, ObjectNotFoundException {  
+			
+			List<MovimentoDTO> movimentosDTO = new ArrayList<>();
+			List<MovimentoItemDTO> movimentosItemDTOSaida = new ArrayList<>();
+						
+		    ///// Movimento  Saida
+			
+			Movimento movimentoSaida = repo.findByIdAutomaticoAndTipoMovimento(idAutomatico,"SAIPL");
+			
+			Iterator<MovimentoItem> it = movimentoSaida.getItemMovimento().iterator();
+			 
+			while (it.hasNext()) {
+ 
+				MovimentoItem movimIt =   it.next();
+				
+				MovimentoItemDTO movimentoItemDTO = new MovimentoItemDTO();
+				
+				movimentoItemDTO.setIdMovimento(movimIt.getIdMovimento());
+				movimentoItemDTO.setIdItem(movimIt.getIdItem());
+				movimentoItemDTO.setIdfil(movimIt.getIdfil()); 
+				movimentoItemDTO.setNotaFiscal(movimIt.getNotaFiscal()); 
+				movimentoItemDTO.setFornecedor(movimIt.getFornecedor()); 
+				movimentoItemDTO.setNotaFiscal(movimIt.getNotaFiscal());	 
+				movimentoItemDTO.setFornecedor(movimIt.getFornecedor()); 
+				movimentoItemDTO.setItem(movimIt.getItem());
+				movimentoItemDTO.setProdutor(movimIt.getProdutor());
+				movimentoItemDTO.setProcedencia(movimIt.getProcedencia());	 
+				movimentoItemDTO.setLote(movimIt.getLote()); 
+				movimentoItemDTO.setTamanho(movimIt.getTamanho());
+				movimentoItemDTO.setDescFio(movimIt.getDescFio());			
+				movimentoItemDTO.setUnidadeMedida(movimIt.getUnidadeMedida()); 
+				movimentoItemDTO.setPilha(movimIt.getPilha());	 
+				movimentoItemDTO.setPesoMedio(movimIt.getPesoMedio()); 
+				movimentoItemDTO.setTipoQualidade(movimIt.getTipoQualidade()); 
+				movimentoItemDTO.setClassifQualidade(movimIt.getClassifQualidade());
+				movimentoItemDTO.setQualidade(movimIt.getTipoQualidade() ) ;
+				movimentoItemDTO.setLoteAdicional(movimIt.getLoteAdicional());  
+				movimentoItemDTO.setColoracao(movimIt.getColoracao());
+				movimentoItemDTO.setIdVolume(movimIt.getIdVolume()); 
+				movimentoItemDTO.setTipoMic(movimIt.getTipoMic());
+				movimentoItemDTO.setDestino(movimIt.getDestino());  
+				movimentoItemDTO.setSac(movimIt.getSac());
+				movimentoItemDTO.setTrid(movimIt.getTrid());			
+				movimentoItemDTO.setPim(movimIt.getPim());
+				movimentoItemDTO.setSc(movimIt.getSc());	 
+				movimentoItemDTO.setMst(movimIt.getMst()); 
+				movimentoItemDTO.setMic(movimIt.getMic());	   
+				movimentoItemDTO.setMat(movimIt.getMat());
+				movimentoItemDTO.setUi(movimIt.getUi());
+				movimentoItemDTO.setSf(movimIt.getSf());	 
+				movimentoItemDTO.setStr(movimIt.getStr());	 
+				movimentoItemDTO.setElg(movimIt.getElg());	 
+				movimentoItemDTO.setTipo(movimIt.getTipo());	 
+				movimentoItemDTO.setSic(movimIt.getSic());	  
+				movimentoItemDTO.setUhml(movimIt.getUhml());
+				movimentoItemDTO.setRs(movimIt.getRs());	 
+				movimentoItemDTO.setB(movimIt.getB());	 
+				movimentoItemDTO.setTrcnt(movimIt.getTrcnt());	 
+				movimentoItemDTO.setTrar(movimIt.getTrar());	 
+				movimentoItemDTO.setUsuarioInclusao(movimIt.getUsuarioInclusao());	 
+				movimentoItemDTO.setUsuarioAlteracao(movimIt.getUsuarioAlteracao());   
+				movimentoItemDTO.setQuantidade(movimIt.getQuantidade());	 
+				movimentoItemDTO.setPeso(movimIt.getPeso());
+				movimentoItemDTO.setPesoMedio(movimIt.getPesoMedio()); 				
+				movimentoItemDTO.setPesoCalculadoInformado(movimIt.getPesoCalculadoInformado()); 
+				movimentoItemDTO.setDataInclusao(movimIt.getDataInclusao());
+				movimentoItemDTO.setDataAlteracao(movimIt.getDataAlteracao());	 
+				movimentoItemDTO.setVlUnitario(movimIt.getVlUnitario());  
+				movimentoItemDTO.setMovimentoAutomatico(movimIt.getMovimentoAutomatico());  
+				movimentoItemDTO.setMovimentoDePilha(movimIt.getMovimentoDePilha());
+				movimentoItemDTO.setIdAutomatico(movimIt.getIdAutomatico());  
+				movimentoItemDTO.setObservacao(movimIt.getObservacao());  
+				movimentoItemDTO.setStatusItem("Exclusão");
+				movimentoItemDTO.setStatusItemOriginal("Alteração");
+				
+				movimentosItemDTOSaida.add(movimentoItemDTO);
+			}
+			
+			Set<MovimentoItemDTO> setItemMovimentoDTOSaida = new HashSet<>(movimentosItemDTOSaida);  
+			movimentoSaida.setItemMovimento(null);
+			movimentoSaida.setItemMovimentoDTO(setItemMovimentoDTOSaida);   
+			
+		    ///// Movimento  Entrada
+			
+			List<MovimentoItemDTO> movimentosItemDTOEntrada = new ArrayList<>();
+			Movimento movimentoEntrada = repo.findByIdAutomaticoAndTipoMovimento(idAutomatico,"ENTPL"); 
+			
+			Iterator<MovimentoItem> itEntrada = movimentoEntrada.getItemMovimento().iterator();
+			 
+			while (itEntrada.hasNext()) {
+ 
+				MovimentoItem movimIt =   itEntrada.next();
+				
+				MovimentoItemDTO movimentoItemDTO = new MovimentoItemDTO();
+				
+				movimentoItemDTO.setIdMovimento(movimIt.getIdMovimento());
+				movimentoItemDTO.setIdItem(movimIt.getIdItem());
+				movimentoItemDTO.setIdfil(movimIt.getIdfil()); 
+				movimentoItemDTO.setNotaFiscal(movimIt.getNotaFiscal()); 
+				movimentoItemDTO.setFornecedor(movimIt.getFornecedor()); 
+				movimentoItemDTO.setNotaFiscal(movimIt.getNotaFiscal());	 
+				movimentoItemDTO.setFornecedor(movimIt.getFornecedor()); 
+				movimentoItemDTO.setItem(movimIt.getItem());
+				movimentoItemDTO.setProdutor(movimIt.getProdutor());
+				movimentoItemDTO.setProcedencia(movimIt.getProcedencia());	 
+				movimentoItemDTO.setLote(movimIt.getLote()); 
+				movimentoItemDTO.setTamanho(movimIt.getTamanho());
+				movimentoItemDTO.setDescFio(movimIt.getDescFio());			
+				movimentoItemDTO.setUnidadeMedida(movimIt.getUnidadeMedida()); 
+				movimentoItemDTO.setPilha(movimIt.getPilha());	 
+				movimentoItemDTO.setPesoMedio(movimIt.getPesoMedio()); 
+				movimentoItemDTO.setTipoQualidade(movimIt.getTipoQualidade()); 
+				movimentoItemDTO.setClassifQualidade(movimIt.getClassifQualidade());
+				movimentoItemDTO.setQualidade(movimIt.getTipoQualidade() ) ;
+				movimentoItemDTO.setLoteAdicional(movimIt.getLoteAdicional());  
+				movimentoItemDTO.setColoracao(movimIt.getColoracao());
+				movimentoItemDTO.setIdVolume(movimIt.getIdVolume()); 
+				movimentoItemDTO.setTipoMic(movimIt.getTipoMic());
+				movimentoItemDTO.setDestino(movimIt.getDestino());  
+				movimentoItemDTO.setSac(movimIt.getSac());
+				movimentoItemDTO.setTrid(movimIt.getTrid());			
+				movimentoItemDTO.setPim(movimIt.getPim());
+				movimentoItemDTO.setSc(movimIt.getSc());	 
+				movimentoItemDTO.setMst(movimIt.getMst()); 
+				movimentoItemDTO.setMic(movimIt.getMic());	   
+				movimentoItemDTO.setMat(movimIt.getMat());
+				movimentoItemDTO.setUi(movimIt.getUi());
+				movimentoItemDTO.setSf(movimIt.getSf());	 
+				movimentoItemDTO.setStr(movimIt.getStr());	 
+				movimentoItemDTO.setElg(movimIt.getElg());	 
+				movimentoItemDTO.setTipo(movimIt.getTipo());	 
+				movimentoItemDTO.setSic(movimIt.getSic());	  
+				movimentoItemDTO.setUhml(movimIt.getUhml());
+				movimentoItemDTO.setRs(movimIt.getRs());	 
+				movimentoItemDTO.setB(movimIt.getB());	 
+				movimentoItemDTO.setTrcnt(movimIt.getTrcnt());	 
+				movimentoItemDTO.setTrar(movimIt.getTrar());	 
+				movimentoItemDTO.setUsuarioInclusao(movimIt.getUsuarioInclusao());	 
+				movimentoItemDTO.setUsuarioAlteracao(movimIt.getUsuarioAlteracao());   
+				movimentoItemDTO.setQuantidade(movimIt.getQuantidade());	 
+				movimentoItemDTO.setPeso(movimIt.getPeso());
+				movimentoItemDTO.setPesoMedio(movimIt.getPesoMedio()); 				
+				movimentoItemDTO.setPesoCalculadoInformado(movimIt.getPesoCalculadoInformado()); 
+				movimentoItemDTO.setDataInclusao(movimIt.getDataInclusao());
+				movimentoItemDTO.setDataAlteracao(movimIt.getDataAlteracao());	 
+				movimentoItemDTO.setVlUnitario(movimIt.getVlUnitario());  
+				movimentoItemDTO.setMovimentoAutomatico(movimIt.getMovimentoAutomatico());  
+				movimentoItemDTO.setMovimentoDePilha(movimIt.getMovimentoDePilha());
+				movimentoItemDTO.setIdAutomatico(movimIt.getIdAutomatico());  
+				movimentoItemDTO.setObservacao(movimIt.getObservacao());  
+				movimentoItemDTO.setStatusItem("Exclusão");
+				movimentoItemDTO.setStatusItemOriginal("Alteração");
+				
+				movimentosItemDTOEntrada.add(movimentoItemDTO);
+			}
+			
+			Set<MovimentoItemDTO> setItemMovimentoDTOEntrada = new HashSet<>(movimentosItemDTOEntrada);  
+			movimentoEntrada.setItemMovimento(null);
+			movimentoEntrada.setItemMovimentoDTO(setItemMovimentoDTOEntrada); 	  
+			
+			movimentosDTO.add(fromDTOMovimentoToMovimentoDTO(movimentoEntrada)); 
+			movimentosDTO.add(fromDTOMovimentoToMovimentoDTO(movimentoSaida)); 
+			
+			
+			String grava = update(movimentosDTO); 
+			
+			
+			return 0.0;
+			
 		
+		}
+		
+		
+		public List<LoteDTO> buscaMovimentosLote(String idfil, String produtor, String lote , String item){ 
+			
+			
+			lote = lote.trim();
+			item = item.trim();
+			
+			List<LotesProjection> loteProj = repo.buscaMovimentosLote(idfil, produtor, lote, item); 			
+			List<LoteDTO> listaLote = loteProj.stream().map(x-> new LoteDTO(x)).toList();			
+			ArrayList<LoteDTO> LoteP = new ArrayList<>(); 
+			
+			for (LoteDTO lotePDTO : listaLote) {
+				
+				 LoteDTO loteDTOItem = new LoteDTO();   
+				
+				 loteDTOItem.setIdfil(lotePDTO.getIdfil());
+				 loteDTOItem.setNotaFiscal(lotePDTO.getNotaFiscal());
+				 loteDTOItem.setDataBase(lotePDTO.getDataBase());
+				 loteDTOItem.setFornecedor(lotePDTO.getFornecedor());
+				 loteDTOItem.setNomeFornecedor(lotePDTO.getNomeFornecedor());
+				 loteDTOItem.setDataTeste(lotePDTO.getDataTeste()); 
+				 loteDTOItem.setQuantidade(lotePDTO.getQuantidade());
+				 loteDTOItem.setTipoMovimento(lotePDTO.getTipoMovimento()); 
+				
+				 LoteP.add(loteDTOItem);
+				 		
+	         }	 
+		   
+			 return LoteP;
+		}		
+		
+		 
 	 
 
 }

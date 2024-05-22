@@ -403,7 +403,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 				" (:pilha IS NULL      OR   trim(M4PILHA)   = :pilha)  AND " +	  
 	            " (:lote     IS NULL  OR   M4LOTE like %:lote%    )  AND " +        
 	    	    "  M4QTDE <> 0  " +   
-	    		" ORDER BY M6.M6DESC,M4PILHA,M4LOTE,1 	" 
+	    		" ORDER BY M6.M6DESC,M4LOTE,M4PILHA,1 	" 
 	    		,nativeQuery = true)
 	     		List<MisturaPadraoProjection> buscaEstoque( 
 	     				@Param("filial") String filial ,

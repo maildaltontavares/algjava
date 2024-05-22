@@ -18,6 +18,8 @@ public class LoteDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
     Date   dataTeste;
+    String tipoMovimento;
+    Double quantidade;
 
     
     public LoteDTO() {
@@ -25,8 +27,9 @@ public class LoteDTO {
     } 
     
     
+	 
 	public LoteDTO(String idfil, String notaFiscal, Date dataBase, String fornecedor, String nomeFornecedor,
-			Date dataTeste) {
+			Date dataTeste, String tipoMovimento, Double quantidade) {
 		super();
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
@@ -34,8 +37,12 @@ public class LoteDTO {
 		this.fornecedor = fornecedor;
 		this.nomeFornecedor = nomeFornecedor;
 		this.dataTeste = dataTeste;
-	} 
-	
+		this.tipoMovimento = tipoMovimento;
+		this.quantidade = quantidade;
+	}
+
+
+
 	public LoteDTO(LotesProjection  projection ) {
 		
 		this.idfil          = projection.getIdfil();	
@@ -44,6 +51,8 @@ public class LoteDTO {
 		this.fornecedor     = projection.getFornecedor();	
 		this.nomeFornecedor = projection.getNomeFornecedor();	 
 	    this.dataTeste      = projection.getDataTeste();	 
+	    this.quantidade     = projection.getQuantidade();
+	    this.tipoMovimento  = projection.getTipoMovimento();
 		
 	}	 
 
@@ -93,6 +102,30 @@ public class LoteDTO {
 
 	public void setDataTeste(Date dataTeste) {
 		this.dataTeste = dataTeste;
+	}
+
+
+
+	public String getTipoMovimento() {
+		return tipoMovimento;
+	}
+
+
+
+	public void setTipoMovimento(String tipoMovimento) {
+		this.tipoMovimento = tipoMovimento;
+	}
+
+
+
+	public Double getQuantidade() {
+		return quantidade;
+	}
+
+
+
+	public void setQuantidade(Double quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 	

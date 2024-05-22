@@ -57,6 +57,7 @@ public class TesteQualidadeResource {
 		}  		
 	} 	 	
  	
+/* 	
  	
  	@CrossOrigin
  	@RequestMapping(value="/{filial}/{produtor}/{lote}/{item}", method=RequestMethod.GET)
@@ -68,7 +69,8 @@ public class TesteQualidadeResource {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 		}  		
 	} 	 	
-	
+
+	*/
 	
 	
 	

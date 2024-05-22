@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.Movimento;
+import com.santanatextiles.alg.dto.LoteDTO;
 import com.santanatextiles.alg.dto.MovimentoDTO;
+import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.services.MovimentoService;
 
 import jakarta.validation.Valid;
@@ -138,7 +140,32 @@ public class MovimentoResource {
 		} 		
 	}  	 	
 	 
-    		
+ 	 
+ 	@CrossOrigin
+ 	@RequestMapping(value="/excluirpilha/{idAutomatico}", method=RequestMethod.GET)
+ 	public  ResponseEntity< ? > excluirPilha ( @PathVariable Double idAutomatico){ 
+ 		try {
+	 		Double idExclusao = service.excluirPilha( idAutomatico) ; 
+	 		return ResponseEntity.status(HttpStatus.OK).body("OK");
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
+ 	
+ 	
+ 	
+ 	
+ 	@CrossOrigin
+ 	@RequestMapping(value="/exibemovimentacao", method=RequestMethod.POST)
+ 	public  ResponseEntity< ? > buscaExistenciaLote (@Valid @RequestBody MovimentoItemDTO objDTO){ 
+ 		try {
+	 		 List<LoteDTO>  movimentosLote = service.buscaMovimentosLote(objDTO.getIdfil(), objDTO.getProdutor(), objDTO.getLote(), objDTO.getItem());
+	 		return ResponseEntity.status(HttpStatus.OK).body(movimentosLote);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		}  		
+	}  	
+    	 
 	
 
 }

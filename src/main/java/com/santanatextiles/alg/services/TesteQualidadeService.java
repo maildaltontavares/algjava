@@ -1,3 +1,4 @@
+
 package com.santanatextiles.alg.services;
 
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.santanatextiles.alg.domain.TesteQualidade;
 import com.santanatextiles.alg.dto.LoteDTO;
-import com.santanatextiles.alg.dto.MovimentoDTO;
-import com.santanatextiles.alg.dto.SaldoPesquisaIdDTO;
 import com.santanatextiles.alg.projections.LotesProjection;
 import com.santanatextiles.alg.repositories.TesteQualidadeRepository; 
 	
@@ -47,7 +46,7 @@ public class TesteQualidadeService {
 			 return obj;
 		}	
 		
-		
+/*		
 		public List<LoteDTO> buscaExistenciaLote(String idfil, String produtor, String lote , String item){ 
 			
 			
@@ -66,7 +65,9 @@ public class TesteQualidadeService {
 				 loteDTOItem.setDataBase(lotePDTO.getDataBase());
 				 loteDTOItem.setFornecedor(lotePDTO.getFornecedor());
 				 loteDTOItem.setNomeFornecedor(lotePDTO.getNomeFornecedor());
-				 loteDTOItem.setDataTeste(lotePDTO.getDataTeste()); 
+				 loteDTOItem.setDataTeste(lotePDTO.getDataTeste());
+				 loteDTOItem.setQuantidade(lotePDTO.getQuantidade());
+				 loteDTOItem.setTipoMovimento(lotePDTO.getTipoMovimento()); 
 				
 				 LoteP.add(loteDTOItem);
 				 		
@@ -75,6 +76,6 @@ public class TesteQualidadeService {
 			 return LoteP;
 		}	 
 		
-		
+		*/
 
 }

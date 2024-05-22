@@ -9,6 +9,8 @@ public interface LotesProjection {
 	Date   getDataBase();
 	String getFornecedor();
 	String getNomeFornecedor();	
-	Date getDataTeste();	 
+	Date getDataTeste();
+    Double getQuantidade();
+    String getTipoMovimento();
 
 }

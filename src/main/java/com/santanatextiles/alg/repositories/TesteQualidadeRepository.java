@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.TesteQualidade;
-import com.santanatextiles.alg.domain.TesteQualidadeId;
-import com.santanatextiles.alg.projections.LotesProjection; 
+import com.santanatextiles.alg.domain.TesteQualidadeId; 
 
 public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, TesteQualidadeId>{
 		 
@@ -104,14 +103,16 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 				" where m9.idfil =  STL.FN_STL_IDFIL('CPFM9',?1) and trim(M9ORIG) = ?2 and trim(M9LOTE) =  trim( ?3 )"
 				,nativeQuery = true)	
                  TesteQualidade  buscaTesteQualidadePorProdutorLote(@Param("idfil") String idfil,@Param("produtor") String produtor,@Param("lote") String lote) ; 	 
-	    
+/*	    
 	    @Query(value = "SELECT 	" +  
 	    	 " M2.idfil ,   	" + 
 	    	 " M2.M2NF notaFiscal,   	" +  
 			 " M2.M2DTBASE dataBase, 	" +  
 			 " M2.M2FORN fornecedor, 	" +  
 			 " B2.B2NOMREDUZ nomeFornecedor, 	" +  
-			 " M9.M9DTTEST 	dataTeste " +  
+			 " M2.M2tpmov 	tipoMovimento, " +
+			 " M9.M9DTTEST 	dataTeste, " +
+			 " M3.M3qtde quantidade" +
 			 " FROM CPF.CPFM3_DBF M3  	" +  
 			 " LEFT JOIN CPF.CPFM2_DBF M2 ON M2.IDFIL = M3.IDFIL AND M2.M2ID = M3.M3IDCAB 	" +   
 			 " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m2.IDFIL) and trim(m2.M2FORN) = b2.B2COD  	" +   
@@ -125,7 +126,7 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 			 ,nativeQuery = true)	 
      	     List<LotesProjection>  buscaExistenciaLote(@Param("idfil") String idfil,@Param("produtor") String produtor,@Param("lote") String lote,@Param("item") String item) ;
 	    
-	    
+	*/    
 	    
 	    
 	    

@@ -27,7 +27,7 @@ public class MovimentoItemService {
 		private MovimentoItemRepository repo;		
 		
 		@Autowired
-		private TesteQualidadeService serviceCQ;  
+		private TesteQualidadeService serviceCQ;   
 		
 		@Autowired
 		private EstoqueMPService serviceEstoqueMP;		
