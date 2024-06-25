@@ -26,7 +26,10 @@ public class Produtor implements Serializable {
 	
 	
 	@Column(name="M6DESC")
-	private String descricao;		
+	private String descricao;
+	
+	@Column(name="M6CHAVE")
+	private String chave;	
  
 
 	public Produtor() {
@@ -34,12 +37,18 @@ public class Produtor implements Serializable {
 	} 
 	
 	
-	public Produtor(String idfil, String codigo, String descricao) {
+ 
+
+	public Produtor(String idfil, String codigo, String descricao, String chave) {
 		super();
 		this.idfil = idfil;
 		this.codigo = codigo;
 		this.descricao = descricao;
-	}  
+		this.chave = chave;
+	}
+
+
+
 
 	public String getIdfil() {
 		return idfil;
@@ -68,7 +77,17 @@ public class Produtor implements Serializable {
 
 	public void setdescricao(String descricao) {
 		this.descricao = descricao;
+	}  
+
+	public String getChave() {
+		return chave;
+	} 
+
+	public void setChave(String chave) {
+		this.chave = chave;
 	}
+
+
 
 
 	@Override

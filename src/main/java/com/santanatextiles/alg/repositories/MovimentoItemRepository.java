@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.MovimentoItemId;
+import com.santanatextiles.alg.domain.TesteQualidade;
 
 import jakarta.persistence.Column;
 
@@ -97,7 +98,13 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
 			@Query(value="UPDATE CPF.CPFM3_DBF M3 SET  M3PESO = M3QTDE * :pesoMedio   ,  M3PSMDNF = :pesoMedio  " +
 				"	WHERE  IDFIL = :idfil  AND M3IDMOV = :idMovto" 	 
 			, nativeQuery = true)
-			int atualizaPesoMedMovtos(@Param("idfil") String idfil ,@Param("idMovto") Double idMovto ,    @Param("pesoMedio") Double pesoMedio  );	    
+			int atualizaPesoMedMovtos(@Param("idfil") String idfil ,@Param("idMovto") Double idMovto ,    @Param("pesoMedio") Double pesoMedio  );
+		    
+		    
+		    
+		    
+
+		    
 		     
 		    
 }

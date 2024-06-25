@@ -255,7 +255,10 @@ public class MovimentoItemService {
 					   objDTO.getMic().equals(0.0)  ||
 					   objDTO.getUhml().equals(0.0))  {
 						
-					   TesteQualidade testeCq = serviceCQ.buscaTesteQualidadeByLote(objDTO.getIdfil(),objDTO.getProdutor(),objDTO.getLote());	
+					   //TesteQualidade testeCq = serviceCQ.buscaTesteQualidadeByLote(objDTO.getIdfil(),objDTO.getProdutor(),objDTO.getLote());
+						TesteQualidade testeCq = serviceCQ.buscaTesteQualidadeByLoteItem(objDTO.getIdfil(),objDTO.getProdutor(),objDTO.getLote(),objDTO.getItem());
+						
+					 
 					   
 					   if( testeCq != null ) {
 						   
@@ -484,8 +487,8 @@ public class MovimentoItemService {
 			
 			return movimentoItem; 
 			
-		}		
-		
+		}
+		 
 		
 		
 		

@@ -37,7 +37,11 @@ public class TesteQualidade implements Serializable {
 	
 	@Id
 	@Column(name="M9LOTE")
-    private String lote;		
+    private String lote;	
+	
+	@Id
+	@Column(name="M9ITEM")	
+    private String item;		
 	
 	@Column(name="M9DTTEST")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
@@ -141,6 +145,8 @@ public class TesteQualidade implements Serializable {
 	@Column(name="M9TPMIC")	
     private String tipoMic;	 
 	
+ 	
+	
 	
 	@ManyToOne 
 	@JoinColumnsOrFormulas({
@@ -153,18 +159,21 @@ public class TesteQualidade implements Serializable {
 	
 	public TesteQualidade() {
 		
-	}   
-	
-	public TesteQualidade(String idfil, String produtor, String lote, Date dataTeste, Double numVolumes, Double sac,
-			Double mst, Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo, Double trid,
-			Double sc, Double pim, String hvi, String benef, String obs, Date dataInclusao, String usarioInclusao,
-			Date dataAlteracao, String usarioAlteracao, Double sic, Double uhml, Double rs, Double b, Double trcnt,
-			Double trar, String prdint, String arqImportacao, String possuiSelo, String tipoSelo, String numeroSelo,
-			String tipoMic, Produtor fkProdutor) {
+	}    
+	 
+
+
+	public TesteQualidade(String idfil, String produtor, String lote, String item, Date dataTeste, Double numVolumes,
+			Double sac, Double mst, Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo,
+			Double trid, Double sc, Double pim, String hvi, String benef, String obs, Date dataInclusao,
+			String usarioInclusao, Date dataAlteracao, String usarioAlteracao, Double sic, Double uhml, Double rs,
+			Double b, Double trcnt, Double trar, String prdint, String arqImportacao, String possuiSelo,
+			String tipoSelo, String numeroSelo, String tipoMic, Produtor fkProdutor) {
 		super();
 		this.idfil = idfil;
 		this.produtor = produtor;
 		this.lote = lote;
+		this.item = item;
 		this.dataTeste = dataTeste;
 		this.numVolumes = numVolumes;
 		this.sac = sac;
@@ -199,7 +208,9 @@ public class TesteQualidade implements Serializable {
 		this.numeroSelo = numeroSelo;
 		this.tipoMic = tipoMic;
 		this.fkProdutor = fkProdutor;
-	} 
+	}
+
+
 
 
 	public String getIdfil() {
@@ -488,7 +499,20 @@ public class TesteQualidade implements Serializable {
 
 	public void setTipoMic(String tipoMic) {
 		this.tipoMic = tipoMic;
+	} 
+	
+
+	public String getItem() {
+		return item;
 	}
+
+
+
+	public void setItem(String item) {
+		this.item = item;
+	}
+
+
 
 	public Produtor getFkProdutor() {
 		return fkProdutor;

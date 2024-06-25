@@ -719,8 +719,10 @@ public class MovimentoService {
 		public List<LoteDTO> buscaMovimentosLote(String idfil, String produtor, String lote , String item){ 
 			
 			
-			lote = lote.trim();
+			lote = lote.trim();  
 			item = item.trim();
+		 
+			
 			
 			List<LotesProjection> loteProj = repo.buscaMovimentosLote(idfil, produtor, lote, item); 			
 			List<LoteDTO> listaLote = loteProj.stream().map(x-> new LoteDTO(x)).toList();			

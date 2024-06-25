@@ -134,14 +134,19 @@ public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoI
 			 " LEFT JOIN CPF.CPFM2_DBF M2 ON M2.IDFIL = M3.IDFIL AND M2.M2ID = M3.M3IDCAB 	" +   
 			 " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m2.IDFIL) and trim(m2.M2FORN) = b2.B2COD  	" +   
 			 " LEFT JOIN CPF.CPFM9_DBF M9 ON M3.IDFIL = M9.IDFIL AND M3.M3ORIG = M9.M9ORIG AND TRIM(M3.M3LOTE) = TRIM(M9.M9LOTE) 	" +  
-			 " WHERE M2.IDFIL =  STL.FN_STL_IDFIL('CPFM2', ?1)  	" +   
-			 " AND   M3.M3ORIG = ?2 	" +  
-			 " AND   TRIM(M3.M3LOTE )  = ?3	" +  
-			 " AND   TRIM(M3.M3ITEM) = ?4		" +      
+			 " WHERE M2.IDFIL =  STL.FN_STL_IDFIL('CPFM2', :idfil)  	" +   
+			 " AND   M3.M3ORIG = :produtor 	" +  
+			 " AND   TRIM(M3.M3LOTE )  = :lote	" +   
+             " AND   TRIM(M3.M3ITEM) = :item	     "+ 
 			 " order by M2.M2DTBASE, 	M2.M2NF"	  
 			 ,nativeQuery = true)	 
     	     List<LotesProjection>  buscaMovimentosLote(@Param("idfil") String idfil,@Param("produtor") String produtor,@Param("lote") String lote,@Param("item") String item) ;
-	    	
+	    	 
+    
+    
+    
+    
+    
     
     
 /*

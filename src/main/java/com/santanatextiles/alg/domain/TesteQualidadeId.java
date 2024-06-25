@@ -10,17 +10,23 @@ public class TesteQualidadeId implements Serializable {
 	private String idfil; 
 	private String produtor;	  
     private String lote;
+    private String item;
     
     public TesteQualidadeId() {
     	
     }
     
-	public TesteQualidadeId(String idfil, String produtor, String lote) {
+ 
+
+	public TesteQualidadeId(String idfil, String produtor, String lote, String item) {
 		super();
 		this.idfil = idfil;
 		this.produtor = produtor;
 		this.lote = lote;
+		this.item = item;
 	}
+
+
 
 	public String getIdfil() {
 		return idfil;
@@ -44,12 +50,24 @@ public class TesteQualidadeId implements Serializable {
 
 	public void setLote(String lote) {
 		this.lote = lote;
+	} 
+
+	public String getItem() {
+		return item;
+	}  
+	
+	public void setItem(String item) {
+		this.item = item;
 	}
+
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(idfil, lote, produtor);
+		return Objects.hash(idfil, item, lote, produtor);
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -60,11 +78,12 @@ public class TesteQualidadeId implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TesteQualidadeId other = (TesteQualidadeId) obj;
-		return Objects.equals(idfil, other.idfil) && Objects.equals(lote, other.lote)
-				&& Objects.equals(produtor, other.produtor);
-	}	
-	
-	
+		return Objects.equals(idfil, other.idfil) && Objects.equals(item, other.item)
+				&& Objects.equals(lote, other.lote) && Objects.equals(produtor, other.produtor);
+	}
+
+
+ 
     
     
     

@@ -16,7 +16,8 @@ public interface ProdutorRepository extends JpaRepository<Produtor, ProdutorId>{
 	    @Query(value = "SELECT 	" + 
 				" IDFIL 	,  " +
 				" M6COD 	,  " + 	
-				" M6DESC 	   " + 	
+				" M6DESC 	 ,  " +
+				" M6CHAVE 	   " + 	
 				" FROM CPFM6_DBF M6 "  +
 				" where m6.idfil =  STL.FN_STL_IDFIL('CPFM6',?1) order by M6DESC"
 				,nativeQuery = true)

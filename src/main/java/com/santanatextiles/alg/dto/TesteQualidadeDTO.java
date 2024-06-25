@@ -48,16 +48,19 @@ public class TesteQualidadeDTO    implements Serializable {
     private String tipoSelo; 
     private String numeroSelo;
     private String tipoMic;
+	private String dataInicial; 
+	private String dataFinal;
+	private String item; 
     
-    
-	public TesteQualidadeDTO() {}     
+	public TesteQualidadeDTO() {}    
+	
 
 	public TesteQualidadeDTO(String idfil, String produtor, String lote, Date dataTeste, Double numVolumes, Double sac,
 			Double mst, Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo, Double trid,
 			Double sc, Double pim, String hvi, String benef, String obs, Date dataInclusao, String usarioInclusao,
 			Date dataAlteracao, String usarioAlteracao, Double sic, Double uhml, Double rs, Double b, Double trcnt,
 			Double trar, String prdint, String arqImportacao, String possuiSelo, String tipoSelo, String numeroSelo,
-			String tipoMic) {
+			String tipoMic, String dataInicial, String dataFinal, String item) {
 		super();
 		this.idfil = idfil;
 		this.produtor = produtor;
@@ -95,8 +98,40 @@ public class TesteQualidadeDTO    implements Serializable {
 		this.tipoSelo = tipoSelo;
 		this.numeroSelo = numeroSelo;
 		this.tipoMic = tipoMic;
-	} 
+		this.dataInicial = dataInicial;
+		this.dataFinal = dataFinal;
+		this.item = item;
+	}
 
+
+
+
+
+
+
+	public String getTipoMic() {
+		return tipoMic;
+	}
+
+	public void setTipoMic(String tipoMic) {
+		this.tipoMic = tipoMic;
+	}
+
+	public String getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(String dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public String getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(String dataFinal) {
+		this.dataFinal = dataFinal;
+	}
 
 	public String getIdfil() {
 		return idfil;
@@ -376,6 +411,16 @@ public class TesteQualidadeDTO    implements Serializable {
 
 	public void setNumeroSelo(String numeroSelo) {
 		this.numeroSelo = numeroSelo;
+	}
+
+
+	public String getItem() {
+		return item;
+	}
+
+
+	public void setItem(String item) {
+		this.item = item;
 	}
     
     
