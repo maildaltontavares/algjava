@@ -219,9 +219,10 @@ public class MovimentoService {
 					 
 					while (it.hasNext()) {
 						
-						 
+						MovimentoItemDTO itMovimAProcessar = it.next();
+						
 						MovimentoItem movimentoItem = serviceItem.fromDTO(
-								it.next(),
+								itMovimAProcessar,
 								movimento.getId(),
 								tipoMovto.getAtualizaItem(),
 								movimento.getIdAutomatico(),

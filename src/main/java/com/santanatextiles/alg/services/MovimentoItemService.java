@@ -103,17 +103,21 @@ public class MovimentoItemService {
 		    
 		    /// Permite inserir novos itens de estoque (IDs)
 		    if(atualizaItem.equals("S")) {        // NFE e EST+
-			    serviceEstoqueMP.insert(movItem,atualizaEstoque);	 
+			    serviceEstoqueMP.insert(movItem,atualizaEstoque);  
+			    
 		    }
+		    
+			// Valida consistencia na M4
+			EstoqueMP validaId = serviceEstoqueMP.findById(movItem.getIdMovimento());
+			
+			if(validaId==null) {
+				throw new ObjectNotFoundException("Registro de estoque não pode ser gravado. Comunique ao analista resposavel.");			
+			}		    
 		    
 		    /// Atualiza o saldo de estoque
 		    if(atualizaEstoque.equals("S")) {  
-		    	// Na insercao nao precisa atualizar o peso medio pois ja inseriu tudo certinho 
-		    	
-		    	    	
-		    	
-		    	   atlzEstok(movItem,"N"  );
-		     
+		    	// Na insercao nao precisa atualizar o peso medio pois ja inseriu tudo certinho   
+		    	   atlzEstok(movItem,"N"  ); 
 		    }
 		    
 		    return movItem;
@@ -124,7 +128,7 @@ public class MovimentoItemService {
 			
 			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
 			
-			if(sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1) {
+			if((sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1)  ) {
 				/*
 		        BigDecimal bd = BigDecimal.valueOf(sldIdMovto.getPeso()/sldIdMovto.getQtde());
 		        bd = bd.setScale(4, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
@@ -250,7 +254,11 @@ public class MovimentoItemService {
 				
 			///// Testa se já foi feito teste no lote deste produtor
 					
-					if(objDTO.getMat().equals(0.0) ||
+					if(objDTO.getMat() == null ||
+					   objDTO.getSic() == null ||
+					   objDTO.getMic() == null || 
+					   objDTO.getUhml() == null || 
+				       objDTO.getMat().equals(0.0) ||
 					   objDTO.getSic().equals(0.0) ||
 					   objDTO.getMic().equals(0.0)  ||
 					   objDTO.getUhml().equals(0.0))  {

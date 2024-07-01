@@ -124,9 +124,18 @@ public class EstoqueMPService {
 	}	
  	
 	
-	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt   ) {
+	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt   )   {
 		
 		Integer idEst; 
+		
+		
+		// Valida consistencia na M4
+		EstoqueMP validaId = findById(idMovto);
+		
+		if(validaId==null) {
+			throw new ObjectNotFoundException("Registro de estoque não pode ser gravado. Comunique ao analista resposavel.");			
+		}
+		
 		 
 		if(atualizaIt.equals("S")) { 
 			 idEst =   repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
