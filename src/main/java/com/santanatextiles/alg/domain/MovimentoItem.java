@@ -200,6 +200,9 @@ public class MovimentoItem implements Serializable {
 	@Column(name="M3DEST")
 	private String destino;		
 	
+	@Column(name="M3CORTEZ")
+	private String corteza;		
+	
 	
 /*	
 	M3TPQ
@@ -263,80 +266,7 @@ public class MovimentoItem implements Serializable {
 	public MovimentoItem() {}    
 	
 
-	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
-			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
-			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
-			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
-			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
-			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
-			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
-			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String tipoQualidade,
-			String classifQualidade, String coloracao, String loteAdicional, String idVolume, String tipoMic,
-			String destino, String statusItem, String statusItemOriginal, Movimento movimento, Fornecedor fkFornecedor,
-			Produtor fkProdutor, Procedencia fkProcedencia, Coloracao fkColoracao) {
-		super();
-		this.idItem = idItem;
-		this.idfil = idfil;
-		this.notaFiscal = notaFiscal;
-		this.fornecedor = fornecedor;
-		this.item = item;
-		this.produtor = produtor;
-		this.procedencia = procedencia;
-		this.lote = lote;
-		this.qualidade = qualidade;
-		this.tamanho = tamanho;
-		this.descFio = descFio;
-		this.pesoCalculadoInformado = pesoCalculadoInformado;
-		this.observacao = observacao;
-		this.unidadeMedida = unidadeMedida;
-		this.pilha = pilha;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
-		this.usuarioInclusao = usuarioInclusao;
-		this.usuarioAlteracao = usuarioAlteracao;
-		this.movimentoAutomatico = movimentoAutomatico;
-		this.movimentoDePilha = movimentoDePilha;
-		this.quantidade = quantidade;
-		this.peso = peso;
-		this.idCab = idCab;
-		this.vlUnitario = vlUnitario;
-		this.idMovimento = idMovimento;
-		this.sac = sac;
-		this.trid = trid;
-		this.pim = pim;
-		this.sc = sc;
-		this.mst = mst;
-		this.mic = mic;
-		this.mat = mat;
-		this.ui = ui;
-		this.sf = sf;
-		this.str = str;
-		this.elg = elg;
-		this.tipo = tipo;
-		this.sic = sic;
-		this.idAutomatico = idAutomatico;
-		this.uhml = uhml;
-		this.rs = rs;
-		this.b = b;
-		this.trcnt = trcnt;
-		this.trar = trar;
-		this.pesoMedio = pesoMedio;
-		this.tipoQualidade = tipoQualidade;
-		this.classifQualidade = classifQualidade;
-		this.coloracao = coloracao;
-		this.loteAdicional = loteAdicional;
-		this.idVolume = idVolume;
-		this.tipoMic = tipoMic;
-		this.destino = destino;
-		this.statusItem = statusItem;
-		this.statusItemOriginal = statusItemOriginal;
-		this.movimento = movimento;
-		this.fkFornecedor = fkFornecedor;
-		this.fkProdutor = fkProdutor;
-		this.fkProcedencia = fkProcedencia;
-		this.fkColoracao = fkColoracao;
-	}  
-	
+	 	
 	
 
 	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
@@ -348,7 +278,8 @@ public class MovimentoItem implements Serializable {
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String tipoQualidade,
 			String classifQualidade, String coloracao, String loteAdicional, String idVolume, String tipoMic,
-			String destino, String statusItem, String statusItemOriginal, Movimento movimento) {
+			String destino, String corteza, String statusItem, String statusItemOriginal, Movimento movimento,
+			Fornecedor fkFornecedor, Produtor fkProdutor, Procedencia fkProcedencia, Coloracao fkColoracao) {
 		super();
 		this.idItem = idItem;
 		this.idfil = idfil;
@@ -403,10 +334,91 @@ public class MovimentoItem implements Serializable {
 		this.idVolume = idVolume;
 		this.tipoMic = tipoMic;
 		this.destino = destino;
+		this.corteza = corteza;
+		this.statusItem = statusItem;
+		this.statusItemOriginal = statusItemOriginal;
+		this.movimento = movimento;
+		this.fkFornecedor = fkFornecedor;
+		this.fkProdutor = fkProdutor;
+		this.fkProcedencia = fkProcedencia;
+		this.fkColoracao = fkColoracao;
+	}
+
+
+
+ 
+	public MovimentoItem(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
+			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
+			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
+			Date dataAlteracao, String usuarioInclusao, String usuarioAlteracao, String movimentoAutomatico,
+			String movimentoDePilha, Double quantidade, Double peso, Double idCab, Double vlUnitario,
+			Double idMovimento, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
+			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
+			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String tipoQualidade,
+			String classifQualidade, String coloracao, String loteAdicional, String idVolume, String tipoMic,
+			String destino, String corteza, String statusItem, String statusItemOriginal, Movimento movimento) {
+		super();
+		this.idItem = idItem;
+		this.idfil = idfil;
+		this.notaFiscal = notaFiscal;
+		this.fornecedor = fornecedor;
+		this.item = item;
+		this.produtor = produtor;
+		this.procedencia = procedencia;
+		this.lote = lote;
+		this.qualidade = qualidade;
+		this.tamanho = tamanho;
+		this.descFio = descFio;
+		this.pesoCalculadoInformado = pesoCalculadoInformado;
+		this.observacao = observacao;
+		this.unidadeMedida = unidadeMedida;
+		this.pilha = pilha;
+		this.dataInclusao = dataInclusao;
+		this.dataAlteracao = dataAlteracao;
+		this.usuarioInclusao = usuarioInclusao;
+		this.usuarioAlteracao = usuarioAlteracao;
+		this.movimentoAutomatico = movimentoAutomatico;
+		this.movimentoDePilha = movimentoDePilha;
+		this.quantidade = quantidade;
+		this.peso = peso;
+		this.idCab = idCab;
+		this.vlUnitario = vlUnitario;
+		this.idMovimento = idMovimento;
+		this.sac = sac;
+		this.trid = trid;
+		this.pim = pim;
+		this.sc = sc;
+		this.mst = mst;
+		this.mic = mic;
+		this.mat = mat;
+		this.ui = ui;
+		this.sf = sf;
+		this.str = str;
+		this.elg = elg;
+		this.tipo = tipo;
+		this.sic = sic;
+		this.idAutomatico = idAutomatico;
+		this.uhml = uhml;
+		this.rs = rs;
+		this.b = b;
+		this.trcnt = trcnt;
+		this.trar = trar;
+		this.pesoMedio = pesoMedio;
+		this.tipoQualidade = tipoQualidade;
+		this.classifQualidade = classifQualidade;
+		this.coloracao = coloracao;
+		this.loteAdicional = loteAdicional;
+		this.idVolume = idVolume;
+		this.tipoMic = tipoMic;
+		this.destino = destino;
+		this.corteza = corteza;
 		this.statusItem = statusItem;
 		this.statusItemOriginal = statusItemOriginal;
 		this.movimento = movimento;
 	}
+
+
+
 
 
 	public void setIdfil(String idfil) {
@@ -1106,6 +1118,25 @@ public class MovimentoItem implements Serializable {
 	public String getIdfil() {
 		return idfil;
 	}
+	
+	
+	
+
+
+	public String getCorteza() {
+		return corteza;
+	}
+
+
+
+
+
+	public void setCorteza(String corteza) {
+		this.corteza = corteza;
+	}
+
+
+
 
 
 	@Override

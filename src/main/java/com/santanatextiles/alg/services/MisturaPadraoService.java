@@ -30,6 +30,8 @@ import com.santanatextiles.alg.repositories.MisturaPadraoRepository;
 
 @Service
 public class MisturaPadraoService {
+	
+	 
 
 	@Autowired
 	private MisturaPadraoRepository repo;
@@ -40,9 +42,10 @@ public class MisturaPadraoService {
 	@Autowired
 	private MovimentoService movimentoService;
 	
+	 
 	@Autowired
 	private EstoqueMPService estoqueService;	
-	
+ 
 	@Autowired
 	private  ProducaoAberturaService ProducaoAberturaService;
 
@@ -316,7 +319,8 @@ public class MisturaPadraoService {
 				movimentoItem.setColoracao(itemEstoque.getColoracao());
 				movimentoItem.setIdVolume(itemEstoque.getIdVolume()); 
 				movimentoItem.setTipoMic(itemEstoque.getTipoMic());
-				movimentoItem.setDestino(itemEstoque.getDestino());  
+				movimentoItem.setDestino(itemEstoque.getDestino());
+				movimentoItem.setCorteza(itemEstoque.getCorteza());  
 				movimentoItem.setSac(itemEstoque.getSac());
 				movimentoItem.setTrid(itemEstoque.getTrid());			
 				movimentoItem.setPim(itemEstoque.getPim());
@@ -336,10 +340,7 @@ public class MisturaPadraoService {
 				movimentoItem.setTrcnt(itemEstoque.getTrcnt());	 
 				movimentoItem.setTrar(itemEstoque.getTrar());	 
 		 	 
-				//movimentoItem.setPesoCalculadoInformado(itemEstoque.getPesoCalculadoInformado()); 
-				//movimentoItem.setDataInclusao(itemEstoque.getDataInclusao());
-				//movimentoItem.setDataAlteracao(itemEstoque.getDataAlteracao());	 
-				//movimentoItem.setVlUnitario(itemEstoque.getV); 
+			 
 				
 				movimentoItem.setUsuarioInclusao(itemEstoque.getUsuarioInclusao());	 
 				movimentoItem.setUsuarioAlteracao(itemEstoque.getUsuarioAlteracao());   
@@ -377,16 +378,9 @@ public class MisturaPadraoService {
 	      novaSeq = novaSeq +1;
 	    }  
 	    
-	    String novaSequencia = String.format("%02d",  novaSeq );  
-	    //String nf = misturaDTO.getMistura().substring(3)  + '/' + String.format("%02d", Integer.parseInt(novaSequencia.toString())); ;
+	    String novaSequencia = String.format("%02d",  novaSeq );
+
 	    String nf = misturaDTO.getMistura().substring(3)  + '/' + novaSequencia ;
-	     
-	    
-	    //if(obj.getMovimentoAutomatico() !=null && obj.getMovimentoAutomatico().equals("S")) { 
-		    //Double novoCodigoAutomatico = repo.codigoNovoMovimento(); 
-		    //obj.setIdAutomatico(novoCodigoAutomatico);		 
-	    //}
-	  
 		
 		MovimentoDTO movimento = new MovimentoDTO();
 
@@ -401,7 +395,7 @@ public class MisturaPadraoService {
 		} else if(misturaDTO.getIdfil().equals("05")) {
 			movimento.setFornecedor("00249");
 		} else if(misturaDTO.getIdfil().equals("03")) {
-			movimento.setFornecedor("01366");	  // Corrigir		
+			movimento.setFornecedor("00089");	  // Corrigir		
 		}
 	    movimento.setTipoMovimento("MIST"); 
 		movimento.setTipoMP("ALG");  
@@ -433,7 +427,7 @@ public class MisturaPadraoService {
 	}
 	
 	
-	
+	 
 	
 
 }

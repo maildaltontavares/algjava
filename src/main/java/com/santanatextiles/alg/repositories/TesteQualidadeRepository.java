@@ -6,14 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
-import com.santanatextiles.alg.domain.TesteQualidadeId; 
+import com.santanatextiles.alg.domain.TesteQualidadeId;
+import com.santanatextiles.alg.projections.TestesQualidadeProjection; 
 
+@Repository
 public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, TesteQualidadeId>{
-		 
+
+	
+	 
+	
+	
 	    @Query(value = "SELECT 	" + 
 				" IDFIL 	 ,  " +
 				" M9ORIG	 ,  " +
@@ -152,12 +158,67 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
                  TesteQualidade  buscaTesteQualidadePorProdutorLoteItem(@Param("idfil") String idfil,@Param("produtor") String produtor,@Param("lote") String lote,@Param("item") String item) ;	    
 	    
 	    
-	    
+	    @Query(value = "SELECT 	" + 
+	    		" M9.IDFIL idfil	 ,  " +
+	    		" M9ORIG produtor	 ,  " +
+	    		" M9LOTE lote	 ,  " +
+	    		" M9DTTEST	datateste ,  " +
+	    		" M9NUMVOL NumVolumes	 ,  " +
+	    		" M9SAC	 sac    ,  " +
+	    		" M9MST	 mst    ,  " +
+	    		" M9MIC	 mic    ,  " +
+	    		" M9MAT	 mat    ,  " +
+	    		" M9UI	 ui    ,  " +
+	    		" M9SF	 sf    ,  " +
+	    		" M9STR	 str    ,  " +
+	    		" M9ELG	 elg    ,  " +
+	    		" M9TIPO tipo	 ,  " +
+	    		" M9TRID trid	 ,  " +
+	    		" M9SC	 sc    ,  " +
+	    		" M9PIM	 pim    ,  " +
+	    		" M9HVI	 hvi    ,  " +
+	    		" M9BENEF benef	 ,  " +
+	    		" M9OBS	  obs   ,  " +
+	    		" M9DTINC dataInclusao	 ,  " +
+	    		" M9USRINC 	UsarioInclusao ,  " +
+	    		" M9DTALT	DataAlteracao ,  " +
+	    		" M9USRALT 	UsarioAlteracao,  " +
+	    		" M9SIC	   sic  ,  " +
+	    		" M9UHML uhml	 ,  " +
+	    		" M9RS	  rs   ,  " +
+	    		" M9B	  b   ,  " +
+	    		" M9TRCNT trcnt	 ,  " +
+	    		" M9TRAR trar	 ,  " +
+	    		" M9PRDINT prdint	 ,  " +
+	    		" M9ARQ	 ArqImportacao    ,  " +
+	    		" M9PSELO	PossuiSelo ,  " +
+	    		" M9TPSELO	TipoSelo ,  " +
+	    		" M9NSELO NumeroSelo	 ,  " +
+	    		" M9TPMIC TipoMic,	    " +
+	    		" M9ITEM Item	 ,   " +
+	    		" M6.M6DESC nomeProdutor   " +	
+				" FROM CPFM9_DBF M9 "  	+
+				" LEFT JOIN  CPFM6_DBF M6 ON M6.IDFIL = stl.fn_stl_idfil('CPFM6',M9.idfil) AND M9.M9ORIG = M6.M6COD" +
+				" where m9.idfil =  STL.FN_STL_IDFIL('CPFM9',:idfil) and " +
+		  	    "(:dataInicial IS NULL     OR TO_CHAR(M9DTINC,'YYYYMMDD') >= :dataInicial )   and " +
+			    "(:dataFinal   IS NULL     OR TO_CHAR(M9DTINC,'YYYYMMDD') <= :dataFinal )   and " + 	  
+				"(:lote        IS NULL     OR TRIM(M9LOTE) = TRIM(:lote)  )    and " +
+				"(:item        IS NULL     OR TRIM(M9ITEM) = TRIM(:item)  )    and " +
+				"(:produtor IS NULL        OR M9ORIG = :produtor )    " 
+				,nativeQuery = true)	
+	            List<TestesQualidadeProjection>  pesquisarTesteRealizados(@Param("idfil") String idfil,
+	            		@Param("dataInicial") String dataInicial,
+	            		@Param("dataFinal") String dataFinal,
+	            		@Param("produtor") String produtor,
+	            		@Param("lote") String lote ,
+	            		@Param("item") String item
+	            		) ; 	
+	     
 	    
 	    
 	    
 	    @Query(value = "SELECT 	" + 
-				" IDFIL 	 ,  " +
+				" M9.IDFIL 	 ,  " +
 				" M9ORIG	 ,  " +
 				" M9LOTE	 ,  " +
 				" M9DTTEST	 ,  " +
@@ -193,8 +254,8 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 				" M9TPSELO	 ,  " +
 				" M9NSELO	 ,  " +
 				" M9TPMIC,	    " +
-				" M9ITEM	    " + 
-				" FROM CPFM9_DBF M9 "  	+
+				" M9ITEM 	 ,   " + 
+				" FROM CPFM9_DBF M9 "  	+ 
 				" where m9.idfil =  STL.FN_STL_IDFIL('CPFM9',:idfil) and " +
 		  	    "(:dataInicial IS NULL     OR TO_CHAR(M9DTINC,'YYYYMMDD') >= :dataInicial )   and " +
 			    "(:dataFinal   IS NULL     OR TO_CHAR(M9DTINC,'YYYYMMDD') <= :dataFinal )   and " + 	  
@@ -402,82 +463,8 @@ public interface TesteQualidadeRepository extends JpaRepository<TesteQualidade, 
 					
 					);	    
  	    
- 	    
- 	    
- 	    
 	    
-	    	    
-/*
-	    cQ1:="UPDATE CPF.CPFM4_DBF M4 SET "
-	    		cQ1+=" M4SAC = '" + STR(M9_SAC) + "'," 
-	    		cQ1+=" M4SC = '" + STR(M9_SC) + "'," 
-	    		cQ1+=" M4PIM = '" + STR(M9_PIM) + "'," 
-	    		cQ1+=" M4TRID = '" + STR(M9_TRID) + "',"   
-	    		cQ1+=" M4MIC = '" + STR(M9_MIC) + "'," 
-	    		cQ1+=" M4MAT = '" + STR(M9_MAT) + "',"         
-	    		cQ1+=" M4UI =  '" + STR(M9_UI) + "',"         
-	    		cQ1+=" M4SF =  '" + STR(M9_SF) + "'," 
-	    		cQ1+=" M4STR = '" + STR(M9_STR) + "'," 
-	    		
-	    		cQ1+=" M4ELG = '" + STR(M9_ELG) + "',"         
-	    		cQ1+=" M4MST = '" + STR(M9_MST) + "'," 
-	    		cQ1+=" M4TIPO= '" + STR(M9_TIPO) + "'," 
-	    		cQ1+=" M4SIC = '" + STR(M9_SIC) + "',"    
-	    		cQ1+=" M4UHML = '" + STR(M9_UHML) + "'," 
-	    		cQ1+=" M4RS   = '" + STR(M9_RS) + "',"         
-	    		cQ1+=" M4B    = '" + STR(M9_B) + "'," 
-	    		cQ1+=" M4TRCNT= '" + STR(M9_TRCNT) + "',"
-	    		   cQ1+=" M4TRAR = '" + STR(M9_TRAR) + "',"   
-	    		   cQ1+=" M4TPMIC = '" + fCLSMIC(M9_MIC) + "'"
-	    		cQ1+=" WHERE IDFIL = '"+fIDFIL('CPFM4')+"'  AND TRIM(M4ORIG) = '" + ALLTRIM(M9_ORIG)   +"'  AND TRIM(M4LOTE) = '" + ALLTRIM(M9_LOTE)   +"'"      
-
-	    		clinha := cQ1
-	    		//fimp()
-
-	    		oSql := SR_GetConnection()
-	    		oSQL:exec(cQ1,,.f.)    
-
-	    		cQ1:="UPDATE CPF.CPFM3_DBF M3 SET "
-	    		cQ1+=" M3SAC = '" + STR(M9_SAC)   + "'," 
-	    		cQ1+=" M3SC = '" + STR(M9_SC)     + "'," 
-	    		cQ1+=" M3PIM = '" + STR(M9_PIM)   + "'," 
-	    		cQ1+=" M3TRID = '" + STR(M9_TRID) + "',"         
-	    		cQ1+=" M3MIC = '" + STR(M9_MIC)   + "'," 
-	    		cQ1+=" M3MAT = '" + STR(M9_MAT)   + "',"         
-	    		cQ1+=" M3UI =  '" + STR(M9_UI)    + "',"         
-	    		cQ1+=" M3SF =  '" + STR(M9_SF)    + "',"    
-	    		cQ1+=" M3STR = '" + STR(M9_STR)   + "'," 
-	    		cQ1+=" M3ELG = '" + STR(M9_ELG)   + "',"         
-	    		cQ1+=" M3MST = '" + STR(M9_MST)   + "'," 
-	    		cQ1+=" M3TIPO= '" + STR(M9_TIPO)  + "',"  
-	    		cQ1+=" M3SIC = '" + STR(M9_SIC)   + "',"      
-	    		cQ1+=" M3UHML = '" + STR(M9_UHML) + "'," 
-	    		cQ1+=" M3RS   = '" + STR(M9_RS)   + "',"         
-	    		cQ1+=" M3B    = '" + STR(M9_B)    + "',"   
-	    		cQ1+=" M3TRCNT= '" + STR(M9_TRCNT) + "'," 
-	    		
-	    		IF EMPCOD = 'STC'
-	    		   cQ1+=" M3TRAR = '" + STR(M9_TRAR)  + "',"   		
-	    		   cQ1+=" M3TPMIC = '" + fCLSMIC(M9_MIC) + "'"           
-	    		ELSE
-	    		   cQ1+=" M3TRAR = '" + STR(M9_TRAR)  + "'"   	
-	    		ENDIF
-	    		
-	    		cQ1+=" WHERE IDFIL = '"+fIDFIL('CPFM4')+"'  AND TRIM(M3ORIG) = '" + ALLTRIM(M9_ORIG)   +"'  AND TRIM(M3LOTE) = '" + ALLTRIM(M9_LOTE)   +"'"   
-	    
-	    
-	    
-	    	    
-	 */
-	    
-	    	    
-	     
-	    
-	    
-	    
-	    
-	    
-	    
+ 
 	    
 	    
 }

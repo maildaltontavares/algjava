@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.Pilha;
 import com.santanatextiles.alg.domain.PilhaId;
 
 
-
+@Repository
 public interface PilhaRepository extends JpaRepository<Pilha, PilhaId>{
 		 
 	    @Query(value = "SELECT 	" + 

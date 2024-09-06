@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoId;
 import com.santanatextiles.alg.projections.LotesProjection;
 
+@Repository
 public interface MovimentoRepository extends JpaRepository<Movimento, MovimentoId>{
  
     @Query(value = "SELECT 	" + 

@@ -28,13 +28,21 @@ public class ProducaoAberturaDTO    implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	private Date  dataAlteracao; 
     private String usarioAlteracao;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
+	private Date  dataInicial;     
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
+	private Date  dataFinal;  	
+	
+	private String dataInicialS; 
+	private String dataFinalS;	
     
-	public ProducaoAberturaDTO() {}    
-    
+	public ProducaoAberturaDTO() {}     
+
+
 	public ProducaoAberturaDTO(String idfil, String mistura, String seq, Double idAutomatico, String maquina,
 			String localFisico, String turno, String operador, Date dataMovimento, String observacao, String lado,
-			Double horaMovimento, Date dataInclusao, String usarioInclusao, Date dataAlteracao,
-			String usarioAlteracao) {
+			Double horaMovimento, Date dataInclusao, String usarioInclusao, Date dataAlteracao, String usarioAlteracao,
+			Date dataInicial, Date dataFinal, String dataInicialS, String dataFinalS) {
 		super();
 		this.idfil = idfil;
 		this.mistura = mistura;
@@ -52,7 +60,30 @@ public class ProducaoAberturaDTO    implements Serializable {
 		this.usarioInclusao = usarioInclusao;
 		this.dataAlteracao = dataAlteracao;
 		this.usarioAlteracao = usarioAlteracao;
+		this.dataInicial = dataInicial;
+		this.dataFinal = dataFinal;
+		this.dataInicialS = dataInicialS;
+		this.dataFinalS = dataFinalS;
 	}
+
+
+
+/*
+	public ProducaoAberturaDTO(ProducaoAberturaProjection  projection ) { 
+		
+		this.idfil = projection.getIdfil();
+		this.mistura = projection.getMistura();
+		this.seq = projection.getSeq();
+		this.dataMovimento = projection.getDataMovimento();
+		this.horaMovimento = projection.getHoraMovimento();
+		this.turno = projection.getTurno();
+		this.maquina = projection.getMaquina();
+		this.lado = projection.getLado();
+	  
+		
+	}		
+
+*/
 
 	public String getIdfil() {
 		return idfil;
@@ -180,8 +211,49 @@ public class ProducaoAberturaDTO    implements Serializable {
 
 	public void setUsarioAlteracao(String usarioAlteracao) {
 		this.usarioAlteracao = usarioAlteracao;
+	}
+
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
 	}	
 
+	
+
+	
+	public String getDataInicialS() {
+		return dataInicialS;
+	} 
+
+	public void setDataInicialS(String dataInicialS) {
+		this.dataInicialS = dataInicialS;
+	}
+
+
+
+
+	public String getDataFinalS() {
+		return dataFinalS;
+	}
+
+
+
+
+	public void setDataFinalS(String dataFinalS) {
+		this.dataFinalS = dataFinalS;
+	}
+	
 	
 	
 	

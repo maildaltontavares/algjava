@@ -1,7 +1,6 @@
 package com.santanatextiles.alg.repositories;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,6 +16,8 @@ import com.santanatextiles.alg.projections.MisturaPadraoCabecProjection;
 @Repository
 public interface MisturaPadraoRepository extends JpaRepository<MisturaPadrao, MisturaPadraoId>{
  
+	 
+	
     @Query(value = "SELECT 	" + 	 
 	    " IDFIL,  " +
 		" T1MIST,  " +

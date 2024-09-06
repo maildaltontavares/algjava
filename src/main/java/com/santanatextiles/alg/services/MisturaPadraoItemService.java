@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.MisturaPadrao;
 import com.santanatextiles.alg.domain.MisturaPadraoItem;
-import com.santanatextiles.alg.domain.MovimentoItem;
-import com.santanatextiles.alg.dto.MisturaPadraoDTO;
 import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
 import com.santanatextiles.alg.repositories.MisturaPadraoItemRepository;
 

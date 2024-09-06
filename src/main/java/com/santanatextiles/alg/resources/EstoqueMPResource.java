@@ -24,9 +24,12 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping(value="/estoquemp")
 public class EstoqueMPResource {
+	 
+	
+ 
 	
 	@Autowired
-	private EstoqueMPService service;  
+	private EstoqueMPService service;
 	
  	@CrossOrigin
  	@RequestMapping(value="/pesquisa/{filial}", method=RequestMethod.GET)
@@ -96,19 +99,7 @@ public class EstoqueMPResource {
 		}  		
 	} 	
  	
- 	
- 	/*
- 	@CrossOrigin
- 	@RequestMapping(value="/id/{filial}/{produtor}", method=RequestMethod.GET)
- 	public  ResponseEntity< ? > pesquisaSaldoId (@PathVariable String filial,@PathVariable String produtor){ 
- 		try {
- 			List<SaldoPesquisaIdDTO> saldoPesquisaId = service.pesquisaSaldoId(filial, produtor); 
-	 		return ResponseEntity.status(HttpStatus.OK).body(saldoPesquisaId);
-		} catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-		}  		
-	} 
- 	*/
+ 	 
  	
  	@CrossOrigin 
  	@RequestMapping(value="/id", method=RequestMethod.POST)
@@ -137,7 +128,10 @@ public class EstoqueMPResource {
  	public  ResponseEntity< ? > buscaEstoque (@Valid @RequestBody  EstoqueMPDTO estoqueMPDTO){ 
  		try {
   			
- 			List<MisturaProjectionDTO> estoqueMP = service.buscaEstoque(estoqueMPDTO.getIdfil(),estoqueMPDTO.getProdutor(),estoqueMPDTO.getLote(),estoqueMPDTO.getItem(),estoqueMPDTO.getFornecedor(),estoqueMPDTO.getProcedencia(),	estoqueMPDTO.getColoracao(),estoqueMPDTO.getDestino(),estoqueMPDTO.getTipoQualidade(),estoqueMPDTO.getClassifQualidade(),	estoqueMPDTO.getTamanho(),estoqueMPDTO.getPilha());
+ 			List<MisturaProjectionDTO> estoqueMP = service.buscaEstoque(estoqueMPDTO.getIdfil(),estoqueMPDTO.getProdutor(),
+ 					estoqueMPDTO.getLote(),estoqueMPDTO.getItem(),estoqueMPDTO.getFornecedor(),estoqueMPDTO.getProcedencia(),
+ 					estoqueMPDTO.getColoracao(),estoqueMPDTO.getDestino(),estoqueMPDTO.getTipoQualidade(),estoqueMPDTO.getClassifQualidade(),
+ 					estoqueMPDTO.getTamanho(),estoqueMPDTO.getPilha(),estoqueMPDTO.getCorteza());
 	 		return ResponseEntity.status(HttpStatus.OK).body(estoqueMP);
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -155,7 +149,7 @@ public class EstoqueMPResource {
 		}  		
 	} 	 	
  	 	
- 		 	
+ 
  		
 
 }

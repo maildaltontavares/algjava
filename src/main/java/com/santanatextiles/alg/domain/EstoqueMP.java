@@ -187,6 +187,11 @@ public class EstoqueMP implements Serializable {
 	@Column(name="M4DEST")
 	private String destino;	  
 	
+	@Column(name="M4CORTEZ")
+	private String corteza;	  
+	
+	
+	
 	@Transient
 	private String dsFornecedor;	
 	
@@ -223,8 +228,7 @@ public class EstoqueMP implements Serializable {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private Procedencia fkProcedencia	;
 	
-	public EstoqueMP() {}   
-
+	public EstoqueMP() {}    
 
 	public EstoqueMP(Double id, String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, Double quantidade, Double peso,
@@ -233,7 +237,7 @@ public class EstoqueMP implements Serializable {
 			Double pesoMedio, Double sac, Double trid, Double pim, Double sc, Double mst, Double mic, Double mat,
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double uhml, Double rs, Double b,
 			Double trcnt, Double trar, String tipoQualidade, String classifQualidade, String coloracao,
-			String loteAdicional, String idVolume, String tipoMic, String destino, String dsFornecedor,
+			String loteAdicional, String idVolume, String tipoMic, String destino, String corteza, String dsFornecedor,
 			String dsProdutor, String dsProcedencia, Fornecedor fkFornecedor, Produtor fkProdutor,
 			Procedencia fkProcedencia) {
 		super();
@@ -285,6 +289,7 @@ public class EstoqueMP implements Serializable {
 		this.idVolume = idVolume;
 		this.tipoMic = tipoMic;
 		this.destino = destino;
+		this.corteza = corteza;
 		this.dsFornecedor = dsFornecedor;
 		this.dsProdutor = dsProdutor;
 		this.dsProcedencia = dsProcedencia;
@@ -292,6 +297,9 @@ public class EstoqueMP implements Serializable {
 		this.fkProdutor = fkProdutor;
 		this.fkProcedencia = fkProcedencia;
 	}
+
+
+
 
 
 
@@ -1118,7 +1126,18 @@ public class EstoqueMP implements Serializable {
 	public void setDestino(String destino) {
 		this.destino = destino;
 	}
+	
+	
+	
 
+
+	public String getCorteza() {
+		return corteza;
+	}
+
+	public void setCorteza(String corteza) {
+		this.corteza = corteza;
+	}
 
 	@Override
 	public int hashCode() {

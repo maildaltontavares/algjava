@@ -67,7 +67,8 @@ public class EstoqueMPDTO implements Serializable {
 	private String loteAdicional;
     private String idVolume; 
     private String tipoMic;	 
-    private String destino;	  	
+    private String destino;	
+    private String corteza;	
 	
 	
 	
@@ -82,6 +83,8 @@ public class EstoqueMPDTO implements Serializable {
 	} 
 
 
+	 
+
 	public EstoqueMPDTO(String idfil, String notaFiscal, String fornecedor, String item, String produtor,
 			String procedencia, String lote, String qualidade, String tamanho, Double quantidade, Double peso,
 			Double id, Double idCab, String unidadeMedida, String pilha, String descFio, Double valorEstoque,
@@ -90,7 +93,7 @@ public class EstoqueMPDTO implements Serializable {
 			Double mic, Double mat, Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Fornecedor fkFornecedo, Produtor fkProdutor,
 			Procedencia fkProcedencia, String tipoQualidade, String classifQualidade, String coloracao,
-			String loteAdicional, String idVolume, String tipoMic, String destino) {
+			String loteAdicional, String idVolume, String tipoMic, String destino, String corteza) {
 		super();
 		this.idfil = idfil;
 		this.notaFiscal = notaFiscal;
@@ -143,8 +146,8 @@ public class EstoqueMPDTO implements Serializable {
 		this.idVolume = idVolume;
 		this.tipoMic = tipoMic;
 		this.destino = destino;
+		this.corteza = corteza;
 	}
-
 
 
 	public String getIdfil() {
@@ -582,6 +585,18 @@ public class EstoqueMPDTO implements Serializable {
 	public void setDestino(String destino) {
 		this.destino = destino;
 	}
+
+
+	public String getCorteza() {
+		return corteza;
+	}
+
+
+	public void setCorteza(String corteza) {
+		this.corteza = corteza;
+	}
+	
+	
 	
 	
 	

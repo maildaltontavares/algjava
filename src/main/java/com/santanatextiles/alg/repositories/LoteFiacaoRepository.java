@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.LoteFiacao;
 import com.santanatextiles.alg.domain.LoteFiacaoId;
-import com.santanatextiles.alg.dto.LoteFiacaoDTO;
 
 @Repository
 public interface LoteFiacaoRepository extends JpaRepository<LoteFiacao, LoteFiacaoId>{

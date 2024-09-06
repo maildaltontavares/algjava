@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.MisturaPadrao;
-import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.dto.MisturaPadraoCabecDTO;
 import com.santanatextiles.alg.dto.MisturaPadraoDTO;
 import com.santanatextiles.alg.services.MisturaPadraoService;
@@ -25,7 +24,7 @@ import jakarta.validation.Valid;
 @RequestMapping(value="/mp")
 public class MisturaPadraoResource {
 
-	
+	 
 	@Autowired
 	private MisturaPadraoService service;  
 	
@@ -166,6 +165,6 @@ public class MisturaPadraoResource {
 		} 		
 	} 	
 	
-	
+	 
 	
 }

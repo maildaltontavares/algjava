@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 @RequestMapping(value="/movimento")
 public class MovimentoResource {
 	
-	
+ 
 	
 	@Autowired
 	private MovimentoService service;  
@@ -166,6 +166,6 @@ public class MovimentoResource {
 		}  		
 	}  	
     	 
-	
+ 
 
 }

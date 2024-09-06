@@ -17,7 +17,7 @@ import com.santanatextiles.alg.services.MovimentoItemService;
 @RestController
 @RequestMapping(value="/movimentoitem")
 public class MovimentoItemResource {
-	
+	 
 	
 	@Autowired
 	private MovimentoItemService service;  
@@ -44,7 +44,7 @@ public class MovimentoItemResource {
 		}  		
 	} 	  	
  	 
-	
+ 
 	
 	
 

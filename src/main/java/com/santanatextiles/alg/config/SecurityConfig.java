@@ -21,12 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.santanatextiles.alg.security.JWTAuthenticationFilter;
 import com.santanatextiles.alg.security.JWTAuthorizationFilter;
-import com.santanatextiles.alg.security.JWTUtil;
-
-
-
- 
-
+import com.santanatextiles.alg.security.JWTUtil;  
 
 @Configuration
 @EnableWebSecurity

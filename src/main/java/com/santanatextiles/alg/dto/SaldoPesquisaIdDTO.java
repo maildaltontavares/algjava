@@ -28,6 +28,7 @@ public class SaldoPesquisaIdDTO {
 	String tipoMic;	 
 	String destino;
 	String qualidade;	
+	String corteza;
 	
 	
 	public SaldoPesquisaIdDTO() {};
@@ -57,18 +58,17 @@ public class SaldoPesquisaIdDTO {
 		this.idVolume = projection.getIdVolume();
 		this.tipoMic = projection.getTipoMic();
 		this.destino = projection.getDestino();
-		this.qualidade = projection.getQualidade();		
+		this.qualidade = projection.getQualidade();
+		this.corteza = projection.getCorteza();		
 		
-	}	
-	
- 
-
- 
+	}	 
+	 
 
 	public SaldoPesquisaIdDTO(Double idMov, String produtor, String pilha, String lote, Double qtde, String nmForn,
 			String item, String nomeItem, String um, String procedencia, String nf, String fornecedor, Double peso,
 			Double vlEst, Double pesoMedio, String tamanho, String tipoQualidade, String classifQualidade,
-			String coloracao, String loteAdicional, String idVolume, String tipoMic, String destino, String qualidade) {
+			String coloracao, String loteAdicional, String idVolume, String tipoMic, String destino, String qualidade,
+			String corteza) {
 		super();
 		this.idMov = idMov;
 		this.produtor = produtor;
@@ -94,6 +94,7 @@ public class SaldoPesquisaIdDTO {
 		this.tipoMic = tipoMic;
 		this.destino = destino;
 		this.qualidade = qualidade;
+		this.corteza = corteza;
 	}
 
 	public Double getIdMov() {
@@ -316,6 +317,14 @@ public class SaldoPesquisaIdDTO {
 
 	public void setQualidade(String qualidade) {
 		this.qualidade = qualidade;
+	}
+
+	public String getCorteza() {
+		return corteza;
+	}
+
+	public void setCorteza(String corteza) {
+		this.corteza = corteza;
 	}	
 	
 	

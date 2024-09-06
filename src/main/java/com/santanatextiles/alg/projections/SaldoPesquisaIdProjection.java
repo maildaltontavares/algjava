@@ -27,7 +27,8 @@ public interface SaldoPesquisaIdProjection {
 	String getLoteAdicional(); 
 	String getIdVolume();  
 	String getTipoMic(); 	 
-	String getDestino(); 		
+	String getDestino();
+	String getCorteza();
 	
 	 
 }

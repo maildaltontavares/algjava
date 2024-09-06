@@ -53,8 +53,7 @@ public class LoteFiacaoResource {
  	@CrossOrigin
  	@RequestMapping(value="/buscaLotePorChave", method=RequestMethod.POST)
  	public  ResponseEntity<?>  buscaLotePorChave (@Valid @RequestBody LoteFiacaoDTO obj){ 
- 		try {
-	 		System.out.println(obj.getLote());
+ 		try { 
 	 		LoteFiacao  loteFiacao = service.buscaLotePorChave(obj.getIdfil(), obj.getTipoMaquina(), obj.getItem(), obj.getIdSSM(), obj.getLote());
 	 		return ResponseEntity.status(HttpStatus.OK).body(loteFiacao);
 		} catch(Exception e) {

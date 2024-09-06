@@ -6,16 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.MovimentoItemId;
-import com.santanatextiles.alg.domain.TesteQualidade;
-
-import jakarta.persistence.Column;
 
  
-	
+@Repository	
 public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, MovimentoItemId>{
 		 
     @Query(value = "SELECT 	"+ 
@@ -71,7 +69,8 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
 			" M3IDFARD 	    , " +
 			" M3TPMIC 	    , " +
 			" M3DEST 	    , " +
-			" M3TRAR 	      " + 
+			" M3TRAR, 	      " + 
+			" M3CORTEZ	      " + 
 			" FROM CPF.CPFM3_DBF M3  "  +
 		    " where m3.idfil =  STL.FN_STL_IDFIL('CPFM3',?1)  "
 			,nativeQuery = true)
@@ -83,9 +82,9 @@ public interface MovimentoItemRepository extends JpaRepository<MovimentoItem, Mo
     
 		    @Transactional(readOnly=true)
 		    List<MovimentoItem>  findByIdfil(String idfil);       
-	    
+	     
     		@Query(value="SELECT CPF.CPFM3_ID_SQ.NEXTVAL FROM DUAL", nativeQuery = true)
-    		Double codigoNovoMovimentoItem(); 	
+    		Double codigoNovoMovimentoItem(); 	  
     		
     		@Transactional
     		Double deleteByIdItem(Double idItem ); 	    		

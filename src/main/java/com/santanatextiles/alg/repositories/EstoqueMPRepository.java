@@ -2,7 +2,6 @@ package com.santanatextiles.alg.repositories;
 
 import java.util.List;
 
-import org.hibernate.mapping.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +17,10 @@ import com.santanatextiles.alg.projections.SaldoPesquisaIdProjection;
 
 @Repository
 public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPId>{
+	
+	 
+	
+	
 	
     @Query(value = "SELECT 	" +  
 	    " IDFIL,    " + 
@@ -67,7 +70,8 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4LTADIC, " +
 		" M4IDFARD," +
 		" M4TPMIC ," +
-		" M4TPMIC  " +		
+		" M4TPMIC,  " +		
+		" M4CORTEZ  " +
 		" FROM CPF.CPFM4_DBF M4    "  +
         " where m4.idfil =  STL.FN_STL_IDFIL('CPFM4',?1) and M4QTDE > 0  order by M4ID"
 		,nativeQuery = true)
@@ -78,18 +82,22 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    @Transactional(readOnly=true)
 	    List<EstoqueMP>  findByIdfil(String idfil);   
 	    
+	    
+	    
 	    @Modifying
 		@Query(value="UPDATE CPF.CPFM4_DBF M4 SET M4QTDE = :quantidade  ,  M4PESO = :peso  ,  M4VLEST = :vlEstoque  " +
 			"	WHERE IDFIL = :idfil  AND M4ID = :idMovto" 	 
 		, nativeQuery = true)
 		int atualizaEstoque(@Param("idfil") String idfil , @Param("idMovto") Double idMovto , @Param("quantidade") Double quantidade ,  @Param("peso") Double peso ,   @Param("vlEstoque") Double vlEstoque );	    
     	 
+	    
+	  
 	    @Modifying
 		@Query(value="UPDATE CPF.CPFM4_DBF M4 SET M4QTDE = :quantidade  ,  M4PESO = :peso  ,  M4VLEST = :vlEstoque , M4PESMED = :pesoMedio  " +
 			"	WHERE IDFIL = :idfil  AND M4ID = :idMovto" 	 
 		, nativeQuery = true)
 		int atualizaEstoqueEPesoMedio(@Param("idfil") String idfil , @Param("idMovto") Double idMovto , @Param("quantidade") Double quantidade ,  @Param("peso") Double peso ,   @Param("vlEstoque") Double vlEstoque ,   @Param("pesoMedio") Double pesoMedio  );	    
-	    
+	   
 	    
 	    @Modifying
 		@Query(value="UPDATE CPF.CPFM4_DBF M4 SET M4PILHA = :pilha   " +
@@ -152,15 +160,16 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4LTADIC loteAdicional, " +
 		" M4IDFARD idVolume," +
 		" M4TPMIC tipoMic," +
-		" M4DEST destino" + 
+		" M4DEST destino,  " +
+		 "M4CORTEZ corteza" +
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
 	    " WHERE M4.IDFIL = :filial  AND " +
 	    " trim(M4.M4ITEM) = :item   AND " + 
         " (:produtor IS NULL  OR   M6COD  = :produtor)  AND " +
-        " (:lote     IS NULL  OR   M4LOTE like %:lote%    )  AND " +        
-	    "  M4QTDE <> 0  " +   
+        " (:lote     IS NULL  OR   trim(M4LOTE) =:lote    )  AND " +        
+	    "  M4QTDE >= 0  " +   
 	    " ORDER BY M6desc, M4.M4LOTE  "  
 	    ,nativeQuery = true)
 	    List<SaldoPesquisaIdProjection> pesquisaSaldoId(  
@@ -171,7 +180,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 			
 		) ;
 	    
-	 // " (:produtor IS NULL  OR  UPPER(TRIM(M6DESC)) like %:produtor% )  " +
+ 
 
 	    
 	    @Query(value =  
@@ -211,7 +220,8 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4IDFARD idVolume," +
 		" M4TPMIC tipoMic," +
 		" M4DEST destino," +
-		" M4QUAL qualidade" + 
+		" M4QUAL qualidade,  " +
+	    " M4CORTEZ corteza " +
 	    " FROM CPF.CPFM4_DBF M4  " +       
 	    " LEFT join CCP.CCPB2_DBF b2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD  " +   
 	    " LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +    
@@ -252,7 +262,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4TRAR, " +    
 		" M4TRCNT, " +    
 		" M4UHML , " + 
-		" Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST " + 
+		" Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST, M4CORTEZ " + 
 		" from  " +
 		" (  " +
 		"     select '' tipo, ?2 mistura ,0 qtde_mist ,m4.* from cpf.CPFM4_DBF m4 " +  
@@ -341,7 +351,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4TRCNT, " +    
 		" M4UHML , " + 
 		" ' ' Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST,M7DESC ,M4TPQ, " +
-		" M4CLASQ   " + 
+		" M4CLASQ, M4CORTEZ  " + 
 		" from cpf.CPFM4_DBF m4  " +		  
 		" LEFT join CCP.CCPB2_DBF B2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD " +   
 		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +
@@ -385,7 +395,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    		" M4TRCNT, " +    
 	    		" M4UHML , " + 
 	    		" ' ' Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST,M7DESC ,M4TPQ,"
-	    		+ "M4CLASQ  " + 
+	    		+ "M4CLASQ, M4CORTEZ   " + 
 	    		" from cpf.CPFM4_DBF m4  " +		  
 	    		" LEFT join CCP.CCPB2_DBF B2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD " +   
 	    		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +
@@ -400,7 +410,8 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 				" (:qual1 IS NULL      OR   trim(M4TPQ)     = :qual1)  AND " +
 				" (:qual2 IS NULL      OR   trim(M4CLASQ)   = :qual2)  AND " +
 				" (:tamanho IS NULL      OR   trim(M4TAM)   = :tamanho)  AND " +
-				" (:pilha IS NULL      OR   trim(M4PILHA)   = :pilha)  AND " +	  
+				" (:pilha IS NULL      OR   trim(M4PILHA)   = :pilha)  AND " +
+				" (:corteza IS NULL      OR   trim(M4CORTEZ)   = :corteza)  AND " +	 
 	            " (:lote     IS NULL  OR   M4LOTE like %:lote%    )  AND " +        
 	    	    "  M4QTDE <> 0  " +   
 	    		" ORDER BY M6.M6DESC,M4LOTE,M4PILHA,1 	" 
@@ -417,7 +428,8 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	     			    @Param("qual1") String qual1, 
 	     			    @Param("qual2") String qual2, 
 	     			    @Param("tamanho") String tamanho,     
-	     			    @Param("pilha") String pilha
+	     			    @Param("pilha") String pilha,
+	     			    @Param("corteza") String corteza
 	     				)  ;	    
 	    
 	    
@@ -448,7 +460,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4TRAR, " +    
 		" M4TRCNT, " +    
 		" M4UHML , " + 
-		" t2mist Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST, ' ' M7DESC   " +
+		" t2mist Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST, ' ' M7DESC , M4CORTEZ  " +
 		" FROM "+
 	       "(" +
 	       "  select " +
@@ -481,6 +493,6 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	 				@Param("idFardosSelecionados") List<String>  idFardosSelecionados 
 	 				 
 	       )  ;      
-
+ 
 
 }

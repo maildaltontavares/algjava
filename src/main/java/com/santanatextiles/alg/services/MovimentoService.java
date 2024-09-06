@@ -28,7 +28,9 @@ import com.santanatextiles.alg.resources.exception.ObjectNotFoundException;
 	
 @Service
 public class MovimentoService {
-				
+			
+ 
+	
 		@Autowired
 		private MovimentoRepository repo;		
 		
@@ -171,16 +173,10 @@ public class MovimentoService {
 					        	// Via movimentos, a mistura só pode ser deletada. Nunca inserida em alterada.
 					        	if(numIdAutom!=null && tipoMovimto.equals("MIST") ) {	  // Exclui apontamento Mistura				        		
 					        		producaoAberturaService.deleteByIdfilAndIdAutomatico(obj.getIdfil(), numIdAutom);	
-/*					        	}
+ 
 					        	
-					        }else if(mvItem.isEmpty()){  
-					        	
-					        	repo.deleteById(obj.getId());
-					        	statusTransacao = "Deletado";
-					        	
-					        	if(numIdAutom!=null && tipoMovimto == "MIST" ) {	  // Exclui apontamento Mistura				        		
-					        		producaoAberturaService.deleteByIdfilAndIdAutomatico(obj.getIdfil(), numIdAutom);	
-	*/				        	}					        	
+ 
+	     			        	}					        	
 					        }
 					        
 						       
@@ -584,7 +580,8 @@ public class MovimentoService {
 				movimentoItemDTO.setColoracao(movimIt.getColoracao());
 				movimentoItemDTO.setIdVolume(movimIt.getIdVolume()); 
 				movimentoItemDTO.setTipoMic(movimIt.getTipoMic());
-				movimentoItemDTO.setDestino(movimIt.getDestino());  
+				movimentoItemDTO.setDestino(movimIt.getDestino());
+				movimentoItemDTO.setCorteza(movimIt.getCorteza()); 
 				movimentoItemDTO.setSac(movimIt.getSac());
 				movimentoItemDTO.setTrid(movimIt.getTrid());			
 				movimentoItemDTO.setPim(movimIt.getPim());
@@ -662,7 +659,8 @@ public class MovimentoService {
 				movimentoItemDTO.setColoracao(movimIt.getColoracao());
 				movimentoItemDTO.setIdVolume(movimIt.getIdVolume()); 
 				movimentoItemDTO.setTipoMic(movimIt.getTipoMic());
-				movimentoItemDTO.setDestino(movimIt.getDestino());  
+				movimentoItemDTO.setDestino(movimIt.getDestino());
+				movimentoItemDTO.setCorteza(movimIt.getCorteza());  
 				movimentoItemDTO.setSac(movimIt.getSac());
 				movimentoItemDTO.setTrid(movimIt.getTrid());			
 				movimentoItemDTO.setPim(movimIt.getPim());
@@ -749,117 +747,10 @@ public class MovimentoService {
 			 return LoteP;
 		}		
 		
-		 
+ 	 
 	 
 
 }
+ 
 
-
-/*		
-public List<Movimento> fromDTO(List<MovimentoDTO> objDTOParam) throws ParseException {   
-	
-	   Iterator<MovimentoDTO> movimTmp = objDTOParam.iterator();  
-	   
-	   List<Movimento> listMovimento =  new ArrayList<>();
-	   
-	   MovimentoDTO objDTO;
-	   
-       while (movimTmp.hasNext()) {
-     
-        	objDTO = movimTmp.next();	 
-	
-			Movimento movimento = new Movimento();     
-			
-			movimento.setId(objDTO.getId());	 
-			movimento.setIdfil(objDTO.getIdfil());  
-			movimento.setNotaFiscal(objDTO.getNotaFiscal());	 
-			movimento.setFornecedor(objDTO.getFornecedor());	 
-			movimento.setTipoMovimento(objDTO.getTipoMovimento());	 
-			movimento.setTipoMP(objDTO.getTipoMP());	 	 
-			movimento.setDataBase(objDTO.getDataBase());	  
-			movimento.setDataEmissao(objDTO.getDataEmissao());	 
-			movimento.setEntradaSaida(objDTO.getEntradaSaida());  
-            
-	        movimento.setLoteFiacao(objDTO.getLoteFiacao());	 
-		    movimento.setPesoMedio(objDTO.getPesoMedio());	 
-		    movimento.setPesoTotal(objDTO.getPesoTotal());	 
-		    movimento.setProdutor(objDTO.getProdutor());	 
-		    movimento.setProcedencia(objDTO.getProcedencia());		 
-	        movimento.setLinhaAbertura(objDTO.getLinhaAbertura()); 
-		    
-	        movimento.setIdAutomatico(objDTO.getIdAutomatico());		 
-		    movimento.setMovimentoPilha(objDTO.getMovimentoPilha()); 
-		    
-		    
-		    movimento.setMistura(objDTO.getMistura());	 
-		    movimento.setSequenciaMistura(objDTO.getSequenciaMistura());	 
-		    movimento.setUsuarioInclusao(objDTO.getUsuarioInclusao());	 
-		    movimento.setUsuarioAlteracao(objDTO.getUsuarioAlteracao());  
-		    
-		    movimento.setDataAlteracao(objDTO.getDataAlteracao());	   
-		    movimento.setItemMovimentoDTO(objDTO.getItemMovimentoDTO());	
-		    
-		    listMovimento.add(movimento);
-	 		
-       }
-	
-	return listMovimento;
-}			
-			
-*/	
-
-
-
-
-	/*
-	
-	@Transactional
-	public Movimento insert(List<Movimento> objParam ) throws ParseException{	 
-		
-		    Iterator<Movimento> movim = objParam.iterator();
-		    Movimento obj1 = new Movimento();
-		    
-		    Movimento obj;
-
-	        // Iterar sobre a lista usando o Iterator
-	         while (movim.hasNext()) {
-	     
-			        obj = movim.next();
-				    TipoMovimento tipoMovto = serviceTipoMovto.buscaTipoMovimentoByCodigo(obj.getIdfil(),obj.getTipoMovimento());
-				    
-					if(tipoMovto == null) {
-						throw new ObjectNotFoundException("Tipo de Movimento não encontrado!");  
-					}else {
-						obj.setEntradaSaida(tipoMovto.getEntradaSaida()); 	
-					}  
-				    
-				    Movimento movimento = configuraMovimento(obj);
-				    
-					
-					if (!this.msg.isEmpty()) {
-						throw new ObjectNotFoundException(String.join(",", this.msg)); 
-					} 
-					
-					repo.save(movimento);
-					 
-					Iterator<MovimentoItemDTO> it = obj.getItemMovimentoDTO().iterator();
-					 
-					while (it.hasNext()) {
-						MovimentoItem movimentoItem = serviceItem.fromDTO(
-								it.next(),
-								movimento.getId(),-
-							//	tipoMovto.getAtualizaItem(),
-								'S',
-								movimento.getIdAutomatico(),
-								movimento.getMovimentoAutomatico(),
-								movimento.getMovimentoPilha()) ;
-						
-						serviceItem.insert(movimentoItem, tipoMovto.getAtualizaEstoque(),
-								   tipoMovto.getAtualizaItem(),tipoMovto.getPesoCalculadoInformado());
-					}   
-	        }
-		    return obj1;
-	}	 	
-
-	
-*/ 	
+ 

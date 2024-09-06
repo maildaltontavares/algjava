@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.EstoqueMP;
-import com.santanatextiles.alg.domain.MisturaPadraoItem;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.dto.EstoqueMPDTO;
-import com.santanatextiles.alg.dto.MisturaPadraoItemDTO;
 import com.santanatextiles.alg.dto.MisturaProjectionDTO;
 import com.santanatextiles.alg.dto.MovimentoDTO;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
@@ -27,8 +25,9 @@ import com.santanatextiles.alg.repositories.EstoqueMPRepository;
 import com.santanatextiles.alg.resources.exception.ObjectNotFoundException; 
 	
 @Service
-public class EstoqueMPService {
-		
+public class EstoqueMPService { 
+	 
+	
 	@Autowired
 	private EstoqueMPRepository repo; 
 	
@@ -99,7 +98,8 @@ public class EstoqueMPService {
 			saldoPesquisaId.setColoracao(saldoPesquisaIdDTO.getColoracao());
 			saldoPesquisaId.setIdVolume(saldoPesquisaIdDTO.getIdVolume()); 
 			saldoPesquisaId.setTipoMic(saldoPesquisaIdDTO.getTipoMic());
-			saldoPesquisaId.setDestino(saldoPesquisaIdDTO.getDestino()); 			
+			saldoPesquisaId.setDestino(saldoPesquisaIdDTO.getDestino());
+			saldoPesquisaId.setCorteza(saldoPesquisaIdDTO.getCorteza()); 
 			 		
          }	 
 	   
@@ -127,10 +127,9 @@ public class EstoqueMPService {
 	public Integer atualizaEstoque(String idfil , Double idMovto , Double quantidade , Double peso , Double vlEstoque , Double pesoMedio , String atualizaIt   )   {
 		
 		Integer idEst; 
-		
-		
+		 
 		// Valida consistencia na M4
-		EstoqueMP validaId = findById(idMovto);
+		EstoqueMP validaId = findById(idMovto);  // 06/08/2024
 		
 		if(validaId==null) {
 			throw new ObjectNotFoundException("Registro de estoque não pode ser gravado. Comunique ao analista resposavel.");			
@@ -139,10 +138,11 @@ public class EstoqueMPService {
 		 
 		if(atualizaIt.equals("S")) { 
 			 idEst =   repo.atualizaEstoqueEPesoMedio(idfil, idMovto, quantidade, peso, vlEstoque , pesoMedio);	
+		 
 		}else {
 			 idEst =  repo.atualizaEstoque(idfil, idMovto, quantidade, peso, vlEstoque );	
 		}
-		
+		 
 		return idEst;
 		
 	}
@@ -216,7 +216,8 @@ public class EstoqueMPService {
 		    itemEstoque.setColoracao(obj.getColoracao());
 			itemEstoque.setIdVolume(obj.getIdVolume()); 
 			itemEstoque.setTipoMic(obj.getTipoMic());
-			itemEstoque.setDestino(obj.getDestino()); 		    
+			itemEstoque.setDestino(obj.getDestino());
+			itemEstoque.setCorteza(obj.getCorteza()); 
 		    
 		    
 		    EstoqueMP  objEstoqueMP = repo.save(itemEstoque);
@@ -304,7 +305,8 @@ public class EstoqueMPService {
 				saldoPesquisaMist.setMistura(saldoPesquisaMistPDTO.getMistura());
 				saldoPesquisaMist.setM4COLOR(saldoPesquisaMistPDTO.getM4COLOR());
 				saldoPesquisaMist.setM4TPMIC(saldoPesquisaMistPDTO.getM4TPMIC());
-				saldoPesquisaMist.setM4DEST(saldoPesquisaMistPDTO.getM4DEST());   
+				saldoPesquisaMist.setM4DEST(saldoPesquisaMistPDTO.getM4DEST());
+				saldoPesquisaMist.setM4CORTEZ(saldoPesquisaMistPDTO.getM4CORTEZ());   
 				
 				saldoPesquisaMistLista.add(saldoPesquisaMist);
 			 
@@ -316,7 +318,7 @@ public class EstoqueMPService {
 	   
 
 	   public List<MisturaProjectionDTO> buscaEstoque( String idfil , String produt   ,String lote ,String item, String fornec,String proced, 
-			   String color, String dest,String q1, String q2, String tam,       String pil) throws ParseException{ 
+			   String color, String dest,String q1, String q2, String tam,       String pil,       String cortez) throws ParseException{ 
 		    
 		   
 		    String produtor = produt;
@@ -375,10 +377,15 @@ public class EstoqueMPService {
 		    	pilha = null; 
 		    }	
 		    
+		    String crt = cortez;
+		    if(crt==null || crt.equals("")) {
+		    	crt = null; 
+		    }			    
+		    
 		    
 		    List<MisturaPadraoProjection> saldoPesquisaEstoque; 
 		  
-			saldoPesquisaEstoque = repo.buscaEstoque( idfil ,  produtor   , lt , it, fornecedor, procedencia, coloracao, destino, qual1,  qual2, tamanho, pilha );    
+			saldoPesquisaEstoque = repo.buscaEstoque( idfil ,  produtor   , lt , it, fornecedor, procedencia, coloracao, destino, qual1,  qual2, tamanho, pilha , crt );    
 		   
 			List<MisturaProjectionDTO> listaSaldoPesquisaEstoque = saldoPesquisaEstoque.stream().map(x-> new MisturaProjectionDTO(x)).toList();  		
 			
@@ -431,6 +438,7 @@ public class EstoqueMPService {
 				saldoPesquisaEst.setM4TPMIC(saldoPesquisaEstPDTO.getM4TPMIC());
 				saldoPesquisaEst.setM4DEST(saldoPesquisaEstPDTO.getM4DEST());
 				saldoPesquisaEst.setM7DESC(saldoPesquisaEstPDTO.getM7DESC());   
+				saldoPesquisaEst.setM4CORTEZ(saldoPesquisaEstPDTO.getM4CORTEZ());
 				
 				saldoPesquisaEstLista.add(saldoPesquisaEst);
 			 
@@ -504,6 +512,7 @@ public class EstoqueMPService {
 				saldoPesquisaEst.setM4COLOR(saldoPesquisaEstPDTO.getM4COLOR());
 				saldoPesquisaEst.setM4TPMIC(saldoPesquisaEstPDTO.getM4TPMIC());
 				saldoPesquisaEst.setM4DEST(saldoPesquisaEstPDTO.getM4DEST());
+				saldoPesquisaEst.setM4CORTEZ(saldoPesquisaEstPDTO.getM4CORTEZ());
 				saldoPesquisaEst.setM7DESC(saldoPesquisaEstPDTO.getM7DESC());   
 				
 				saldoPesquisaEstLista.add(saldoPesquisaEst);
@@ -569,14 +578,13 @@ public class EstoqueMPService {
 			Integer iI =  movimIt.getIdMovimento().intValue();
 			
 			idFardosSelecionados.add( "*" + iI.toString()+ "*" );
-			// idFardosSelecionados += "'*" + iI.toString()+ "*'" + ","; 
-			//idFardosSelecionados += iI.toString() + ",";
+ 
 			
 			idfil = movimIt.getIdfil();
 			
 		}	   	   
 		
-		//idFardosSelecionados = idFardosSelecionados.substring(0, idFardosSelecionados.length() - 1); 
+ 
 		
 		List<MisturaProjectionDTO> listaIdsEmMistura = buscaEstoqueMistura(idfil,idFardosSelecionados); 
 			
@@ -612,7 +620,7 @@ public class EstoqueMPService {
 	
 	
 	
-
+ 
 	 
 
 }

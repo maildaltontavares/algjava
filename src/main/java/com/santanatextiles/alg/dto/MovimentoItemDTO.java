@@ -67,11 +67,13 @@ public class MovimentoItemDTO  implements Serializable {
 	private String loteAdicional;	 
 	private String idVolume; 
 	private String tipoMic;	 
-	private String destino;		
+	private String destino;
+	private String corteza;	
 	
 	
-	public MovimentoItemDTO() {}  
-
+	public MovimentoItemDTO() {}   
+	
+	
 	public MovimentoItemDTO(Double idItem, String idfil, String notaFiscal, String fornecedor, String item,
 			String produtor, String procedencia, String lote, String qualidade, String tamanho, String descFio,
 			String pesoCalculadoInformado, String observacao, String unidadeMedida, String pilha, Date dataInclusao,
@@ -81,7 +83,7 @@ public class MovimentoItemDTO  implements Serializable {
 			Double ui, Double sf, Double str, Double elg, Double tipo, Double sic, Double idAutomatico, Double uhml,
 			Double rs, Double b, Double trcnt, Double trar, Double pesoMedio, String statusItem,
 			String statusItemOriginal, String tipoQualidade, String classifQualidade, String coloracao,
-			String loteAdicional, String idVolume, String tipoMic, String destino) {
+			String loteAdicional, String idVolume, String tipoMic, String destino, String corteza) {
 		super();
 		this.idItem = idItem;
 		this.idfil = idfil;
@@ -138,7 +140,13 @@ public class MovimentoItemDTO  implements Serializable {
 		this.idVolume = idVolume;
 		this.tipoMic = tipoMic;
 		this.destino = destino;
-	} 
+		this.corteza = corteza;
+	}
+
+
+
+
+
 
 	public MovimentoItemDTO(Double idItem, String idfil, String produtor, String lote) {
 		super();
@@ -681,6 +689,16 @@ public class MovimentoItemDTO  implements Serializable {
 
 	public void setDestino(String destino) {
 		this.destino = destino;
+	}
+
+
+	public String getCorteza() {
+		return corteza;
+	}
+
+
+	public void setCorteza(String corteza) {
+		this.corteza = corteza;
 	}
 
 

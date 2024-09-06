@@ -22,6 +22,8 @@ import com.santanatextiles.alg.resources.exception.ObjectNotFoundException;
 	
 @Service
 public class MovimentoItemService {
+	
+	 
 			
 		@Autowired
 		private MovimentoItemRepository repo;		
@@ -129,11 +131,7 @@ public class MovimentoItemService {
 			SaldoIdMovtoDTO sldIdMovto =  serviceEstoqueMP.buscaSaldoIdMovto(pMovItem.getIdfil(), pMovItem.getIdMovimento());
 			
 			if((sldIdMovto.getQtde() >= -0.90 && sldIdMovto.getPeso() >= -1)  ) {
-				/*
-		        BigDecimal bd = BigDecimal.valueOf(sldIdMovto.getPeso()/sldIdMovto.getQtde());
-		        bd = bd.setScale(4, RoundingMode.HALF_UP); // Arredonda para 2 casas decimais
-		        double pesMed = bd.doubleValue();				
-				*/
+		 
 				serviceEstoqueMP.atualizaEstoque(pMovItem.getIdfil(),pMovItem.getIdMovimento(),sldIdMovto.getQtde(),sldIdMovto.getPeso(),sldIdMovto.getVlEst(),pMovItem.getPesoMedio(),atualzMovto );				
 			}else {
 				throw new ObjectNotFoundException("Lote: " + pMovItem.getLote() + " apresentou saldo negativo.");
@@ -245,12 +243,18 @@ public class MovimentoItemService {
 					
 					movimentoItem.setTipoQualidade(objDTO.getTipoQualidade()); 
 					movimentoItem.setClassifQualidade(objDTO.getClassifQualidade());
-					movimentoItem.setQualidade(objDTO.getTipoQualidade() + ' ' + objDTO.getClassifQualidade()) ;
+					
+					if(objDTO.getTipoQualidade()!=null) {
+						movimentoItem.setQualidade(objDTO.getTipoQualidade() + ' ' + objDTO.getClassifQualidade()) ;
+					} 
+					
+					
 					movimentoItem.setLoteAdicional(objDTO.getLoteAdicional());  
 					movimentoItem.setColoracao(objDTO.getColoracao());
 					movimentoItem.setIdVolume(objDTO.getIdVolume()); 
 					movimentoItem.setTipoMic(objDTO.getTipoMic());
-					movimentoItem.setDestino(objDTO.getDestino()); 
+					movimentoItem.setDestino(objDTO.getDestino());
+					movimentoItem.setCorteza(objDTO.getCorteza()); 
 				
 			///// Testa se já foi feito teste no lote deste produtor
 					
@@ -373,7 +377,17 @@ public class MovimentoItemService {
 						movimentoItem.setRs(e.getRs());	 
 						movimentoItem.setB(e.getB());	 
 						movimentoItem.setTrcnt(e.getTrcnt());	 
-						movimentoItem.setTrar(e.getTrar());					 
+						movimentoItem.setTrar(e.getTrar());	 
+						
+						movimentoItem.setTipoQualidade(e.getTipoQualidade()); 
+						movimentoItem.setClassifQualidade(e.getClassifQualidade());
+						movimentoItem.setQualidade(e.getTipoQualidade() + ' ' + e.getClassifQualidade()) ;
+						movimentoItem.setLoteAdicional(e.getLoteAdicional());  
+						movimentoItem.setColoracao(e.getColoracao());
+						movimentoItem.setIdVolume(e.getIdVolume()); 
+						movimentoItem.setTipoMic(e.getTipoMic());
+						movimentoItem.setDestino(e.getDestino());
+						movimentoItem.setCorteza(e.getCorteza()); 
 					 
 					 
 				 }else {
@@ -467,7 +481,8 @@ public class MovimentoItemService {
 			movimentoItem.setColoracao(itemEstoque.getColoracao());
 			movimentoItem.setIdVolume(itemEstoque.getIdVolume()); 
 			movimentoItem.setTipoMic(itemEstoque.getTipoMic());
-			movimentoItem.setDestino(itemEstoque.getDestino());  
+			movimentoItem.setDestino(itemEstoque.getDestino());
+			movimentoItem.setCorteza(itemEstoque.getCorteza());  
 			movimentoItem.setSac(itemEstoque.getSac());
 			movimentoItem.setTrid(itemEstoque.getTrid());			
 			movimentoItem.setPim(itemEstoque.getPim());
@@ -498,7 +513,7 @@ public class MovimentoItemService {
 		}
 		 
 		
-		
+	 
 		
 	
 

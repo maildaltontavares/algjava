@@ -4,6 +4,7 @@ package com.santanatextiles.alg.services;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.TesteQualidade;
+import com.santanatextiles.alg.dto.MisturaProjectionDTO;
 import com.santanatextiles.alg.dto.TesteQualidadeDTO;
+import com.santanatextiles.alg.dto.TesteQualidadeProjectionDTO;
+import com.santanatextiles.alg.projections.TestesQualidadeProjection;
 import com.santanatextiles.alg.repositories.TesteQualidadeRepository;
 import com.santanatextiles.alg.resources.exception.ObjectNotFoundException; 
 	
 @Service
-public class TesteQualidadeService {
-			
+public class TesteQualidadeService { 
+	
 		@Autowired
 		private TesteQualidadeRepository repo;	 
 		 
@@ -41,15 +45,7 @@ public class TesteQualidadeService {
 			 return obj;
 		}			
 		
-	/*
-		public TesteQualidade buscaTesteQualidadeByLote(String filial, String produtor, String pLote ){	
-			
-			 //String lote = String.format("%-35s", pLote); 
-			 TesteQualidade obj = repo.buscaTesteQualidadePorProdutorLote(filial, produtor, pLote ) ;	  
-			 return obj;
-		}	
-		
-*/		
+ 		
 		public TesteQualidade buscaTesteQualidadeByLoteItem(String filial, String produtor, String pLote, String pItem ){	
 			
 			 //String lote = String.format("%-35s", pLote); 
@@ -61,8 +57,87 @@ public class TesteQualidadeService {
 			
 			 //String lote = String.format("%-35s", pLote); 
 			 List<TesteQualidade> obj = repo.pesquisarTeste(testeQualidadeDTO.getIdfil(),  testeQualidadeDTO.getDataInicial(),testeQualidadeDTO.getDataFinal(),testeQualidadeDTO.getProdutor(),testeQualidadeDTO.getLote(),testeQualidadeDTO.getItem().toString()) ;	  
+ 
 			 return obj;
 		}	
+		
+		
+		public List<TesteQualidadeProjectionDTO> pesquisarTesteRealizados(TesteQualidadeDTO testeQualidadeDTO  ) throws ParseException{ 
+		     
+		    List<TestesQualidadeProjection> testeQ; 
+		  
+		    testeQ = repo.pesquisarTesteRealizados(testeQualidadeDTO.getIdfil(),  testeQualidadeDTO.getDataInicial(),testeQualidadeDTO.getDataFinal(),testeQualidadeDTO.getProdutor(),testeQualidadeDTO.getLote(),testeQualidadeDTO.getItem().toString()) ;    
+		   
+			List<TesteQualidadeProjectionDTO> listaTestes = testeQ.stream().map(x-> new TesteQualidadeProjectionDTO(x)).toList();  		
+			
+			List<TesteQualidadeProjectionDTO> aTeste =  new ArrayList<>(); 
+			
+			for (TesteQualidadeProjectionDTO eTestePDTO : listaTestes) {  
+				
+				TesteQualidadeProjectionDTO tmpTeste = new TesteQualidadeProjectionDTO();
+				
+				 tmpTeste.setIdfil(eTestePDTO.getIdfil()) ;  
+				 tmpTeste.setProdutor(eTestePDTO.getProdutor());	 
+				 tmpTeste.setLote(eTestePDTO.getLote());     
+				 tmpTeste.setDataTeste(eTestePDTO.getDataTeste()); 
+				 tmpTeste.setNumVolumes(eTestePDTO.getNumVolumes()); 
+				 tmpTeste.setSac(eTestePDTO.getSac());		 
+				 tmpTeste.setMst(eTestePDTO.getMst());	 
+				 tmpTeste.setMic(eTestePDTO.getMic());	 
+				 tmpTeste.setMat(eTestePDTO.getMat());	 
+				 tmpTeste.setUi(eTestePDTO.getUi());	 
+				 tmpTeste.setSf(eTestePDTO.getSf()); 
+				 tmpTeste.setStr(eTestePDTO.getStr()); 	
+				 tmpTeste.setElg(eTestePDTO.getElg());	 
+				 tmpTeste.setTipo(eTestePDTO.getTipo()); 
+				 tmpTeste.setTrid(eTestePDTO.getTrid()); 
+				 tmpTeste.setSc(eTestePDTO.getSc()); 	
+				 tmpTeste.setPim(eTestePDTO.getPim());	 
+				 tmpTeste.setHvi(eTestePDTO.getHvi());	 
+				 tmpTeste.setBenef(eTestePDTO.getBenef()); 
+				 tmpTeste.setObs(eTestePDTO.getObs());  
+				 tmpTeste.setDataInclusao(eTestePDTO.getDataInclusao()); 
+				 tmpTeste.setUsarioInclusao(eTestePDTO.getUsarioInclusao());	
+				 tmpTeste.setDataAlteracao(eTestePDTO.getDataAlteracao()); 
+				 tmpTeste.setUsarioAlteracao(eTestePDTO.getUsarioAlteracao());		 
+				 tmpTeste.setSic(eTestePDTO.getSic());	 
+				 tmpTeste.setUhml(eTestePDTO.getUhml()); 
+				 tmpTeste.setRs(eTestePDTO.getRs()); 
+				 tmpTeste.setB(eTestePDTO.getB()); 
+				 tmpTeste.setTrcnt(eTestePDTO.getTrcnt()); 
+				 tmpTeste.setTrar(eTestePDTO.getTrar()); 	
+				 tmpTeste.setPrdint(eTestePDTO.getPrdint()); 
+				 tmpTeste.setArqImportacao(eTestePDTO.getArqImportacao()); 
+				 tmpTeste.setPossuiSelo(eTestePDTO.getPossuiSelo()); 
+				 tmpTeste.setTipoSelo(eTestePDTO.getTipoSelo()); 
+				 tmpTeste.setNumeroSelo(eTestePDTO.getNumeroSelo());
+				 tmpTeste.setTipoMic(eTestePDTO.getTipoMic());
+				 tmpTeste.setItem(eTestePDTO.getItem()); 
+				 tmpTeste.setNomeProdutor(eTestePDTO.getNomeProdutor());
+
+				
+				aTeste.add(tmpTeste);
+			 
+	         }	 
+		   
+			  return aTeste;
+	}		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		@Transactional
 		public String excluirTeste(String idfil, String produtor, String pLote, String pItem ) throws ParseException{ 
@@ -658,5 +733,8 @@ public class TesteQualidadeService {
 			
 			
 		}
+ 
+
+
 
 }
