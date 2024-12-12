@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santanatextiles.alg.domain.Item;
+import com.santanatextiles.alg.dto.ItemFioProjectionDTO;
 import com.santanatextiles.alg.services.ItemService;
 
 @RestController
@@ -45,7 +46,7 @@ public class ItemResource {
  		Page<Item> lista = service.buscaItemPag(page, linesPerPage, orderBy, direction, filial  );
  		return ResponseEntity.status(HttpStatus.OK).body(lista);
  	} 	
- 	
+ 	 
  	
 	@CrossOrigin
 	@RequestMapping(value="/{idfil}/{codigo}", method=RequestMethod.GET)
@@ -66,6 +67,34 @@ public class ItemResource {
 			@PathVariable String descricao) {
 		try {
 			List<Item> lista = service.procuraPorDescricao(idfil,descricao);
+			return ResponseEntity.ok().body(lista);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+		
+	} 	
+	
+	@CrossOrigin
+	@RequestMapping(value="/pesquisa/{idfil}/codigo/{codigo}",method=RequestMethod.GET)
+	public  ResponseEntity<?> buscaFioPorCodigo(
+			@PathVariable String idfil,
+			@PathVariable String codigo) {
+		try {
+			List<ItemFioProjectionDTO> lista = service.buscaFioPorCodigo(idfil,codigo);
+			return ResponseEntity.ok().body(lista);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+		
+	} 	
+	
+	@CrossOrigin
+	@RequestMapping(value="/pesquisa/{idfil}/descricao/{descricao}",method=RequestMethod.GET)
+	public  ResponseEntity<?> buscaFioPorDescricao(
+			@PathVariable String idfil,
+			@PathVariable String descricao) {
+		try {
+			List<ItemFioProjectionDTO> lista = service.buscaFioPorDescricao(idfil,descricao);
 			return ResponseEntity.ok().body(lista);
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

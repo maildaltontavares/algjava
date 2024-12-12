@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.santanatextiles.alg.domain.Item;
-import com.santanatextiles.alg.domain.ItemId; 
+import com.santanatextiles.alg.domain.ItemId;
+import com.santanatextiles.alg.projections.FioProjection; 
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item , ItemId> {
@@ -38,7 +39,56 @@ public interface ItemRepository extends JpaRepository<Item , ItemId> {
 		+ "ORDER BY i.material.descricao")
         List<Item> procuraPorDescricao(Long localizacao , Long idfil,  String descricao);
 		
-		
+ 
+		@Query(value=  
+				"select   " + 
+				" trim(to_char(item.D0422_ID_ITEM,'0000000')) codigo , " + 
+				" item.D0421_ID_MATERIAL  codMaterial , " + 
+				" trim(to_char(item.d0002_id_fil,'00')) idfil," + 
+				" item.D0003_ID_LOCALIZACAO localizacao," + 
+				" (trim(mat.D0421_NOME) || ' ' || trim(mat.D0421_NOME_DIMENSAO) )   descricao," + 
+				" titulo, " + 
+				" mat.D0403_ID_CLASSE_MATERIAL classeMaterial" + 
+				" from " + 
+				" STL.E0422_STL_ITEM item " + 
+				" inner JOIN STL.e0421_stl_material mat on  item.D0421_ID_MATERIAL = mat.D0421_ID_MATERIAL    " + 
+				" inner join " + 
+				" (" + 
+				 
+				" 	Select " + 
+				" 	idfil,h8cod item,h8tit  titulo" + 
+				" 	from cpfh8_dbf h8" + 
+				" 	where h8tit is not null" +  
+				"  	union all " +  
+				" 	Select " +  
+				" 	idfil, " + 
+				" 	item, " + 
+				" 	TO_NUMBER(REPLACE(titulo,'.',',')) titulo " + 
+				" 	from " + 
+				" 	(" + 
+				" 		Select trim(to_char(it.d0002_id_fil,'00')) idfil,trim(to_char(it.D0422_ID_ITEM,'0000000')) item, " + 
+				" 		trim(tbt.tb_tp) titulo " + 
+				" 		from" + 
+				" 		STL.E0422_STL_ITEM it " + 
+				" 		inner JOIN STL.e0421_stl_material mat on  it.D0421_ID_MATERIAL = mat.D0421_ID_MATERIAL    " + 
+				" 		inner join sap.tec_dbf tec  on  tec.idfil = STL.FN_STL_IDFIL('TEC',it.d0002_id_fil ) and tec.pd_cd = mat.d0421_id_mat_sap   " + 
+				" 		LEFT JOIN sap.tb_dbf tbt on  tbt.idfil = STL.FN_STL_IDFIL('TB',it.d0002_id_fil ) and tec.pd_titulo   = SUBSTR(tbt.tb_cd,1,3) AND tbt.tb_nr = 'TT'  " + 
+				" 		where " + 
+				" 		it.d0002_id_fil in ( 1,3,5) and " + 
+				" 		TEC.PD_TIPOPD = 'F'" + 
+				" 		and tbt.tb_tp is not null  " + 
+				" 	)" + 
+				" 	where TO_NUMBER(REPLACE(titulo,'.',','))  < 30   " + 
+				" ) tit on  trim(to_char(item.D0422_ID_ITEM,'0000000'))  = tit.item	  " +
+				" WHERE item.d0002_id_fil  =   :idfil   and	" +  
+				" (:descricaoFio IS NULL OR UPPER(mat.D0421_NOME) like  %:descricaoFio%  )   and " +
+				" (:codigo IS NULL OR trim(to_char(item.D0422_ID_ITEM,'0000000')) = :codigo)   " +
+				" order by mat.D0421_NOME,mat.D0421_NOME_DIMENSAO                    " 
+	    		,nativeQuery = true)   
+		        List<FioProjection> buscaFio(@Param("idfil") int idfil,@Param("descricaoFio") String descricaoFio,@Param("codigo") String codigo) ;
+     
+		 
+		 
 	   
 
 }

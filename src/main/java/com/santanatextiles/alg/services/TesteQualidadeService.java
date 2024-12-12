@@ -398,7 +398,19 @@ public class TesteQualidadeService {
 	        
 			BigDecimal faixaUhmlIni ; 
 	        BigDecimal faixaUhmlFim;  
-	        BigDecimal nUhml ; 	        
+	        BigDecimal nUhml ; 	  
+	        
+	        BigDecimal faixaTrCntIni; 
+            BigDecimal faixaTrCntFim;  
+    
+			BigDecimal faixaTrarIni; 
+	        BigDecimal faixaTrarFim;  	        
+	        
+	        BigDecimal nTrCnt;
+	        BigDecimal nTrar;
+	        
+	        
+	        
 	        
 	        
 	        if(testeQualidade.getIdfil().equals("05")) {
@@ -439,13 +451,26 @@ public class TesteQualidadeService {
 	        BigDecimal faixaTipoFim = new BigDecimal("99.9");  
 	        BigDecimal nTipo = BigDecimal.valueOf(testeQualidade.getTipo() ).setScale(1, RoundingMode.HALF_UP); 	
 	        
-			BigDecimal faixaTrCntIni = new BigDecimal("0.1"); 
-	        BigDecimal faixaTrCntFim = new BigDecimal("99.9");  
-	        BigDecimal nTrCnt = BigDecimal.valueOf(testeQualidade.getTrcnt() ).setScale(1, RoundingMode.HALF_UP); 
-	        
-			BigDecimal faixaTrarIni = new BigDecimal("0.01"); 
-	        BigDecimal faixaTrarFim = new BigDecimal("9.99");  
-	        BigDecimal nTrar = BigDecimal.valueOf(testeQualidade.getTrar() ).setScale(2, RoundingMode.HALF_UP); 		        
+	        if(testeQualidade.getIdfil().equals("05")) {
+			   faixaTrCntIni = new BigDecimal("0.1"); 
+	           faixaTrCntFim = new BigDecimal("999.9");  
+	            nTrCnt = BigDecimal.valueOf(testeQualidade.getTrcnt() ).setScale(1, RoundingMode.HALF_UP);
+	        }else {
+				   faixaTrCntIni = new BigDecimal("0.1"); 
+		           faixaTrCntFim = new BigDecimal("99.9");  
+		            nTrCnt = BigDecimal.valueOf(testeQualidade.getTrcnt() ).setScale(1, RoundingMode.HALF_UP);	        	   
+	        	   
+	           }
+	        if(testeQualidade.getIdfil().equals("05")) {	        
+				faixaTrarIni = new BigDecimal("0.01"); 
+		        faixaTrarFim = new BigDecimal("99.99");  
+		         nTrar = BigDecimal.valueOf(testeQualidade.getTrar() ).setScale(2, RoundingMode.HALF_UP); 
+	        }else {
+		        	
+					faixaTrarIni = new BigDecimal("0.01"); 
+			        faixaTrarFim = new BigDecimal("9.99");  
+			        nTrar = BigDecimal.valueOf(testeQualidade.getTrar() ).setScale(2, RoundingMode.HALF_UP); 		        	
+		        }
 	        
 			BigDecimal faixaSacIni = new BigDecimal("0.1"); 
 	        BigDecimal faixaSacFim = new BigDecimal("9.9");  
