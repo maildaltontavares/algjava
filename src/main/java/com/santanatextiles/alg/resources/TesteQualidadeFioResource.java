@@ -69,7 +69,7 @@ public class TesteQualidadeFioResource {
  	@RequestMapping(value="/insert", method=RequestMethod.POST)
  	public  ResponseEntity< ? > insert (@Valid @RequestBody  TesteQualidadeFioDTO testeQualidadeFioDTO){ 
  		try {
- 			TesteQualidadeFio testeQualidadeFio = service.insert(testeQualidadeFioDTO) ; 
+ 			Double testeQualidadeFio = service.insert(testeQualidadeFioDTO) ; 
 	 		return ResponseEntity.status(HttpStatus.OK).body(testeQualidadeFio);
 		} catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

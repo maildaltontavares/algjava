@@ -37,7 +37,7 @@ public class TesteQualidadeFioService {
 		}	
 		
 		@Transactional
-		public  TesteQualidadeFio  insert(TesteQualidadeFioDTO obj ){ 
+		public  Double  insert(TesteQualidadeFioDTO obj ){ 
 			
 			    Double novoCodigoAutomaticoCab = null; 
 			    TesteQualidadeFio testeCqFio = fromDTO(obj);  
@@ -65,7 +65,7 @@ public class TesteQualidadeFioService {
 				
 				
 				
-			    return testeCqFio;
+			    return novoCodigoAutomaticoCab;
 			 
 		}	
 		
@@ -80,7 +80,7 @@ public class TesteQualidadeFioService {
 			 
 			 TesteQualidadeFio testeCqFio = null;
 			 
-			 if(obj.getId()!=null) {  
+			 if(obj.getId()!=null || !obj.getId().equals(0)) {  
 			  	 
 			 	 testeCqFio = fromDTO(obj);   
 			 	 
