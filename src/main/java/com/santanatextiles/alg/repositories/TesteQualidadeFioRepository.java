@@ -37,7 +37,9 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
 		        " j3desc descTipoTeste,	" + 
 		        " J1ID id,         	" + 
 		        " J1DTINC dataInclusao ,	" + 
-		        " substr(J1CODMAQ,3,2) tipoMaquina 	" + 
+		        " substr(J1CODMAQ,3,2) tipoMaquina, 	" + 
+	    		" J1HORA hora, " +
+	    		" J1POSMAQ posicaoMaquina" +
 		        " from	" + 
 		        " cpf.cpfj1_dbf j1 	" + 
 		        " left join cpf.cpfb2_dbf b2 on b2.idfil = '01' and b2.b2cod = SUBSTR(J1CODMAQ,3,2)	" + 
@@ -90,7 +92,9 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
 	    		" J1USRINC," +
 	    		" J1DTINC," +
 	    		" J1USRALT," +
-	    		" J1DTALT " +
+	    		" J1DTALT, " +
+	    		" J1HORA, " +
+	    		" J1POSMAQ " +
 				" from cpf.cpfj1_dbf j1" + 
 	    		" where " +
 	    		" j1.idfil =  STL.FN_STL_IDFIL('CPFJ1',:idfil)     and " + 
@@ -101,7 +105,9 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
 				 " J1TURNO       = :turno                          and " + 
 				 " TRIM(J1ITEM)  = TRIM(:item)                     and " +
 				 " J1TPTEST      = :tipoTeste                      and " +
-			     " J1LADO        = :lado      " 
+				 " J1HORA        = :hora                           and " +
+				 " J1POSMAQ      = :posicaoMaquina                 and " +
+			     "( :lado  IS NULL     OR  J1LADO        = :lado)      " 
 	    		
 			,nativeQuery = true)	
             TesteQualidadeFio   buscaTesteQualidadeFioPorChave(
@@ -112,7 +118,9 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
             		@Param("lado") String lado,
             		@Param("turno") String turno,
             		@Param("item") String item,
-            		@Param("tipoTeste") String tipoTeste  
+            		@Param("tipoTeste") String tipoTeste,
+            		@Param("hora") Integer hora,  
+            		@Param("posicaoMaquina") String posicaoMaquina  
             		
             		) ;	    
 	    
@@ -132,11 +140,13 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
 	    		" J1LOTFIA," +
 	    		" J1ID," +
 	    		" J1ESTIRA," + 
-	    		" J1OBS, " + 
+	    		" J1OBS, " +  
 	    		" J1USRINC," +
 	    		" J1DTINC," +
-	    		" J1USRALT," +
-	    		" J1DTALT " +
+	    		" J1USRALT," + 
+	    		" J1DTALT, " +
+	    		" J1HORA, " +
+	    		" J1POSMAQ " +
 				" from cpf.cpfj1_dbf j1" + 
 	    		" where j1.idfil =  STL.FN_STL_IDFIL('CPFJ1',?1)"
 				,nativeQuery = true)

@@ -88,7 +88,13 @@ public class TesteQualidadeFio  implements Serializable {
 		private Date  dataAlteracao;
 		
 		@Column(name="J1OBS")
-		private String observacao;			
+		private String observacao;		
+		
+		@Column(name="J1HORA")
+		private Integer hora;	
+		
+		@Column(name="J1POSMAQ")
+		private String posicaoMaquina;			
 		
 		@ManyToOne 
 		@JoinColumnsOrFormulas({ 
@@ -109,7 +115,7 @@ public class TesteQualidadeFio  implements Serializable {
  
 		}    
 		
-		
+	/*	
 		public TesteQualidadeFio(Double id, String idfil, String tipoTesteFiacao, String dobradora, Date dataTeste,
 				String turno, String operador, String localFisico, String ladoMaquina, String codigoMaquina,
 				String item, String loteFiacao, Double estiragem, String usuarioInclusao, String usuarioAlteracao,
@@ -140,7 +146,8 @@ public class TesteQualidadeFio  implements Serializable {
 			this.testeQualidadeFioDetalheDTO = testeQualidadeFioDetalheDTO;
 		}
 
-
+*/
+		
 
 
 
@@ -149,6 +156,38 @@ public class TesteQualidadeFio  implements Serializable {
 			return id;
 		}
 
+
+		public TesteQualidadeFio(Double id, String idfil, String tipoTesteFiacao, String dobradora, Date dataTeste,
+			String turno, String operador, String localFisico, String ladoMaquina, String codigoMaquina, String item,
+			String loteFiacao, Double estiragem, String usuarioInclusao, String usuarioAlteracao, Date dataInclusao,
+			Date dataAlteracao, String observacao, Integer hora, String posicaoMaquina, TipoTesteCQFio fkTipoTesteCQio,
+			Set<TesteQualidadeFioDetalhe> testeQualidadeFioDetalhe,
+			Set<TesteQualidadeFioDetalheDTO> testeQualidadeFioDetalheDTO) {
+		super();
+		this.id = id;
+		this.idfil = idfil;
+		this.tipoTesteFiacao = tipoTesteFiacao;
+		this.dobradora = dobradora;
+		this.dataTeste = dataTeste;
+		this.turno = turno;
+		this.operador = operador;
+		this.localFisico = localFisico;
+		this.ladoMaquina = ladoMaquina;
+		this.codigoMaquina = codigoMaquina;
+		this.item = item;
+		this.loteFiacao = loteFiacao;
+		this.estiragem = estiragem;
+		this.usuarioInclusao = usuarioInclusao;
+		this.usuarioAlteracao = usuarioAlteracao;
+		this.dataInclusao = dataInclusao;
+		this.dataAlteracao = dataAlteracao;
+		this.observacao = observacao;
+		this.hora = hora;
+		this.posicaoMaquina = posicaoMaquina;
+		this.fkTipoTesteCQio = fkTipoTesteCQio;
+		this.testeQualidadeFioDetalhe = testeQualidadeFioDetalhe;
+		this.testeQualidadeFioDetalheDTO = testeQualidadeFioDetalheDTO;
+	}
 
 		public void setId(Double id) {
 			this.id = id;
@@ -352,8 +391,24 @@ public class TesteQualidadeFio  implements Serializable {
 
 		public void setTesteQualidadeFioDetalheDTO(Set<TesteQualidadeFioDetalheDTO> testeQualidadeFioDetalheDTO) {
 			this.testeQualidadeFioDetalheDTO = testeQualidadeFioDetalheDTO;
+		} 
+		
+
+		public Integer getHora() {
+			return hora;
 		}
 
+		public void setHora(Integer hora) {
+			this.hora = hora;
+		}
+
+		public String getPosicaoMaquina() {
+			return posicaoMaquina;
+		}
+
+		public void setPosicaoMaquina(String posicaoMaquina) {
+			this.posicaoMaquina = posicaoMaquina;
+		}
 
 		@Override
 		public int hashCode() {

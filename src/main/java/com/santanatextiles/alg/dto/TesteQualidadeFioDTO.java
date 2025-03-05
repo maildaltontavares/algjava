@@ -36,7 +36,9 @@ public class TesteQualidadeFioDTO implements Serializable {
 	private String dataTesteParam;
 	private String dataInicial;	
 	private String dataFinal;
-	private String tipoMaquina;	
+	private String tipoMaquina;	 
+	private Integer hora;	 
+	private String posicaoMaquina;	
 	
 	
 	public TesteQualidadeFioDTO() { 
@@ -63,7 +65,7 @@ public class TesteQualidadeFioDTO implements Serializable {
 
 
 
-
+/*
 	public TesteQualidadeFioDTO(Double id, String idfil, String tipoTesteFiacao, String dobradora, Date dataTeste,
 			String turno, String operador, String localFisico, String ladoMaquina, String codigoMaquina, String item,
 			String loteFiacao, Double estiragem, String usuarioInclusao, String usuarioAlteracao, Date dataInclusao,
@@ -96,14 +98,79 @@ public class TesteQualidadeFioDTO implements Serializable {
 	}
 
 
+*/ 
 
 
+
+
+
+
+	public TesteQualidadeFioDTO(Double id, String idfil, String tipoTesteFiacao, String dobradora, Date dataTeste,
+		String turno, String operador, String localFisico, String ladoMaquina, String codigoMaquina, String item,
+		String loteFiacao, Double estiragem, String usuarioInclusao, String usuarioAlteracao, Date dataInclusao,
+		Date dataAlteracao, Set<TesteQualidadeFioDetalheDTO> testeQualidadeFioDetalheDTO, String observacao,
+		String dataTesteParam, String dataInicial, String dataFinal, String tipoMaquina, Integer hora,
+		String posicaoMaquina) {
+	super();
+	this.id = id;
+	this.idfil = idfil;
+	this.tipoTesteFiacao = tipoTesteFiacao;
+	this.dobradora = dobradora;
+	this.dataTeste = dataTeste;
+	this.turno = turno;
+	this.operador = operador;
+	this.localFisico = localFisico;
+	this.ladoMaquina = ladoMaquina;
+	this.codigoMaquina = codigoMaquina;
+	this.item = item;
+	this.loteFiacao = loteFiacao;
+	this.estiragem = estiragem;
+	this.usuarioInclusao = usuarioInclusao;
+	this.usuarioAlteracao = usuarioAlteracao;
+	this.dataInclusao = dataInclusao;
+	this.dataAlteracao = dataAlteracao;
+	this.testeQualidadeFioDetalheDTO = testeQualidadeFioDetalheDTO;
+	this.observacao = observacao;
+	this.dataTesteParam = dataTesteParam;
+	this.dataInicial = dataInicial;
+	this.dataFinal = dataFinal;
+	this.tipoMaquina = tipoMaquina;
+	this.hora = hora;
+	this.posicaoMaquina = posicaoMaquina;
+}
 
 
 
 	public Double getId() {
 		return id;
 	}
+	
+	public Integer getHora() {
+		return hora;
+	}
+
+
+
+
+	public void setHora(Integer hora) {
+		this.hora = hora;
+	}
+
+
+
+
+	public String getPosicaoMaquina() {
+		return posicaoMaquina;
+	}
+
+
+
+
+	public void setPosicaoMaquina(String posicaoMaquina) {
+		this.posicaoMaquina = posicaoMaquina;
+	}
+
+
 
 
 	public void setId(Double id) {

@@ -5,6 +5,8 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.santanatextiles.alg.projections.TesteQualidadeFioProjection;
 
+import jakarta.persistence.Column;
+
 public class TesteQualidadeFioProjectionDTO {
 
 	
@@ -22,6 +24,8 @@ public class TesteQualidadeFioProjectionDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR",timezone="Brazil/East")
 	Date    dataInclusao; 
 	String tipoMaquina;
+    Integer hora;	
+	String posicaoMaquina;		
 	
 	
 	public TesteQualidadeFioProjectionDTO() {
@@ -43,17 +47,17 @@ public class TesteQualidadeFioProjectionDTO {
 		this.dataTeste =  projection.getDataTeste(); 
 		this.dataInclusao =  projection.getDataInclusao(); 		
 		this.tipoMaquina =  projection.getTipoMaquina(); 	
+		this.hora = projection.getHora();
+		this.posicaoMaquina = projection.getPosicaoMaquina();
 
 
 	}	
  
-
-	 
-
+ 
 
 	public TesteQualidadeFioProjectionDTO(String idfil, String loteFiacao, String turno, String descTipoMaquina,
 			String maquina, String lado, String item, String descTipoTeste, Double id, Date dataTeste,
-			Date dataInclusao, String tipoMaquina) {
+			Date dataInclusao, String tipoMaquina, Integer hora, String posicaoMaquina) {
 		super();
 		this.idfil = idfil;
 		this.loteFiacao = loteFiacao;
@@ -67,6 +71,8 @@ public class TesteQualidadeFioProjectionDTO {
 		this.dataTeste = dataTeste;
 		this.dataInclusao = dataInclusao;
 		this.tipoMaquina = tipoMaquina;
+		this.hora = hora;
+		this.posicaoMaquina = posicaoMaquina;
 	}
 
 
@@ -166,6 +172,26 @@ public class TesteQualidadeFioProjectionDTO {
 
 	public void setTipoMaquina(String tipoMaquina) {
 		this.tipoMaquina = tipoMaquina;
+	}
+
+
+	public Integer getHora() {
+		return hora;
+	}
+
+
+	public void setHora(Integer hora) {
+		this.hora = hora;
+	}
+
+
+	public String getPosicaoMaquina() {
+		return posicaoMaquina;
+	}
+
+
+	public void setPosicaoMaquina(String posicaoMaquina) {
+		this.posicaoMaquina = posicaoMaquina;
 	} 
 	
 	

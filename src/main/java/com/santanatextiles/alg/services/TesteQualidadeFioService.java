@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santanatextiles.alg.domain.TesteQualidadeFio;
-import com.santanatextiles.alg.domain.TesteQualidadeFioDetalhe;
 import com.santanatextiles.alg.dto.TesteQualidadeFioDTO;
 import com.santanatextiles.alg.dto.TesteQualidadeFioDetalheDTO;
 import com.santanatextiles.alg.dto.TesteQualidadeFioProjectionDTO;
@@ -29,7 +28,12 @@ public class TesteQualidadeFioService {
 		private TesteQualidadeFioRepository repo;	  
 		
 		@Autowired
-		private TesteQualidadeFioDetalheService serviceDetalhe;			
+		private TesteQualidadeFioDetalheService serviceDetalhe;		
+		
+		@Autowired
+		private MaquinaService maquinaService;				
+		
+		private ArrayList<String> msg = new ArrayList<>(); 
 		 
 		public List<TesteQualidadeFio> buscaTesteQualidadeFioPorParametros(String filial ){ 
 			 List<TesteQualidadeFio> obj = repo.buscaTesteQualidadeFioPorParametros(filial ) ;	  
@@ -37,7 +41,13 @@ public class TesteQualidadeFioService {
 		}	
 		
 		@Transactional
-		public  Double  insert(TesteQualidadeFioDTO obj ){ 
+		public  Double  insert(TesteQualidadeFioDTO obj ){  
+			
+			   verificaEntidades(obj); 
+				
+				if (!this.msg.isEmpty()) {
+					throw new ObjectNotFoundException(String.join(",", this.msg)); 
+				}	 
 			
 			    Double novoCodigoAutomaticoCab = null; 
 			    TesteQualidadeFio testeCqFio = fromDTO(obj);  
@@ -56,7 +66,9 @@ public class TesteQualidadeFioService {
 					
 					TesteQualidadeFioDetalheDTO resultadoTeste = it.next();
 
-					TesteQualidadeFioDetalhe ItemDetalhe = serviceDetalhe.insereResultado(resultadoTeste,novoCodigoAutomaticoCab) ;
+					//TesteQualidadeFioDetalhe ItemDetalhe = serviceDetalhe.insereResultado(resultadoTeste,novoCodigoAutomaticoCab) ;
+					
+					serviceDetalhe.insereResultado(resultadoTeste,novoCodigoAutomaticoCab) ;
 					
 
 				}
@@ -99,7 +111,9 @@ public class TesteQualidadeFioService {
 				
 				TesteQualidadeFioDetalheDTO resultadoTeste = it.next();
 
-				TesteQualidadeFioDetalhe ItemDetalhe = serviceDetalhe.insereResultado(resultadoTeste,obj.getId());
+				//TesteQualidadeFioDetalhe ItemDetalhe = serviceDetalhe.insereResultado(resultadoTeste,obj.getId());
+				
+				serviceDetalhe.insereResultado(resultadoTeste,obj.getId());
 				
 
 			}			 
@@ -113,18 +127,20 @@ public class TesteQualidadeFioService {
 		
 		
 		
-		public  TesteQualidadeFio  buscaTesteQualidadeFioPorChave(TesteQualidadeFioDTO obj ){ 
+		public  TesteQualidadeFio  buscaTesteQualidadeFioPorChave(TesteQualidadeFioDTO obj )  throws ParseException{ 
 			
 			 TesteQualidadeFio testeCqFio;
 			 
 			 if(obj.getId()==null || obj.getId().equals(0.0) ) {
 				 
 				 
-					if(obj.getLadoMaquina()==null) {
-						obj.setLadoMaquina("U"); 
-					} 				 
+					//if(obj.getLadoMaquina()==null) {
+					//	obj.setLadoMaquina("U"); 
+					//} 				 
 				 
-				 
+					
+			     obj.setPosicaoMaquina("9999999999");
+			     
 			     testeCqFio = repo.buscaTesteQualidadeFioPorChave(
 					 obj.getIdfil(),
 					 obj.getCodigoMaquina().substring(2,4),
@@ -133,7 +149,9 @@ public class TesteQualidadeFioService {
 					 obj.getLadoMaquina(),
 					 obj.getTurno(),
 					 obj.getItem(),
-					 obj.getTipoTesteFiacao()
+					 obj.getTipoTesteFiacao(),
+					 obj.getHora(),
+					 obj.getPosicaoMaquina()
 				  
 					 ) ;	 
 			 }else {
@@ -187,6 +205,9 @@ public class TesteQualidadeFioService {
 				testeQualidadeFioEnd.setDataInclusao(testeQualidadeFioEndDTO.getDataInclusao());  
 				testeQualidadeFioEnd.setTipoMaquina(testeQualidadeFioEndDTO.getTipoMaquina());  
 				
+				testeQualidadeFioEnd.setHora(testeQualidadeFioEndDTO.getHora());
+				testeQualidadeFioEnd.setPosicaoMaquina(testeQualidadeFioEndDTO.getPosicaoMaquina());
+				
 				aTesteQualidadeFioEnd.add(testeQualidadeFioEnd);
 
 			}
@@ -220,7 +241,11 @@ public class TesteQualidadeFioService {
 			oTesteQualidadeFio.setEstiragem(obj.getEstiragem());
 			oTesteQualidadeFio.setUsuarioInclusao(obj.getUsuarioInclusao());
 			oTesteQualidadeFio.setUsuarioAlteracao(obj.getUsuarioAlteracao());    
-			oTesteQualidadeFio.setObservacao(obj.getObservacao());  
+			oTesteQualidadeFio.setObservacao(obj.getObservacao());    
+			oTesteQualidadeFio.setHora(obj.getHora()); 
+			oTesteQualidadeFio.setPosicaoMaquina("9999999999");  
+			
+	 
 			
 			if(obj.getLadoMaquina()==null) {
 				oTesteQualidadeFio.setLadoMaquina("U"); 
@@ -246,6 +271,47 @@ public class TesteQualidadeFioService {
 		}			
 		
 		 
-	
+		
+		 private void verificaEntidades(TesteQualidadeFioDTO obj) {			 
+			    
+			 
+			    String pLado = null;
+			    this.msg.clear();
+			    
+			    if(obj.getTipoMaquina().equals("04")  ) {
+				
+			    	if(obj.getLadoMaquina().equals("A") || obj.getLadoMaquina().equals("B")) {
+				    	pLado = "D";
+				    }else if(obj.getLadoMaquina().equals("U") ) {
+				    	pLado = "U"; 
+				    }else {
+				    	pLado = null; 
+				    	this.msg.add("Lado maquina invalido");
+				    }
+			    	
+				 
+			    }
+			    
+				try {
+					
+					if(obj.getTipoMaquina().equals("04")  ) {
+						if(pLado!=null) {
+							if(maquinaService.buscaMaquinaPorCodigoLado(obj.getIdfil(), obj.getCodigoMaquina(), pLado) == null) {
+								  this.msg.add("Máquina/Lado não encontrado");
+						    }   
+						}
+					}		
+					
+	 
+					 
+				}			
+				catch (Exception e) {			
+				}
+				return; 			 
+		 }			
+		
+		
+		
+	// Maquina buscaMaquinaPorCodigoLado(String filial, String maquina, String lado) 
 
 }

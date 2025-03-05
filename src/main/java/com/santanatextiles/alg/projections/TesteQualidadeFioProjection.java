@@ -15,5 +15,7 @@ public interface TesteQualidadeFioProjection {
 	Date getDataTeste(); 
 	Date getDataInclusao(); 
 	String getTipoMaquina();
+	Integer getHora(); 
+	String getPosicaoMaquina() ; 
 	
 }
