@@ -39,7 +39,7 @@ public class ProducaoAberturaResource {
  	
  	@CrossOrigin
  	@RequestMapping(value="/pesquisabaixa/{filial}/{mistura}", method=RequestMethod.GET)
- 	public  ResponseEntity< ? > buscaProdutorPorParametros (@PathVariable String filial,@PathVariable String mistura){ 
+ 	public  ResponseEntity< ? > buscaProducaoAberturaPorFilialMistura (@PathVariable String filial,@PathVariable String mistura){ 
  		try {
  			List<ProducaoAbertura>  producaoAbertura = service.buscaProducaoAberturaPorFilialMistura(filial, mistura );
 	 		return ResponseEntity.status(HttpStatus.OK).body(producaoAbertura);

@@ -48,7 +48,7 @@ public interface MisturaPadraoProjection {
 	 String getM4TPQ();
 	 String getM4CLASQ();
 	 String getM4CORTEZ(); 
-	
+	 Integer getTotTeste();
 	
 		 
 	

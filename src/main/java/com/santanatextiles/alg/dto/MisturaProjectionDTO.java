@@ -51,6 +51,7 @@ public class MisturaProjectionDTO {
 	String M4TPQ;
 	String M4CLASQ; 
 	String M4CORTEZ; 
+	Integer totTeste;
 	
 	public MisturaProjectionDTO() {}
 	
@@ -101,18 +102,24 @@ public class MisturaProjectionDTO {
 		this.M7DESC 	 = projection.getM7DESC(); 
 		this.M4TPQ       = projection.getM4TPQ(); 
 		this.M4CLASQ     = projection.getM4CLASQ();
-		this.M4CORTEZ     = projection.getM4CORTEZ(); 
+		this.M4CORTEZ    = projection.getM4CORTEZ(); 
+		this.totTeste    = projection.getTotTeste();
 	}	 
-	
+	 
 	 
 	
+	
+	
+	
+	
+	 
 	public MisturaProjectionDTO(String fORN, String pRODUT, String cOD_PROD, String lOTE, String pI, Double eSTOQUE,
 			Double frd_reserv, Double qTDE, Double disponivel, Double total_mist_util, Double m4id, String m4nf,
 			String m4descf, String m4item, String m4um, Double m4pesmed, String m4proced, String m4tam, String m4qual,
 			String m4forn, Double eLG, Double mAT, Double mIC, Double mST, Double sF, Double sIC, Double sTR,
 			Double tIPO, Double uI, Double sAC, Double tRID, Double pIM, Double sC, Double m4b, Double m4rs,
 			Double m4trar, Double m4trcnt, Double m4uhml, String mistura, String m4color, String m4tpmic, String m4dest,
-			String m7desc, String m4tpq, String m4clasq, String m4cortez) {
+			String m7desc, String m4tpq, String m4clasq, String m4cortez, Integer totTeste) {
 		super();
 		FORN = fORN;
 		PRODUT = pRODUT;
@@ -160,6 +167,7 @@ public class MisturaProjectionDTO {
 		M4TPQ = m4tpq;
 		M4CLASQ = m4clasq;
 		M4CORTEZ = m4cortez;
+		this.totTeste = totTeste;
 	}
 
 	public String getFORN() {
@@ -529,9 +537,14 @@ public class MisturaProjectionDTO {
 	public void setM4CORTEZ(String m4cortez) {
 		M4CORTEZ = m4cortez;
 	}
-	
-	
-	
+
+	public Integer getTotTeste() {
+		return totTeste;
+	}
+
+	public void setTotTeste(Integer totTeste) {
+		this.totTeste = totTeste;
+	} 
 	
 	
 

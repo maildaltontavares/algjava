@@ -46,8 +46,8 @@ public interface TesteQualidadeFioRepository extends JpaRepository<TesteQualidad
 		        " left join cpf.cpfj3_dbf j3 on  j1.idfil = j3.idfil and J1TPTEST = j3.J3COD	" + 
 		        "  where	" + 
 		        " j1.idfil =  STL.FN_STL_IDFIL('CPFJ1',:idfil)    and     	" + 
-		  	    " (:dataInicial  IS NULL     OR TO_CHAR(J1DTINC,'YYYYMMDD') >= :dataInicial )   and " +
-			    " (:dataFinal    IS NULL     OR TO_CHAR(J1DTINC,'YYYYMMDD') <= :dataFinal )   and " + 	
+		  	    " (:dataInicial  IS NULL     OR TO_CHAR(J1DTTEST,'YYYYMMDD') >= :dataInicial )   and " +
+			    " (:dataFinal    IS NULL     OR TO_CHAR(J1DTTEST,'YYYYMMDD') <= :dataFinal )   and " + 	
 			    " (:tipoMaquina  IS NULL     OR substr(J1CODMAQ,3,2) = :tipoMaquina) and  " + 
 			    " (:lote         IS NULL     OR J1LOTFIA  =  :lote  )    and " +
 			    " (:turno        IS NULL     OR J1TURNO = :turno  )    and " +

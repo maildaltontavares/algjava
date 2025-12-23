@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ import com.santanatextiles.alg.domain.EstoqueMP;
 import com.santanatextiles.alg.domain.Movimento;
 import com.santanatextiles.alg.domain.MovimentoItem;
 import com.santanatextiles.alg.domain.TesteQualidade;
+import com.santanatextiles.alg.dto.IdLoteDocumentoProjectionDTO;
 import com.santanatextiles.alg.dto.MovimentoItemDTO;
 import com.santanatextiles.alg.dto.SaldoIdMovtoDTO;
+import com.santanatextiles.alg.projections.IdLoteDocumentoProjection;
 import com.santanatextiles.alg.repositories.MovimentoItemRepository;
 import com.santanatextiles.alg.resources.exception.ObjectNotFoundException; 
 	
@@ -511,7 +514,59 @@ public class MovimentoItemService {
 			return movimentoItem; 
 			
 		}
-		 
+		  
+	    
+	    
+		public List<IdLoteDocumentoProjectionDTO> pesquisaIdLoteDoc(IdLoteDocumentoProjectionDTO params ){ 
+			
+			List<IdLoteDocumentoProjection> saldoPesquisaIdLoteDoc = repo.pesquisaIdLoteDoc(params.getIdfil(),params.getTipoMovimento(),params.getNmForn(),params.getNf(),params.getProdutor(),params.getLoteForn(),params.getItem(),params.getId()); 
+			List<IdLoteDocumentoProjectionDTO> listaPesquisaId = saldoPesquisaIdLoteDoc.stream().map(x-> new IdLoteDocumentoProjectionDTO(x)).toList();   
+			
+			List<IdLoteDocumentoProjectionDTO> saldoPesquisaIdLtDoc =  new ArrayList<>(); 
+			 
+			
+			for (IdLoteDocumentoProjectionDTO idLoteDocumentoProjectionDTO : listaPesquisaId) {
+				
+				IdLoteDocumentoProjectionDTO dadosId = new IdLoteDocumentoProjectionDTO();
+				
+				
+				dadosId.setIdfil(idLoteDocumentoProjectionDTO.getIdfil());
+				dadosId.setId(idLoteDocumentoProjectionDTO.getId());
+				dadosId.setIdMov(idLoteDocumentoProjectionDTO.getIdMov());
+				
+				dadosId.setNf(idLoteDocumentoProjectionDTO.getNf());
+				dadosId.setProdutor(idLoteDocumentoProjectionDTO.getProdutor());
+				dadosId.setLoteForn(idLoteDocumentoProjectionDTO.getLoteForn());
+				dadosId.setNmForn(idLoteDocumentoProjectionDTO.getNmForn());
+				dadosId.setDtEmissao(idLoteDocumentoProjectionDTO.getDtEmissao());
+				dadosId.setDtMovimento(idLoteDocumentoProjectionDTO.getDtMovimento());
+				
+				dadosId.setTipoMovimento(idLoteDocumentoProjectionDTO.getTipoMovimento());
+				dadosId.setItem(idLoteDocumentoProjectionDTO.getItem());
+				dadosId.setDescItem(idLoteDocumentoProjectionDTO.getDescItem());
+				dadosId.setQtde(idLoteDocumentoProjectionDTO.getQtde());
+				dadosId.setPeso(idLoteDocumentoProjectionDTO.getPeso()); 
+				
+				dadosId.setCodProdutor(idLoteDocumentoProjectionDTO.getCodProdutor()); 
+				dadosId.setCodFornecedor(idLoteDocumentoProjectionDTO.getCodFornecedor()); 
+				dadosId.setNomeFornecedor(idLoteDocumentoProjectionDTO.getNomeFornecedor()); 
+				dadosId.setNomeRedFornecedor(idLoteDocumentoProjectionDTO.getNomeRedFornecedor()); 
+				
+				
+				
+				saldoPesquisaIdLtDoc.add(dadosId);
+				 		
+	         }	 
+		   
+			  return saldoPesquisaIdLtDoc;
+		}		    
+	    
+	    		
+		
+		
+		
+		
+		
 		
 	 
 		

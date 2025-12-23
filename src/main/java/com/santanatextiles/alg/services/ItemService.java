@@ -16,6 +16,7 @@ import com.santanatextiles.alg.domain.ItemId;
 import com.santanatextiles.alg.dto.ItemFioProjectionDTO;
 import com.santanatextiles.alg.projections.FioProjection;
 import com.santanatextiles.alg.repositories.ItemRepository;
+import com.santanatextiles.alg.resources.exception.ObjectNotFoundException;
 import com.santanatextiles.alg.resources.utils.URL;
  
 
@@ -47,7 +48,7 @@ public class ItemService {
 	}
 	
 	
-	 //public List<MisturaProjectionDTO> buscaEstoqueMistura( String idfil , List<String>  idFardosSelecionados) throws ParseException{
+	
 	 public List<ItemFioProjectionDTO> buscaFioPorDescricao( String idfil , String descricao ) throws ParseException{  
 		 
 		    //List<MisturaPadraoProjection> saldoPesquisaEstoque; 
@@ -74,6 +75,10 @@ public class ItemService {
 				elemento.setDescricao(itemLista.getDescricao()); 
 				elemento.setTitulo(itemLista.getTitulo()); 
 				elemento.setClasseMaterial(itemLista.getClasseMaterial());
+				elemento.setTipoMaquina(itemLista.getTipoMaquina());				
+				elemento.setToleranciaInferior(itemLista.getToleranciaInferior());
+				elemento.setToleranciaSuperior(itemLista.getToleranciaSuperior());
+				
 				elemento.setComposicao(itemLista.getComposicao());   
 				
 				listaItemFinal.add(elemento);
@@ -110,6 +115,9 @@ public class ItemService {
 				elemento.setTitulo(itemLista.getTitulo()); 
 				elemento.setClasseMaterial(itemLista.getClasseMaterial());
 				elemento.setComposicao(itemLista.getComposicao());   
+				elemento.setTipoMaquina(itemLista.getTipoMaquina());				
+				elemento.setToleranciaInferior(itemLista.getToleranciaInferior());
+				elemento.setToleranciaSuperior(itemLista.getToleranciaSuperior());
 				
 				listaItemFinal.add(elemento);
 			 
@@ -118,8 +126,50 @@ public class ItemService {
 			  return listaItemFinal;
 	}		 
 	
-	
+	 public List<ItemFioProjectionDTO> buscaFioPorCodigoTipoMaquina( String idfil , String codigo , String tipoMaquina) throws ObjectNotFoundException,ParseException{ 
+	 
+		    List<ItemFioProjectionDTO> listaItemProj =  buscaFioPorCodigo(idfil,codigo);
+		    List<ItemFioProjectionDTO> listaItemFinal =  new ArrayList<>();
+		    
+		    
+		    // Tipo Maquina 07 usa os mesmos fios do tipo máquina tipo 06
+		    if (tipoMaquina.equals("07")){
+		    	tipoMaquina = "06";		    	
+		    }
+		 
+			for (ItemFioProjectionDTO itemLista : listaItemProj) {  
+				
+				
+				if(itemLista.getTipoMaquina().equals(tipoMaquina)) {
+					
+					ItemFioProjectionDTO elemento = new ItemFioProjectionDTO();
+					 
+					elemento.setIdfil(itemLista.getIdfil()); 
+					elemento.setCodigo(itemLista.getCodigo()); 
+					elemento.setCodMaterial(itemLista.getCodMaterial()); 
+					elemento.setLocalizacao(itemLista.getLocalizacao()); 
+					elemento.setDescricao(itemLista.getDescricao()); 
+					elemento.setTitulo(itemLista.getTitulo()); 
+					elemento.setClasseMaterial(itemLista.getClasseMaterial());
+					elemento.setComposicao(itemLista.getComposicao());   
+					elemento.setTipoMaquina(itemLista.getTipoMaquina());				
+					elemento.setToleranciaInferior(itemLista.getToleranciaInferior());
+					elemento.setToleranciaSuperior(itemLista.getToleranciaSuperior());
+					
+					listaItemFinal.add(elemento);
+				
+				}else {
+				  
+					throw new ObjectNotFoundException("Item incompatível com tipo máquina.");
+					
+				}
+			 
+	         }			 
+ 
 	    
-    
+		 return listaItemFinal;
+		 
+		 
+	 }
     
 }    

@@ -15,7 +15,7 @@ public class ProdutorService {
 		@Autowired
 		private ProdutorRepository repo;		
 		
-		@Value("${spring.datasource.url}")
+		@Value("${spring.datasource.url}")  
 		private String JDBC_URL;
 		
 		@Value("${spring.datasource.username}")

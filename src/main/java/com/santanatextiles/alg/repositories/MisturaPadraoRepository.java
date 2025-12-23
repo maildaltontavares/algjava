@@ -140,7 +140,7 @@ public interface MisturaPadraoRepository extends JpaRepository<MisturaPadrao, Mi
 	    String buscaNovoIdMistura(String filial) ; 
  
     @Query(value =  
-    "    select max(M2SEQMST)   total " +   
+    "    select max(to_number(M2SEQMST))    total " +   
     "    from   " +
 	"    cpft1_dbf t1 " +   
     "    inner join cpf.cpfm2_dbf m2 on m2.idfil = t1.idfil and t1.t1mist = m2.m2mist " +  

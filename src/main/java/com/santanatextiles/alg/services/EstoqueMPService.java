@@ -307,6 +307,7 @@ public class EstoqueMPService {
 				saldoPesquisaMist.setM4TPMIC(saldoPesquisaMistPDTO.getM4TPMIC());
 				saldoPesquisaMist.setM4DEST(saldoPesquisaMistPDTO.getM4DEST());
 				saldoPesquisaMist.setM4CORTEZ(saldoPesquisaMistPDTO.getM4CORTEZ());   
+				saldoPesquisaMist.setTotTeste(saldoPesquisaMistPDTO.getTotTeste());
 				
 				saldoPesquisaMistLista.add(saldoPesquisaMist);
 			 
@@ -439,6 +440,7 @@ public class EstoqueMPService {
 				saldoPesquisaEst.setM4DEST(saldoPesquisaEstPDTO.getM4DEST());
 				saldoPesquisaEst.setM7DESC(saldoPesquisaEstPDTO.getM7DESC());   
 				saldoPesquisaEst.setM4CORTEZ(saldoPesquisaEstPDTO.getM4CORTEZ());
+				saldoPesquisaEst.setTotTeste(saldoPesquisaEstPDTO.getTotTeste());
 				
 				saldoPesquisaEstLista.add(saldoPesquisaEst);
 			 

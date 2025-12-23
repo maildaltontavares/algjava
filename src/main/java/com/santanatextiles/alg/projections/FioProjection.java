@@ -10,4 +10,7 @@ public interface FioProjection {
 	Float   getTitulo();
 	Integer getClasseMaterial();
 	String  getComposicao();
+	String  getTipoMaquina();
+	Float   getToleranciaInferior();
+	Float   getToleranciaSuperior();	
 } 

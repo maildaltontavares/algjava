@@ -11,17 +11,26 @@ public class ItemFioProjectionDTO {
 	String  descricao;
 	Float   titulo;
 	Integer classeMaterial;
-	String composicao; 
+	String  composicao;
+	String  tipoMaquina;
+	Float   toleranciaInferior;
+	Float   toleranciaSuperior;
 	
 	
+
 	public ItemFioProjectionDTO() {
 	 
 	}
  
 
+ 
+	
+	
+	
 
 	public ItemFioProjectionDTO(String idfil, String codigo, Integer codMaterial, Integer localizacao, String descricao,
-			Float titulo, Integer classeMaterial, String composicao) {
+			Float titulo, Integer classeMaterial, String composicao, String tipoMaquina, Float toleranciaInferior,
+			Float toleranciaSuperior) {
 		super();
 		this.idfil = idfil;
 		this.codigo = codigo;
@@ -31,10 +40,16 @@ public class ItemFioProjectionDTO {
 		this.titulo = titulo;
 		this.classeMaterial = classeMaterial;
 		this.composicao = composicao;
+		this.tipoMaquina = tipoMaquina;
+		this.toleranciaInferior = toleranciaInferior;
+		this.toleranciaSuperior = toleranciaSuperior;
 	}
-	
-	
-	
+
+
+
+
+
+
 
 	public ItemFioProjectionDTO(FioProjection projection ) { 
 		
@@ -46,6 +61,9 @@ public class ItemFioProjectionDTO {
 		this.titulo = projection.getTitulo();
 		this.classeMaterial = projection.getClasseMaterial();
 		this.composicao = projection.getComposicao();  
+		this.tipoMaquina = projection.getTipoMaquina();
+		this.toleranciaInferior = projection.getToleranciaInferior();
+		this.toleranciaSuperior = projection.getToleranciaSuperior();
 	
 	}
 	
@@ -144,6 +162,66 @@ public class ItemFioProjectionDTO {
 
 	public void setClasseMaterial(Integer classeMaterial) {
 		this.classeMaterial = classeMaterial;
+	}
+
+
+
+
+
+
+
+	public String getTipoMaquina() {
+		return tipoMaquina;
+	}
+
+
+
+
+
+
+
+	public void setTipoMaquina(String tipoMaquina) {
+		this.tipoMaquina = tipoMaquina;
+	}
+
+
+
+
+
+
+
+	public Float getToleranciaInferior() {
+		return toleranciaInferior;
+	}
+
+
+
+
+
+
+
+	public void setToleranciaInferior(Float toleranciaInferior) {
+		this.toleranciaInferior = toleranciaInferior;
+	}
+
+
+
+
+
+
+
+	public Float getToleranciaSuperior() {
+		return toleranciaSuperior;
+	}
+
+
+
+
+
+
+
+	public void setToleranciaSuperior(Float toleranciaSuperior) {
+		this.toleranciaSuperior = toleranciaSuperior;
 	}
 	
 	

@@ -379,8 +379,13 @@ public class MisturaPadraoService {
 	    }  
 	    
 	    String novaSequencia = String.format("%02d",  novaSeq );
-
-	    String nf = misturaDTO.getMistura().substring(3)  + '/' + novaSequencia ;
+	    String nf;
+	    if(novaSeq>=100) {	    
+	       nf = misturaDTO.getMistura().substring(4)  + '/' + novaSequencia;
+	    }
+	    else {
+	    	nf = misturaDTO.getMistura().substring(3)  + '/' + novaSequencia ;	    	   
+	    }
 		
 		MovimentoDTO movimento = new MovimentoDTO();
 

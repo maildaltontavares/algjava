@@ -38,7 +38,9 @@ public class TesteQualidadeFioDTO implements Serializable {
 	private String dataFinal;
 	private String tipoMaquina;	 
 	private Integer hora;	 
-	private String posicaoMaquina;	
+	private String posicaoMaquina;
+	private Double tituloFio;
+	private Double mediaTitulo;
 	
 	
 	public TesteQualidadeFioDTO() { 
@@ -100,17 +102,19 @@ public class TesteQualidadeFioDTO implements Serializable {
 
 */ 
 
+ 
 
 
-
-
-
+	public Double getId() {
+		return id;
+	}
+	
 	public TesteQualidadeFioDTO(Double id, String idfil, String tipoTesteFiacao, String dobradora, Date dataTeste,
 		String turno, String operador, String localFisico, String ladoMaquina, String codigoMaquina, String item,
 		String loteFiacao, Double estiragem, String usuarioInclusao, String usuarioAlteracao, Date dataInclusao,
 		Date dataAlteracao, Set<TesteQualidadeFioDetalheDTO> testeQualidadeFioDetalheDTO, String observacao,
 		String dataTesteParam, String dataInicial, String dataFinal, String tipoMaquina, Integer hora,
-		String posicaoMaquina) {
+		String posicaoMaquina, Double tituloFio, Double mediaTitulo) {
 	super();
 	this.id = id;
 	this.idfil = idfil;
@@ -137,14 +141,13 @@ public class TesteQualidadeFioDTO implements Serializable {
 	this.tipoMaquina = tipoMaquina;
 	this.hora = hora;
 	this.posicaoMaquina = posicaoMaquina;
+	this.tituloFio = tituloFio;
+	this.mediaTitulo = mediaTitulo;
 }
 
 
 
-	public Double getId() {
-		return id;
-	}
-	
+
 	public Integer getHora() {
 		return hora;
 	}
@@ -429,6 +432,34 @@ public class TesteQualidadeFioDTO implements Serializable {
 
 	public void setTipoMaquina(String tipoMaquina) {
 		this.tipoMaquina = tipoMaquina;
+	}
+
+
+
+
+	public Double getTituloFio() {
+		return tituloFio;
+	}
+
+
+
+
+	public void setTituloFio(Double tituloFio) {
+		this.tituloFio = tituloFio;
+	}
+
+
+
+
+	public Double getMediaTitulo() {
+		return mediaTitulo;
+	}
+
+
+
+
+	public void setMediaTitulo(Double mediaTitulo) {
+		this.mediaTitulo = mediaTitulo;
 	}
 
 	

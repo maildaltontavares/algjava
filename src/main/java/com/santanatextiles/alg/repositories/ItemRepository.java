@@ -39,7 +39,7 @@ public interface ItemRepository extends JpaRepository<Item , ItemId> {
 		+ "ORDER BY i.material.descricao")
         List<Item> procuraPorDescricao(Long localizacao , Long idfil,  String descricao);
 		
- 
+ /*
 		@Query(value=  
 				"select   " + 
 				" trim(to_char(item.D0422_ID_ITEM,'0000000')) codigo , " + 
@@ -86,9 +86,42 @@ public interface ItemRepository extends JpaRepository<Item , ItemId> {
 				" order by mat.D0421_NOME,mat.D0421_NOME_DIMENSAO                    " 
 	    		,nativeQuery = true)   
 		        List<FioProjection> buscaFio(@Param("idfil") int idfil,@Param("descricaoFio") String descricaoFio,@Param("codigo") String codigo) ;
-     
+*/     
 		 
 		 
+		 
+		
+		@Query(value=  
+				"select   " + 
+				" trim(to_char(item.D0422_ID_ITEM,'0000000')) codigo , " + 
+				" item.D0421_ID_MATERIAL  codMaterial , " + 
+				" trim(to_char(item.d0002_id_fil,'00')) idfil," + 
+				" item.D0003_ID_LOCALIZACAO localizacao," + 
+				" (trim(mat.D0421_NOME) || ' ' || trim(mat.D0421_NOME_DIMENSAO) )   descricao," + 
+				" titulo, " + 
+				" mat.D0403_ID_CLASSE_MATERIAL classeMaterial," +
+				" tipoMaquina," + 
+				" toleranciaInferior," + 
+				" toleranciaSuperior " + 
+				" from " + 
+				" STL.E0422_STL_ITEM item " + 
+				" inner JOIN STL.e0421_stl_material mat on  item.D0421_ID_MATERIAL = mat.D0421_ID_MATERIAL    " + 
+				" inner join " + 
+				" (" + 				 
+				" 	  Select " + 
+				" 	  idfil,h8cod item,h8tit  titulo, h8tpmaq tipoMaquina, H8TOLUP toleranciaSuperior, H8TOLDWN toleranciaInferior" + 
+				" 	  from cpfh8_dbf h8" + 
+				" 	  where h8tit is not null" + 
+				" ) tit on  trim(to_char(item.D0422_ID_ITEM,'0000000'))  = tit.item	  " +
+				" WHERE item.d0002_id_fil  =   :idfil   and	" +  
+				" (:descricaoFio IS NULL OR UPPER(mat.D0421_NOME) like  %:descricaoFio%  )   and " +
+				" (:codigo IS NULL OR trim(to_char(item.D0422_ID_ITEM,'0000000')) = :codigo)   " +
+				" order by mat.D0421_NOME,mat.D0421_NOME_DIMENSAO                    " 
+	    		,nativeQuery = true)   
+		        List<FioProjection> buscaFio(@Param("idfil") int idfil,@Param("descricaoFio") String descricaoFio,@Param("codigo") String codigo) ;
+ 	
+		
+		
 	   
 
 }

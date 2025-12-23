@@ -37,7 +37,7 @@ public interface ProducaoAberturaRepository extends JpaRepository<ProducaoAbertu
 			" T3USRALT 	    , " +	
 			" T3USRINC 	     " 	+ 
 			" FROM CPF.CPFT3_DBF T3  "  +
-		    " where T3.idfil =  STL.FN_STL_IDFIL('CPFT3',?1)  "
+		    " where T3.idfil =  STL.FN_STL_IDFIL('CPFT3',?1)   order by T3MIST , to_char(T3SEQ,'000')"
 			,nativeQuery = true)
     		List<ProducaoAbertura> buscaProducaoAberturaPorFilial(@Param("idfil") String idfil) ;  
     
@@ -100,7 +100,7 @@ public interface ProducaoAberturaRepository extends JpaRepository<ProducaoAbertu
 		    " (:dataInicial IS NULL     OR TO_CHAR(T3DTMOV,'YYYYMMDD') >= :dataInicial )   and " +
 		    " (:dataFinal   IS NULL     OR TO_CHAR(T3DTMOV,'YYYYMMDD') <= :dataFinal )     and " +
 		    " (:mistura     IS NULL     OR T3MIST = :mistura)     " + 
-		    " order by T3MIST,T3SEQ"
+		    "  order by T3MIST , to_char(T3SEQ,'000')"
 		    
 			,nativeQuery = true)
 		    List<ProducaoAbertura> buscaProducaoAberturaPorParametros(
@@ -198,7 +198,7 @@ public interface ProducaoAberturaRepository extends JpaRepository<ProducaoAbertu
 			" T3USRALT 	    , " +	
 			" T3USRINC 	     " 	+ 
 			" FROM CPF.CPFT3_DBF T3  "  +
-		    " where T3.idfil =  STL.FN_STL_IDFIL('CPFT3',?1) and  T3MIST = ?2  "
+		    " where T3.idfil =  STL.FN_STL_IDFIL('CPFT3',?1) and  T3MIST = ?2 order by T3MIST , to_char(T3SEQ,'000') "
 			,nativeQuery = true)
     		List<ProducaoAbertura> buscaProducaoAberturaPorFilialMistura(
     				@Param("idfil") String idfil,

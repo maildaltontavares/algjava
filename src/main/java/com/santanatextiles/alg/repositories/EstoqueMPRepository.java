@@ -262,7 +262,7 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		" M4TRAR, " +    
 		" M4TRCNT, " +    
 		" M4UHML , " + 
-		" Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST, M4CORTEZ " + 
+		" Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST, M4CORTEZ,teste.TOT_TESTE totTeste " + 
 		" from  " +
 		" (  " +
 		"     select '' tipo, ?2 mistura ,0 qtde_mist ,m4.* from cpf.CPFM4_DBF m4 " +  
@@ -280,6 +280,10 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 		"     where   " +
 		"     t2.idfil = ?1  and T2MIST = ?2   " +  
 		" ) Est_mist " +  
+		 " LEFT JOIN " + 
+ 		" ( " +
+ 		"   SELECT m9.IDFIL,M9orig,m9lote,COUNT(*) TOT_TESTE FROM CPF.CPFM9_DBF  M9  GROUP BY m9.IDFIL,M9orig,m9lote " +
+ 		" ) TESTE ON TESTE.IDFIL =  Est_mist.IDFIL   AND trim(TESTE.M9orig) = trim(Est_mist.M4orig) and trim(Est_mist.m4lote) = trim(TESTE.m9lote) " +		
 		" left join   " +
      	"   (  " +
 			"         Select  idfil, t2id ,sum(fardos_reserv) frd_reserv " +  
@@ -395,11 +399,15 @@ public interface EstoqueMPRepository extends JpaRepository<EstoqueMP, EstoqueMPI
 	    		" M4TRCNT, " +    
 	    		" M4UHML , " + 
 	    		" ' ' Mistura , M4COLOR, DECODE(M4TPMIC,null,' ','-' || M4TPMIC) M4TPMIC ,M4DEST,M7DESC ,M4TPQ,"
-	    		+ "M4CLASQ, M4CORTEZ   " + 
+	    		+ "M4CLASQ, M4CORTEZ ,nvl(TESTE.TOT_TESTE ,0 )  totTeste " + 
 	    		" from cpf.CPFM4_DBF m4  " +		  
 	    		" LEFT join CCP.CCPB2_DBF B2 on b2.idfil = STL.FN_STL_IDFIL('CCPB2', m4.IDFIL) and trim(m4.M4FORN) = b2.B2COD " +   
 	    		" LEFT JOIN CPF.CPFM6_DBF M6 ON M6.IDFIL = STL.FN_STL_IDFIL('CPFM6', m4.IDFIL)  AND M6COD = m4.M4ORIG  " +
 	    		" LEFT JOIN CPF.CPFM7_DBF M7 ON M7.IDFIL = STL.FN_STL_IDFIL('CPFM7', m4.IDFIL)  AND M7COD = m4.M4PROCED  " +
+    		    " LEFT JOIN " + 
+	    		" ( " +
+	    		"   SELECT m9.IDFIL,M9orig,m9lote,COUNT(*) TOT_TESTE FROM CPF.CPFM9_DBF  M9  GROUP BY m9.IDFIL,M9orig,m9lote " +
+	    		" ) TESTE ON TESTE.IDFIL =  m4.IDFIL   AND trim(TESTE.M9orig) = trim(m4.M4orig) and trim(m4lote) = trim(TESTE.m9lote) " +	    		
 	    		" WHERE M4.IDFIL = :filial  AND " + 
 	    	    " (:item IS NULL  OR  trim(M4.M4ITEM)  = :item)  AND " +
 	    	    " (:produtor IS NULL  OR   M6COD  = :produtor)  AND " + 

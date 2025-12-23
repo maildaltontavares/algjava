@@ -101,7 +101,21 @@ public class ItemResource {
 		} 		
 		
 	} 	
- 	
+ 	 
+	@CrossOrigin
+	@RequestMapping(value="/pesquisa/{idfil}/codigo/{codigo}/tpMaq/{tipoMaquina}",method=RequestMethod.GET)
+	public  ResponseEntity<?> buscaFioPorCodigoTipoMaquina(
+			@PathVariable String idfil,
+			@PathVariable String codigo,
+			@PathVariable String tipoMaquina) {
+		try {
+			List<ItemFioProjectionDTO> lista = service.buscaFioPorCodigoTipoMaquina(idfil,codigo,tipoMaquina);
+			return ResponseEntity.ok().body(lista);
+		} catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+		} 		
+		
+	}
 	
 	
 
